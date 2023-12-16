@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-l)ioh6h3)05k^i-4ui=&a-*=42ov-*z-k^3_lx05yoq6=&z56d
 DEBUG = False
 # DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['laylabutik.com','www.laylabutik.com','164.90.195.164']
 
 
 # Application definition
@@ -55,7 +55,7 @@ ROOT_URLCONF = 'layla.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["laylabutik.com",'www.laylabutik.com','164.90.195.164'],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
