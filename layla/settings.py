@@ -132,6 +132,10 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # //prod için
 STATIC_ROOT = '/var/www/layla/static/'
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
