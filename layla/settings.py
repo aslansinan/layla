@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-l)ioh6h3)05k^i-4ui=&a-*=42ov-*z-k^3_lx05yoq6=&z56d
 DEBUG = False
 # DEBUG = True
 
-ALLOWED_HOSTS = ['laylabutik.com','www.laylabutik.com','164.90.195.164']
+ALLOWED_HOSTS = ['laylabutik.com','www.laylabutik.com','68.183.0.224']
 
 
 # Application definition
@@ -128,11 +128,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static'),
+# ]
 # //prod için
-STATIC_ROOT = '/var/www/layla/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
