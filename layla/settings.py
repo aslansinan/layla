@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-l)ioh6h3)05k^i-4ui=&a-*=42ov-*z-k^3_lx05yoq6=&z56d
 DEBUG = False
 # DEBUG = True
 
-ALLOWED_HOSTS = ['laylabutik.com','www.laylabutik.com','164.90.195.164']
+ALLOWED_HOSTS = ['laylabutik.com','www.laylabutik.com','68.183.0.224']
 
 
 # Application definition
