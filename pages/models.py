@@ -7,6 +7,7 @@ class Urun(models.Model):
     kod = models.CharField(max_length=4, blank=True, null=True)
     aciklama = models.CharField(max_length=124, blank=True)
     fiyat = models.CharField(max_length=124, blank=True)
+    resim = models.ImageField(upload_to="products/%Y/%m/%d/", default="products/default_product_image.jpg")
 
     aktif = models.BooleanField(default=True)
     class Meta:
