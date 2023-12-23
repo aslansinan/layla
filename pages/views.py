@@ -1,7 +1,6 @@
 from django.shortcuts import render
 
-def index(request):
-    return render(request, 'index.html')
 
-def deneme(request):
-    return render(request, 'index.html')
+def index(request):
+    details = "index.html"
+    return render(request, details)
