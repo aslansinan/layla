@@ -27,7 +27,7 @@ var _forEach = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-st
 
 var _concat = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/concat"));
 
-var _indexOf = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/index-of"));
+var _indexOf = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/index.html-of"));
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof _Symbol !== "undefined" && _getIteratorMethod(o) || o["@@iterator"]; if (!it) { if (_Array$isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
@@ -430,7 +430,7 @@ var _slice = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stab
 
 var _parseInt2 = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/parse-int"));
 
-var _indexOf = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/index-of"));
+var _indexOf = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/index.html-of"));
 
 var _forEach = _interopRequireDefault(require("@babel/runtime-corejs3/core-js-stable/instance/for-each"));
 
@@ -1302,7 +1302,7 @@ XRegExp.escape = function (str) {
  * @memberOf XRegExp
  * @param {String} str String to search.
  * @param {RegExp} regex Regex to search with.
- * @param {Number} [pos=0] Zero-based index at which to start the search.
+ * @param {Number} [pos=0] Zero-based index.html at which to start the search.
  * @param {Boolean|String} [sticky=false] Whether the match must start at the specified position
  *   only. The string `'sticky'` is accepted as an alternative to `true`.
  * @returns {Array} Match array with named capture properties on the `groups` object, or `null`. If
@@ -1317,7 +1317,7 @@ XRegExp.escape = function (str) {
  * let pos = 3, result = [], match;
  * while (match = XRegExp.exec('<1><2><3><4>5<6>', /<(\d)>/, pos, 'sticky')) {
  *   result.push(match[1]);
- *   pos = match.index + match[0].length;
+ *   pos = match.index.html + match[0].length;
  * }
  * // result -> ['2', '3', '4']
  */
@@ -1334,7 +1334,7 @@ XRegExp.exec = function (str, regex, pos, sticky) {
     cacheKey += 'y';
   } else if (sticky) {
     // Simulate sticky matching by appending an empty capture to the original regex. The
-    // resulting regex will succeed no matter what at the current index (set with `lastIndex`),
+    // resulting regex will succeed no matter what at the current index.html (set with `lastIndex`),
     // and will not search the rest of the subject string. We'll know that the original regex
     // has failed if that last capture is `''` rather than `undefined` (i.e., if that last
     // capture participated in the match).
@@ -1377,7 +1377,7 @@ XRegExp.exec = function (str, regex, pos, sticky) {
  * @param {RegExp} regex Regex to search with.
  * @param {Function} callback Function to execute for each match. Invoked with four arguments:
  *   - The match array, with named backreference properties.
- *   - The zero-based match index.
+ *   - The zero-based match index.html.
  *   - The string being traversed.
  *   - The regex object being used to traverse the string.
  * @example
@@ -1647,7 +1647,7 @@ XRegExp.matchChain = function (str, chain) {
  *       is off, named backreferences are accessible as properties of this argument.
  *     - args[1..n] - One argument for each backreference (corresponding to `$1`, `$2`, etc. above).
  *       If the regex has no capturing groups, no arguments appear in this position.
- *     - args[n+1] - The zero-based index of the match within the entire search string.
+ *     - args[n+1] - The zero-based index.html of the match within the entire search string.
  *     - args[n+2] - The total string being searched.
  *     - args[n+3] - If the the search pattern is a regex with named capturing groups, the last
  *       argument is the groups object. Its keys are the backreference names and its values are the
@@ -1787,7 +1787,7 @@ XRegExp.split = function (str, separator, limit) {
  * @memberOf XRegExp
  * @param {String} str String to search.
  * @param {RegExp} regex Regex to search with.
- * @param {Number} [pos=0] Zero-based index at which to start the search.
+ * @param {Number} [pos=0] Zero-based index.html at which to start the search.
  * @param {Boolean|String} [sticky=false] Whether the match must start at the specified position
  *   only. The string `'sticky'` is accepted as an alternative to `true`.
  * @returns {boolean} Whether the regex matched the provided value.
@@ -1947,11 +1947,11 @@ fixed.exec = function (str) {
       var r2 = copyRegex(this, {
         removeG: true,
         isInternalOnly: true
-      }); // Using `str.slice(match.index)` rather than `match[0]` in case lookahead allowed
+      }); // Using `str.slice(match.index.html)` rather than `match[0]` in case lookahead allowed
       // matching due to characters outside the match
 
       (0, _slice["default"])(_context3 = String(str)).call(_context3, match.index).replace(r2, function () {
-        var len = arguments.length; // Skip index 0 and the last 2
+        var len = arguments.length; // Skip index.html 0 and the last 2
 
         for (var i = 1; i < len - 2; ++i) {
           if ((i < 0 || arguments.length <= i ? undefined : arguments[i]) === undefined) {
@@ -1969,7 +1969,7 @@ fixed.exec = function (str) {
         // https://tc39.github.io/proposal-regexp-named-groups/#sec-regexpbuiltinexec
         match.groups = (0, _create["default"])(null);
         groupsObject = match.groups;
-      } // Skip index 0
+      } // Skip index.html 0
 
 
       for (var i = 1; i < match.length; ++i) {
@@ -2445,7 +2445,7 @@ module.exports = require("core-js-pure/stable/instance/flags");
 },{"core-js-pure/stable/instance/flags":213}],9:[function(require,module,exports){
 module.exports = require("core-js-pure/stable/instance/for-each");
 },{"core-js-pure/stable/instance/for-each":214}],10:[function(require,module,exports){
-module.exports = require("core-js-pure/stable/instance/index-of");
+module.exports = require("core-js-pure/stable/instance/index.html-of");
 },{"core-js-pure/stable/instance/index-of":215}],11:[function(require,module,exports){
 module.exports = require("core-js-pure/stable/instance/slice");
 },{"core-js-pure/stable/instance/slice":216}],12:[function(require,module,exports){
@@ -2624,7 +2624,7 @@ var entryVirtual = require('../../../internals/entry-virtual');
 module.exports = entryVirtual('Array').forEach;
 
 },{"../../../internals/entry-virtual":91,"../../../modules/es.array.for-each":169}],38:[function(require,module,exports){
-require('../../../modules/es.array.index-of');
+require('../../../modules/es.array.index.html-of');
 var entryVirtual = require('../../../internals/entry-virtual');
 
 module.exports = entryVirtual('Array').indexOf;
@@ -2671,7 +2671,7 @@ module.exports = function (it) {
 
 },{"../../internals/object-is-prototype-of":135,"../regexp/flags":50}],44:[function(require,module,exports){
 var isPrototypeOf = require('../../internals/object-is-prototype-of');
-var method = require('../array/virtual/index-of');
+var method = require('../array/virtual/index.html-of');
 
 var ArrayPrototype = Array.prototype;
 
@@ -2902,7 +2902,7 @@ module.exports = function from(arrayLike /* , mapfn = undefined, thisArg = undef
 
 },{"../internals/call-with-safe-iteration-closing":72,"../internals/create-property":80,"../internals/function-bind-context":96,"../internals/function-call":97,"../internals/get-iterator":102,"../internals/get-iterator-method":101,"../internals/global":104,"../internals/is-array-iterator-method":112,"../internals/is-constructor":115,"../internals/length-of-array-like":123,"../internals/to-object":157}],63:[function(require,module,exports){
 var toIndexedObject = require('../internals/to-indexed-object');
-var toAbsoluteIndex = require('../internals/to-absolute-index');
+var toAbsoluteIndex = require('../internals/to-absolute-index.html');
 var lengthOfArrayLike = require('../internals/length-of-array-like');
 
 // `Array.prototype.{ indexOf, includes }` methods implementation
@@ -3044,7 +3044,7 @@ module.exports = function (METHOD_NAME, argument) {
 
 },{"../internals/fails":94}],67:[function(require,module,exports){
 var global = require('../internals/global');
-var toAbsoluteIndex = require('../internals/to-absolute-index');
+var toAbsoluteIndex = require('../internals/to-absolute-index.html');
 var lengthOfArrayLike = require('../internals/length-of-array-like');
 var createProperty = require('../internals/create-property');
 
@@ -4718,7 +4718,7 @@ var max = Math.max;
 var min = Math.min;
 
 // Helper for a popular repeating case of the spec:
-// Let integer be ? ToInteger(index).
+// Let integer be ? ToInteger(index.html).
 // If integer < 0, let result be max((length + integer), 0); else let result be min(integer, length).
 module.exports = function (index, length) {
   var integer = toIntegerOrInfinity(index);
@@ -4914,7 +4914,7 @@ var V8_VERSION = require('../internals/engine-v8-version');
 
 var IS_CONCAT_SPREADABLE = wellKnownSymbol('isConcatSpreadable');
 var MAX_SAFE_INTEGER = 0x1FFFFFFFFFFFFF;
-var MAXIMUM_ALLOWED_INDEX_EXCEEDED = 'Maximum allowed index exceeded';
+var MAXIMUM_ALLOWED_INDEX_EXCEEDED = 'Maximum allowed index.html exceeded';
 var TypeError = global.TypeError;
 
 // We can't use this feature detection in V8 since it causes
@@ -5054,7 +5054,7 @@ module.exports = defineIterator(Array, 'Array', function (iterated, kind) {
   setInternalState(this, {
     type: ARRAY_ITERATOR,
     target: toIndexedObject(iterated), // target
-    index: 0,                          // next index
+    index: 0,                          // next index.html
     kind: kind                         // kind
   });
 // `%ArrayIteratorPrototype%.next` method
@@ -5095,7 +5095,7 @@ var global = require('../internals/global');
 var isArray = require('../internals/is-array');
 var isConstructor = require('../internals/is-constructor');
 var isObject = require('../internals/is-object');
-var toAbsoluteIndex = require('../internals/to-absolute-index');
+var toAbsoluteIndex = require('../internals/to-absolute-index.html');
 var lengthOfArrayLike = require('../internals/length-of-array-like');
 var toIndexedObject = require('../internals/to-indexed-object');
 var createProperty = require('../internals/create-property');
@@ -5867,7 +5867,7 @@ module.exports = function (it) {
 };
 
 },{"../../internals/classof":75,"../../internals/has-own-property":105,"../../internals/object-is-prototype-of":135,"../../modules/web.dom-collections.iterator":207,"../array/virtual/for-each":210}],215:[function(require,module,exports){
-var parent = require('../../es/instance/index-of');
+var parent = require('../../es/instance/index.html-of');
 
 module.exports = parent;
 
