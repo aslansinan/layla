@@ -3,67 +3,80 @@
 
 {% block content %}
 	
-<section class="page-section">
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-lg-8 col-xl-6 text-center">
-                <h2 class="mt-0">İletişime Geçelim!</h2>
-                <hr class="divider" />
-                <p class="text-muted mb-5">Herhangi bir görüş veya öneriniz var mı? Bize bir mesaj gönderin ve en kısa sürede size döneceğiz!</p>
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Ürünlerimiz</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Kendinizi özel hissetmek için şimdi keşfedin ve tarzınıza dokunuş katın!</p>
+        </div>
+    </div>
+</header>
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class = "row mt-3 mb-4 button-group filter-button-group">
+            <div class = "col d-flex justify-content-center">
+                <a href="{% url 'products' %}" class = "btn btn-light mx-1 active">Hepsi</a>
+                <a href="#" class = "btn btn-light mx-1">Ayakkabılar</a>
+                <a href="#" class = "btn btn-light mx-1">Elbiseler</a>
+                <a href="#" class = "btn btn-light mx-1">Montlar</a>
             </div>
         </div>
-        <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
-            <div class="col-lg-6">
-                <!-- * * * * * * * * * * * * * * *-->
-                <!-- * * SB Forms Contact Form * *-->
-                <!-- * * * * * * * * * * * * * * *-->
-                <!-- This form is pre-integrated with SB Forms.-->
-                <!-- To make this form functional, sign up at-->
-                <!-- https://startbootstrap.com/solution/contact-forms-->
-                <!-- to get an API token!-->
-                <form id="contactForm" data-sb-form-api-token="API_TOKEN">
-                    <!-- Name input-->
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                        <label for="name">İsim soyisim</label>
-                        <div class="invalid-feedback" data-sb-feedback="name:required">Bir ad gerekli.</div>
+        <div class="row">
+            <div class="col-lg-3 col-12 right-single">
+                <div class="widget-search">
+                    <div class="site-search-area">
+                        <h5>Arama</h5>
+                        <form method="get" id="site-searchform" action="{% url 'search' %}">
+                            <div>
+                                <input class="input-text form-control" name="search" placeholder="Kelime ara.." type="text">
+                                <input id="searchsubmit" class="btn btn-primary" value="Search" type="submit">
+                            </div>
+                        </form>
                     </div>
-                    <!-- Email address input-->
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
-                        <label for="email">Email adresi</label>
-                        <div class="invalid-feedback" data-sb-feedback="email:required">Bir e-mail gerekli.</div>
-                        <div class="invalid-feedback" data-sb-feedback="email:email">E-posta geçerli değil.</div>
-                    </div>
-                    <!-- Phone number input-->
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
-                        <label for="phone">Telefon numarası</label>
-                        <div class="invalid-feedback" data-sb-feedback="phone:required">Telefon numarası gerekli.</div>
-                    </div>
-                    <!-- Message input-->
-                    <div class="form-floating mb-3">
-                        <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
-                        <label for="message">Mesaj</label>
-                        <div class="invalid-feedback" data-sb-feedback="message:required">Bir mesaj gerekli.</div>
-                    </div>
-                    <!-- Submit success message-->
-                    <!---->
-                    <!-- This is what your users will see when the form-->
-                    <!-- has successfully submitted-->
-                    <div class="d-none" id="submitSuccessMessage">
-                        <div class="text-center mb-3">
-                            <div class="fw-bolder">Form gönderimi başarılı!</div>
+                </div>
+                <div class="widget-price-range mt-4">
+                    <h5>Fiyat Aralığı</h5>
+                    <form method="get" action="{% url 'search' %}">
+                        <div class="form-group">
+                            <label for="min_price">Min Fiyat:</label>
+                            <input type="number" class="form-control" id="min_price" name="min_price" placeholder="Min Fiyat" value="{{ request.GET.min_price }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="max_price">Max Fiyat:</label>
+                            <input type="number" class="form-control" id="max_price" name="max_price" placeholder="Max Fiyat" value="{{ request.GET.max_price }}">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Filtrele</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-9 blog-post-single">
+                <div class="row gx-3 gx-lg-4 row-cols-2 row-cols-md-2 row-cols-xl-3 justify-content-center">
+                {% if urunler %}
+                    {% for urun in urunler %}
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <img  class="img-fluid" src="{{ urun.resim.url }}" alt="{{urun.isim}}" style="width: 450px; height: 250px;"/>
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">{{urun.isim}}</h5>
+                                    <!-- Product price-->
+                                    {{urun.fiyat}}₺
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Sepete Ekle</a></div>
+                            </div>
                         </div>
                     </div>
-                    <!-- Submit error message-->
-                    <!---->
-                    <!-- This is what your users will see when there is-->
-                    <!-- an error submitting the form-->
-                    <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Mesaj gönderilirken hata oluştu!</div></div>
-                    <!-- Submit Button-->
-                    <div class="d-grid"><button class="btn btn-primary btn-xl disabled" id="submitButton" type="submit">Gönder</button></div>
-                </form>
+                    {% endfor %}
+                {% else %}
+                    <h3 class="text-center">Ürün bulunamadı.</h3>
+                {% endif %}
+                </div>
             </div>
         </div>
     </div>
