@@ -1,21 +1,23 @@
 from django.contrib import admin
-from django import forms
 from django.contrib.auth.admin import UserAdmin
-from import_export.admin import ExportMixin
-from account.models import Uye
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django import forms
+from .models import Uye
 
 
-# Register your models here.
 class UserCreationForm(forms.ModelForm):
+    """A form for creating new users. Includes all the required
+    fields, plus a repeated password."""
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     class Meta:
         model = Uye
-        fields = ('email', 'isim_soyisim', 'cep_telefonu')
+        fields = '__all__'
+        # fields = ('email', 'isim', 'soyisim')
 
     def clean_password2(self):
+        # Check that the two password entries match
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
@@ -23,7 +25,8 @@ class UserCreationForm(forms.ModelForm):
         return password2
 
     def save(self, commit=True):
-        user = super().save(commit=False)
+        # Save the provided password in hashed format
+        user = super(UserCreationForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()
@@ -31,6 +34,10 @@ class UserCreationForm(forms.ModelForm):
 
 
 class UserChangeForm(forms.ModelForm):
+    """A form for updating users. Includes all the fields on
+    the user, but replaces the password field with admin's
+    password hash display field.
+    """
     password = ReadOnlyPasswordHashField(label=("Password"),
                                          help_text=("Raw passwords are not stored, so there is no way to see "
                                                     "this user's password, but you can change the password "
@@ -41,27 +48,31 @@ class UserChangeForm(forms.ModelForm):
         fields = '__all__'
 
     def clean_password(self):
+        # Regardless of what the user provides, return the initial value.
+        # This is done here, rather than on the field, because the
+        # field does not have access to the initial value
         return self.initial["password"]
 
-class UyeAdmin(ExportMixin, UserAdmin):
+
+class UyeAdmin(UserAdmin):
     form = UserChangeForm
     add_form = UserCreationForm
-    list_display = ['email', 'isim_soyisim', 'cep_telefonu', 'olusturma_tarihi']
-    search_fields = ['email', 'isim_soyisim', 'cep_telefonu']
-    list_filter = ['email', 'is_active', 'olusturma_tarihi']
-    ordering = ('email',)
+    model = Uye
+    list_display = ('email', 'isim_soyisim', 'is_staff', 'is_active')
+    list_filter = ('is_staff', 'is_active')
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Kişisel Bilgileri', {'fields': ('isim_soyisim', 'cep_telefonu')}),
-        ('Yetkilendirme', {'fields': ('is_staff', 'is_superuser', 'is_active')}),
-        ('Önemli Tarihler', {'fields': ('last_login',)}),
+        ('Personal Info', {'fields': ('isim_soyisim',)}),
+        ('Permissions', {'fields': ('is_staff', 'is_active')}),
     )
-    exclude = ('username',)
-
-    class Media:
-        js = [
-            '/static/js/uyelik.js',
-        ]
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2', 'isim_soyisim', 'is_staff', 'is_active')}
+         ),
+    )
+    search_fields = ('email', 'isim_soyisim')
+    ordering = ('email',)
 
 
 admin.site.register(Uye, UyeAdmin)
