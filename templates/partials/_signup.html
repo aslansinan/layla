@@ -1,0 +1,20 @@
+{% load static %}
+
+<form method="POST" action="/account/register" class="signup" id="sign-up-form">
+    {% csrf_token %}
+    <p class="text-white text-center bg-danger mt-2 uyari" id="hata-bastir"></p>
+    
+    <div class="field">
+        <input type="email" name="email" class="form-control" placeholder="E-mail" required id="id_email">
+    </div>
+    <div class="field">
+        <input type="text" name="isim_soyisim" class="form-control" placeholder="İsim-Soyisim" required id="id_isim">
+    </div>
+
+    <div class="field">
+        <input type="password" name="password" class="form-control" placeholder="Parola" required id="id_password">
+    </div>
+    <div class="field">
+        <button id="kayit-ol-btn" type="submit">Kayıt Ol</button>
+    </div>
+</form>

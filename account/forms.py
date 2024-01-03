@@ -31,15 +31,6 @@ class UyeKayitFormu(forms.Form):
         'class': 'form-control',
     }))
 
-    # dogum_gunu = forms.DateField(required=True)
-
-    # cinsiyet = forms.CharField(required=True)
-
-    cep_telefonu = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'form-control',
-        'placeholder': 'Cep Telefonu',
-    }))
-
     password = forms.CharField(widget=forms.PasswordInput(attrs={
         'class': 'form-control',
         'placeholder': 'Parola',
@@ -59,12 +50,6 @@ class UyeKayitFormu(forms.Form):
 
         return email
 
-    def clean_cep_telefonu(self):
-        cep_telefonu = self.cleaned_data["cep_telefonu"]
-        if Uye.objects.filter(cep_telefonu=cep_telefonu).exists():
-            raise ValidationError("Bu cep_telefonu ile önceden kayıt olunmuş.")
-        return cep_telefonu
-
     def clean_password(self):
         password = self.cleaned_data["password"]
         if len(password) < 6:
@@ -77,7 +62,6 @@ class UyeKayitFormu(forms.Form):
             isim_soyisim=self.cleaned_data['isim_soyisim'],
             password=self.cleaned_data["password"],
         )
-        uye.cep_telefonu = self.cleaned_data["cep_telefonu"]
         return uye
 
     def save(self, commit=True):
