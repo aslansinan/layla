@@ -1,7 +1,7 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
     <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="{% if '/' == request.path %} #page-top {% else %} {% url 'index' %} {% endif %}">
+        <a class="navbar-brand" href="{% if '/' == request.path %} #page-top {% else %} {% url 'index.html' %} {% endif %}">
             <img class="img-fluid rounded-circle" src="{% static 'assets/img/layla.jpeg' %}" alt="layla"
                  style="max-width: 100px; max-height: 100px;"/>
         </a>
@@ -11,22 +11,22 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ms-auto my-2 my-lg-0">
                 <li class="nav-item"><a class="nav-link"
-                                        href="{% if '/' == request.path %} #page-top {% else %} {% url 'index' %} {% endif %}">Anasayfa</a>
+                                        href="{% if '/' == request.path %} #page-top {% else %} {% url 'index.html' %} {% endif %}">Anasayfa</a>
                 </li>
                 <li class="nav-item"><a class="nav-link"
-                                        href="{% if '/' == request.path %} #about {% else %} {% url 'index' %}#about {% endif %}">Hakkımızda</a>
+                                        href="{% if '/' == request.path %} #about {% else %} {% url 'index.html' %}#about {% endif %}">Hakkımızda</a>
                 </li>
                 <li class="nav-item"><a class="nav-link"
-                                        href="{% if '/' == request.path %} #services {% else %} {% url 'index' %}#services {% endif %}">Ürünler</a>
+                                        href="{% if '/' == request.path %} #services {% else %} {% url 'index.html' %}#services {% endif %}">Ürünler</a>
                 </li>
                 <li class="nav-item"><a class="nav-link"
-                                        href="{% if '/' == request.path %} #communication {% else %} {% url 'index' %}#communication {% endif %}">İletişim</a>
+                                        href="{% if '/' == request.path %} #communication {% else %} {% url 'index.html' %}#communication {% endif %}">İletişim</a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Bize Ulaş</a></li>
                 {% if request.user.is_authenticated %}
                     <li class="nav-item" data-bs-toggle="collapse"
                         data-bs-target=".navbar-collapse.show" href="#hesabim">
-                        <a class="nav-link" href="#hesabim">
+                        <a class="nav-link" href={% url 'anasayfa' %}>
                             <span><strong>Hesabım</strong></span>
                         </a>
                     </li>

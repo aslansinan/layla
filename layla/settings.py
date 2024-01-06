@@ -149,3 +149,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# For POSTMARK
+# EMAIL_BACKEND = 'postmarker.django.EmailBackend'
+# POSTMARK_API_KEY = '' # yeni token
+# POSTMARK_SENDER = 'info@penfest.com.tr'
+#
+# POSTMARK = {
+#     'TOKEN': '',
+# }

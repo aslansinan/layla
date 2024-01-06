@@ -9,10 +9,10 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-
+from django.urls import reverse
 from . import forms
-from .forms import UyeKayitFormu
-from django.http import JsonResponse
+from .forms import UyeKayitFormu, LoginForm
+from django.http import JsonResponse, HttpResponseRedirect
 from http import HTTPStatus
 
 from .models import Uye
@@ -32,15 +32,20 @@ def anonymous_required(function=None, redirect_url=None):
 
 
 # Create your views here.
-def indexaccount(request):
-    return render(request, 'account/index.html')
+def anasayfa(request):
+    details = "account/index.html"
+    return render(request, details)
 
 
 def login_request(request):
     message = ''
     if request.method == 'POST':
-        datas = json.load(request)
-        form = forms.LoginForm(datas["data"])
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        form = LoginForm({
+            'email': email,
+            'password': password,
+        })
         if form.is_valid():
             user = authenticate(
                 email=form.cleaned_data['email'],
@@ -48,14 +53,13 @@ def login_request(request):
             )
             if user is not None:
                 login(request, user)
-                return JsonResponse({'success': '.'})
+                return redirect('index.html')
             else:
-                return JsonResponse({"error": "Girilen e-mail veya şifre hatalıdır."},
-                                    status=HTTPStatus.INTERNAL_SERVER_ERROR)
+                error_message = "Girilen e-mail veya şifre hatalıdır."
+                return render(request, 'index.html', {'error_message': error_message})
         else:
-            return JsonResponse({"error": form.errors}, status=HTTPStatus.INTERNAL_SERVER_ERROR)
-    return JsonResponse({"error": "Hata."}, status=HTTPStatus.INTERNAL_SERVER_ERROR)
-
+            return render(request, 'index.html', {'error_message': form.errors})
+    return render(request, 'index.html', {'error_message': "Hata."})
 
 def authenticate_user(email=None, password=None):
     User = get_user_model()
@@ -81,16 +85,14 @@ def yeni_uye_kayit(request):
             if form.is_valid():
                 form.save()
                 user = authenticate_user(email=email, password=password)
-                print(user)
                 if user is not None:
                     login(request, user)
-                    return JsonResponse({'success': 'Kayıt başarılı bir şekilde yapıldı.'})
+                    return redirect('index.html')
             else:
-                return JsonResponse({"errors": form.errors}, status=HTTPStatus.INTERNAL_SERVER_ERROR)
+                return render(request, 'index.html', {'error_message': form.errors})
         except json.JSONDecodeError:
-            return JsonResponse({"errors": "Geçersiz JSON formatı"}, status=HTTPStatus.BAD_REQUEST)
-
-    return JsonResponse({'error': 'Geçersiz istek'}, status=HTTPStatus.BAD_REQUEST)
+            return render(request, 'index.html', {'error_message': "geçersiz format"})
+    return render(request, 'index.html', {'error_message': "Geçersiz istek."})
 
 
 @anonymous_required
@@ -110,7 +112,7 @@ def forget_password(request):
         encoded = base64.b64encode(str(uye_email).encode('ascii'))
         formatlama = str(encoded).replace("'", "/")[1:]
         # url = "http://127.0.0.1:8000/account/mail/change-password" + formatlama
-        url = "https://penfest.com.tr/account/mail/change-password" + formatlama
+        url = "http://localhost:8000/account/mail/change-password" + formatlama
         mail_dict["hashed_url"] = url
         html_content = render_to_string('email-icerikleri/sifre-degistirme-mail.html', mail_dict)
         text_content = strip_tags(html_content)
@@ -123,11 +125,30 @@ def forget_password(request):
         email.attach_alternative(html_content, "text/html")
         email.send()
         messages.success(request, "Şifre Sıfırlama Mailiniz Gönderildi...")
-        return redirect("index")
+        return redirect("forget-password")
     else:
-        return render(request, "account/sifremi_unuttum.html")
+        return render(request, "account/şifremi_unuttum.html")
 
 
+@anonymous_required
+def mail_change_password(request, code):
+    context = dict()
+
+    if request.method == "POST":
+        binary_mail = base64.b64decode(code).decode('utf-8')
+        mail_str = str(binary_mail)
+        form_datas = dict()
+        form_datas["email"] = mail_str
+        form_datas["password"] = request.POST.get("password")
+        form = forms.PasswordChangeForm(form_datas)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Şifreniz Başarılı Bir Şekilde Değiştirildi.")
+            return redirect("index.html")
+        else:
+            return render(request, 'index.html', {'error_message': "Şifre değiştirilemedi lütfen tekrar deneyiniz..."})
+
+    return render(request, "account/şifre_yenileme.html", context)
 def logout_request(request):
     logout(request)
-    return redirect("index")
+    return redirect('index.html')
