@@ -1,8 +1,28 @@
 from django.db import models
+from mptt.fields import TreeForeignKey
+from mptt.models import MPTTModel
 
+class Kategori(MPTTModel):
+    baslik = models.CharField(max_length=30)
+    aktif = models.BooleanField(default=True)
+    parent = TreeForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
+    class MPTTMeta:
+        order_insertion_by = ['baslik']
 
-# Create your models here.
+    def __str__(self):
+        full_path = [self.baslik]
+        k = self.parent
+        while k is not None:
+            full_path.append(k.baslik)
+            k = k.parent
+        return '/'.join(full_path[::-1])
+
+    def get_absolute_url(self):
+        return reverse('category_detail', kwargs={'aktif': self.aktif})
+
 class Urun(models.Model):
+    kategori = models.ForeignKey(Kategori, on_delete=models.CASCADE)
+    aciklama = models.CharField(max_length=255)
     isim = models.CharField(max_length=25, verbose_name='İSİM')
     kod = models.CharField(max_length=4, blank=True, null=True)
     aciklama = models.CharField(max_length=124, blank=True)

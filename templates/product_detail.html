@@ -1,0 +1,89 @@
+{% extends 'partials/_base.html' %}
+{% load static %}
+
+{% block content %}
+	
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">{{ urun.isim }}</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Kendinizi özel hissetmek için şimdi keşfedin ve tarzınıza dokunuş katın!</p>
+        </div>
+    </div>
+</header>
+<!-- Product section-->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ urun.resim.url }}" alt="{{urun.isim}}" style="width: 550px; height: 400px;"/></div>
+            <div class="col-md-6">
+                <div class="small mb-1">{{ urun.kategori.baslik }}</div>
+                <h1 class="display-5 fw-bolder">{{ urun.isim }}</h1>
+                <div class="fs-5 mb-5">
+                    <span>{{urun.fiyat}}₺</span>
+                </div>
+                <p class="lead">{{ urun.aciklama }}</p>
+                <div class="d-flex align-items-center">
+                    <div class="input-group">
+                        <button class="btn btn-outline-dark" type="button" onclick="changeQuantity(-1)">
+                            <i class="bi bi-dash"></i>
+                        </button>
+                        <input class="form-control text-center" id="inputQuantity" type="number" value="1" min="1" style="max-width: 4rem" />
+                        <button class="btn btn-outline-dark" type="button" onclick="changeQuantity(1)">
+                            <i class="bi bi-plus"></i>
+                        </button>
+                        <button class="btn btn-outline-dark ms-2" type="button" onclick="addToCart()">
+                            <i class="bi bi-cart-fill me-1"></i>
+                            Sepete Ekle
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Related items section-->
+<section class="py-5 bg-light">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h2 class="fw-bolder mb-4">İlgili ürünler</h2>
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            {% for urun in urunler %} 
+            <div class="col mb-5">
+                <div class="card h-100">
+                    <!-- Product image-->
+                    <img class="card-img-top" src="{{ urun.resim.url }}" alt="{{urun.isim}}" />
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h5 class="fw-bolder">{{ urun.isim }}</h5>
+                            <!-- Product price-->
+                            {{urun.fiyat}}₺
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'urun_detay' urun.id %}">Detay Gör</a></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<script>
+    function changeQuantity(amount) {
+        var inputQuantity = document.getElementById('inputQuantity');
+        var currentValue = parseInt(inputQuantity.value, 10) || 0;
+        var newValue = Math.max(currentValue + amount, 1); // En az 1 adet olmalı
+        inputQuantity.value = newValue;
+    }
+
+    function addToCart() {
+        // Sepete ekleme işlemleri burada yapılabilir
+        var inputQuantity = document.getElementById('inputQuantity');
+        var quantity = parseInt(inputQuantity.value, 10) || 0;
+        alert('Sepete ' + quantity + ' adet eklendi!');
+    }
+</script>
+{% endblock %}
