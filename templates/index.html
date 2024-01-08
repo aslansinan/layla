@@ -47,7 +47,7 @@
 				{% for urun in urunler %}
 				<div class="col-lg-4 col-sm-6">
 					<a class="portfolio-box" href="{{ urun.resim.url }}" title="{{urun.isim}}">
-						<img class="img-fluid" src="{{ urun.resim.url }}" alt="..." />
+						<img class="img-fluid" src="{{ urun.resim.url }}" alt="..." style="width: 650px; height: 450px;"/>
 						<div class="portfolio-box-caption">
 							<div class="project-category text-white-50">Category</div>
 							<div class="project-name">{{urun.isim}}</div>
@@ -58,6 +58,12 @@
 			</div>
 		</div>
 	</div>
+	<section class="page-section bg-dark text-white">
+		<div class="container px-4 px-lg-5 text-center">
+			<h2 class="mb-4">Daha fazlası için</h2>
+			<a class="btn btn-light btn-xl" href="{% url 'products' %}">HEMEN TIKLA !</a>
+		</div>
+	</section>
 </section>
 <!-- Contact-->
 <section class="page-section" id="communication">

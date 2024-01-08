@@ -6,3 +6,4 @@ tzdata==2023.3
 pillow
 django-import-export
 postmarker==1.0
+django-imagekit==5.0.0
