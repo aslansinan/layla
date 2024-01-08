@@ -2,10 +2,10 @@ import base64
 import json
 
 from django.conf import settings
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth import authenticate, login, logout, get_user_model, REDIRECT_FIELD_NAME
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -149,6 +149,23 @@ def mail_change_password(request, code):
             return render(request, 'index.html', {'error_message': "Şifre değiştirilemedi lütfen tekrar deneyiniz..."})
 
     return render(request, "account/şifre_yenileme.html", context)
+
+@login_required(login_url='/')
+def change_password(request):
+    if request.method == 'POST':
+        new_password = request.POST.get('password')
+
+        # Burada yeni şifrenin güvenlik kontrolleri ve kullanıcıya atanması yapılabilir
+        if len(new_password) < 6:
+            messages.error(request, 'Parolanız en az 6 karakter olmalıdır.')
+            return render(request, "account")
+        else:
+            # Yeni şifreyi kullanıcıya atama işlemi burada gerçekleştirilebilir
+            request.user.set_password(new_password)
+            request.user.save()
+            messages.success(request, 'Şifreniz başarıyla güncellendi.')
+            return redirect("index.html")
+    return redirect('index.html')
 def logout_request(request):
     logout(request)
     return redirect('index.html')
