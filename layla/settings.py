@@ -33,7 +33,7 @@ ALLOWED_HOSTS = ['laylabutik.com','www.laylabutik.com','68.183.0.224']
 
 INSTALLED_APPS = [
     'import_export',
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
