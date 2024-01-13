@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['laylabutik.com','www.laylabutik.com','68.183.0.224']
 # Application definition
 
 INSTALLED_APPS = [
+    'import_export',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pages.apps.PagesConfig',
+    'account',
 ]
 
 MIDDLEWARE = [
@@ -110,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+AUTH_USER_MODEL = 'account.Uye'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -133,6 +135,7 @@ STATIC_URL = '/static/'
 # ]
 # //prod için
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# //prod için
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
@@ -147,3 +150,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# For POSTMARK
+EMAIL_BACKEND = 'postmarker.django.EmailBackend'
+POSTMARK_API_KEY = '' # yeni token
+POSTMARK_SENDER = 'info@penfest.com.tr'
+
+POSTMARK = {
+    'TOKEN': '',
+}

@@ -1,0 +1,32 @@
+{% load static %}
+<div class="modal" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="wrapper">
+                <div class="d-flex flex-row-reverse">
+                    <a type="button" class="pop-up-close-btn" data-bs-dismiss="modal"><i
+                            class="fa-sharp fa-solid fa-xmark close-color"></i></a>
+                </div>
+                <div class="title-text">
+                    <div class="title login">Giriş Yap</div>
+                    <div class="title signup">Kayıt Ol</div>
+                </div>
+                <div class="form-container">
+                    <div class="slide-controls">
+                        <input class="account-radio" type="radio" name="slider" id="login" checked>
+                        <input class="account-radio" type="radio" name="slider" id="signup">
+                        <label for="login" class="slide login">Giriş Yap</label>
+                        <label for="signup" class="slide signup">Kayıt Ol</label>
+                        <div class="slide-tab"></div>
+                    </div>
+                    <div class="form-inner">
+                        <p class="text-white text-center bg-danger mt-2 uyari" id="hata-bastirs"></p>
+                        {% include 'partials/_loginform.html' %}
+
+                        {% include 'partials/_signup.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+{% load static %}
+
+<form method="POST" action="{% url 'login' %}" class="login" id="login-form">
+    {% csrf_token %}
+    
+    <p class="text-white text-center bg-danger mt-2 uyari" id="hata-bastir-login"></p>
+
+    <div class="field">
+        <input type="email" name="email" id="email" class="form-control"  placeholder="E-Post Adresiniz" required>
+    </div>
+    <div class="field">
+        <input type="password" name="password" id="password" class="form-control" placeholder="Şifreniz" required>
+    </div>
+    <div class="pass-link"><a href="{% url 'forget-password' %}">Şifrenizi mi unuttunuz?</a></div>
+    <div class="field">
+        <button type="submit" id="login-link">Giriş Yap</button>
+    </div>
+    <div class="signup-link">Üye değil misiniz? <a href="#">Şimdi Kayıt Ol</a></div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+<script>
+
+    $("#login-link").click(function (e) {
+
+        var formData = document.getElementById("login-form"); //.serialize()
+        var datas = {};
+        for (let i = 0; i < formData.length; i++) {
+            const element = formData[i];
+            datas[element.name] = element.value;
+        }
+        console.log(datas)
+        var postDATA = JSON.stringify({
+            'data': datas
+        });
+
+        $('#spinner-div-login').show();
+        $.ajax({
+            url: window.location.origin + '/account/login',
+            type: "POST",
+            dataType: "json",
+            data: postDATA,
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": getCookie("csrftoken"), // don't forget to include the 'getCookie' function
+            },
+            success: (data) => {
+                var url = window.location.origin + '/'
+                window.location.href = url;
+            },
+            complete: function () {
+                $('#spinner-div-login').hide();
+            },
+            error: (error) => {
+                login_hata_bastir(error);
+            }
+        });
+
+        e.preventDefault();
+    })
+
+
+    function login_hata_bastir(errors) {
+            if (errors["responseJSON"]["error"]["__all__"]) {
+                $("#hata-bastir-login").text(errors["responseJSON"]["error"]["__all__"])
+            }
+            else{
+                $("#hata-bastir-login").text(errors["responseJSON"]["error"])
+            }
+        }
+
+</script>
