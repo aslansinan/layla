@@ -23,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-l)ioh6h3)05k^i-4ui=&a-*=42ov-*z-k^3_lx05yoq6=&z56d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 # DEBUG = True
 
-ALLOWED_HOSTS = ['laylabutik.com','www.laylabutik.com','68.183.0.224']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pages.apps.PagesConfig',
     'account',
+    'satis'
 ]
 
 MIDDLEWARE = [
@@ -77,22 +78,22 @@ WSGI_APPLICATION = 'layla.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'layla',
-        'USER': 'layla',
-        'PASSWORD': 'layla123',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'layla',
+#         'USER': 'layla',
+#         'PASSWORD': 'layla123',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 
 # Password validation
@@ -130,17 +131,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, 'static'),
-# ]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 # //prod için
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# //prod için
+# STATIC_ROOT = '/var/www/layla/static/'
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -152,10 +152,10 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # For POSTMARK
-EMAIL_BACKEND = 'postmarker.django.EmailBackend'
-POSTMARK_API_KEY = '' # yeni token
-POSTMARK_SENDER = 'info@penfest.com.tr'
-
-POSTMARK = {
-    'TOKEN': '',
-}
+# EMAIL_BACKEND = 'postmarker.django.EmailBackend'
+# POSTMARK_API_KEY = '' # yeni token
+# POSTMARK_SENDER = 'info@penfest.com.tr'
+#
+# POSTMARK = {
+#     'TOKEN': '',
+# }
