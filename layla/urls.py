@@ -19,6 +19,8 @@ from django.conf.urls.static import static
 
 from layla import settings
 
+admin.site.site_header = 'Layla Admin Paneli'
+
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('', include('pages.urls')),

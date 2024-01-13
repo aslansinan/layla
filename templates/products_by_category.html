@@ -15,10 +15,11 @@
     <div class="container px-4 px-lg-5 mt-5">
         <div class = "row mt-3 mb-4 button-group filter-button-group">
             <div class = "col d-flex justify-content-center">
-                <a href="{% url 'products' %}" class="btn btn-light mx-1 active">Hepsi</a>
+                <a href="{% url 'products' %}" class="btn btn-light mx-1 {% if not secili_kategori %}active{% endif %}">Hepsi</a>
                 {% for kategori in ana_kategoriler %}
-                    <a href="{% url 'urunler_by_kategori' kategori.id %}" class="btn btn-light mx-1">{{ kategori.baslik }}</a>
+                    <a href="{% url 'urunler_by_kategori' kategori.id %}" class="btn btn-light mx-1 {% if secili_kategori and kategori.id == secili_kategori.id %}active{% endif %}">{{ kategori.baslik }}</a>
                 {% endfor %}
+
             </div>
         </div>
         <div class="row">
@@ -26,7 +27,7 @@
                 <div class="widget-search">
                     <div class="site-search-area">
                         <h5>Arama</h5>
-                        <form method="get" id="site-searchform" action="{% url 'search' %}">
+                        <form method="get" id="site-searchform" action="{% url 'search' secili_kategori.id %}">
                             <div>
                                 <input class="input-text form-control" name="search" placeholder="Kelime ara.." type="text">
                                 <input id="searchsubmit" class="btn btn-primary" value="Search" type="submit">
@@ -36,7 +37,7 @@
                 </div>
                 <div class="widget-price-range mt-4">
                     <h5>Fiyat Aralığı</h5>
-                    <form method="get" action="{% url 'search' %}">
+                    <form method="get" action="{% url 'search' secili_kategori.id %}">
                         <div class="form-group">
                             <label for="min_price">Min Fiyat:</label>
                             <input type="number" class="form-control" id="min_price" name="min_price" placeholder="Min Fiyat" value="{{ request.GET.min_price }}">
@@ -51,7 +52,7 @@
             </div>
             <div class="col-lg-9 blog-post-single">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-2 row-cols-xl-4 justify-content-center mt-5">
-                    {% if urunler %}
+                {% if urunler %}
                     {% for urun in urunler %}
                     <div class="col mb-5">
                         <div class="card h-60">
@@ -75,7 +76,7 @@
                                 <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Sepete Ekle</a></div>
                             </div>
                         </div>
-                    </div>                    
+                    </div>      
                     {% endfor %}
                 {% else %}
                     <h3 class="text-center">Ürün bulunamadı.</h3>
