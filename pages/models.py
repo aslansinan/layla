@@ -5,6 +5,7 @@ from mptt.models import MPTTModel
 
 class Kategori(MPTTModel):
     baslik = models.CharField(max_length=30)
+    sira = models.IntegerField()
     aktif = models.BooleanField(default=True)
     parent = TreeForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
     class MPTTMeta:
