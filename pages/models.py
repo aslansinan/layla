@@ -28,7 +28,10 @@ class Urun(models.Model):
     isim = models.CharField(max_length=25, verbose_name='İSİM')
     kod = models.CharField(max_length=4, blank=True, null=True)
     aciklama = models.CharField(max_length=124, blank=True)
+    kod = models.CharField(max_length=124, blank=True)
     fiyat = models.DecimalField(max_digits=10, decimal_places=2)
+    stok_durumu = models.IntegerField(default=0)
+    count = models.IntegerField(default=0)
     resim = models.ImageField(upload_to="products/%Y/%m/%d/", default="products/default_product_image.jpg")
 
     aktif = models.BooleanField(default=True)
