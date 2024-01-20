@@ -3,7 +3,7 @@
 
 {% block content %}
 	
-<header class="bg-dark py-5">
+<header class="bg-secondary py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
             <h1 class="display-4 fw-bolder">{{ urun.isim }}</h1>
@@ -15,7 +15,11 @@
 <section class="py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5 align-items-center">
-            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="{{ urun.resim.url }}" alt="{{urun.isim}}" style="width: 550px; height: 400px;"/></div>
+            <div id="portfolio" class="col-md-6">
+                <a class="portfolio-box" href="{{ urun.resim.url }}" title="{{urun.isim}}">
+                    <img class="img-fluid card-img-top mb-5 mb-md-0" src="{{ urun.resim.url }}" alt="{{urun.isim}}"/>
+                </a>
+            </div>
             <div class="col-md-6">
                 <div class="small mb-1">{{ urun.kategori.baslik }}</div>
                 <h1 class="display-5 fw-bolder">{{ urun.isim }}</h1>

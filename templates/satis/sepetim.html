@@ -3,9 +3,10 @@
 {% load static %}
 
 {% block content %}
-    <header class="bg-light py-5">
+    <header class="bg-secondary py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Sepetiniz</h1>
             </div>
         </div>
     </header>
@@ -13,9 +14,130 @@
         <div class="container px-4 px-lg-5 mt-5">
             <div class="container-fluid">
                 <div class="row">
+                    <div class="col-lg-8">
+                        <div class="border bg-light p-3 text-center">
+                            <h5>Sepet Ürünleri</h5>
+                        </div>
+                        <div class="border p-3">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Ürün Adı</th>
+                                        <th scope="col">Adet</th>
+                                        <th scope="col">Fiyat</th>
+                                        <th scope="col">Sil</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Ürün 1</td>
+                                        <td>
+                                            <button class="btn btn-outline-dark btn-sm" onclick="changeQuantity(-1)">
+                                                <i class="bi bi-dash"></i>
+                                            </button>
+                                            <span class="mx-2">1</span>
+                                            <button class="btn btn-outline-dark btn-sm" onclick="changeQuantity(1)">
+                                                <i class="bi bi-plus"></i>
+                                            </button>
+                                        </td>
+                                        <td>50.0₺</td>
+                                        <td>
+                                            <button class="btn btn-outline-danger btn-sm" onclick="removeFromCart()">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ürün 2</td>
+                                        <td>
+                                            <button class="btn btn-outline-dark btn-sm" onclick="changeQuantity(-1)">
+                                                <i class="bi bi-dash"></i>
+                                            </button>
+                                            <span class="mx-2">1</span>
+                                            <button class="btn btn-outline-dark btn-sm" onclick="changeQuantity(1)">
+                                                <i class="bi bi-plus"></i>
+                                            </button>
+                                        </td>
+                                        <td>50.0₺</td>
+                                        <td>
+                                            <button class="btn btn-outline-danger btn-sm" onclick="removeFromCart()">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ürün 3</td>
+                                        <td>
+                                            <button class="btn btn-outline-dark btn-sm" onclick="changeQuantity(-1)">
+                                                <i class="bi bi-dash"></i>
+                                            </button>
+                                            <span class="mx-2">1</span>
+                                            <button class="btn btn-outline-dark btn-sm" onclick="changeQuantity(1)">
+                                                <i class="bi bi-plus"></i>
+                                            </button>
+                                        </td>
+                                        <td>50.0₺</td>
+                                        <td>
+                                            <button class="btn btn-outline-danger btn-sm" onclick="removeFromCart()">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!-- Diğer ürünlerin benzer satırları buraya eklenebilir -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="border bg-light p-3 text-center">
+                            <h5>Ödenecek Tutar</h5>
+                        </div>
+                        <div class="border p-3 text-center">
+                            <h4 id="toplamTutar">150.0₺</h4>
+                            <button class="btn btn-success btn-lg btn-block" onclick="clearCart()">Sepeti Onayla</button>
+                        </div>
+                        <div class="border bg-light p-3">
+                            <p>Sepet Tutarı: <span id="sepetTutari">120.0₺</span></p>
+                            <p>Toplam Adet: <span id="toplamAdet">3</span></p>
+                            <p>KDV Tutarı: <span id="kdvTutari">30.0₺</span></p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <button style="width:100%" class="btn btn-primary mt-2 btn-block">
+                            <i class="bi bi-arrow-left"></i> Geri Git
+                        </button>
+                    </div>
+                    <div class="col-lg-4">
+                        <button style="width:100%" class="btn btn-outline-dark mt-2 btn-block" onclick="clearCart()">
+                            <i class="bi bi-basket"></i> Sepeti Boşalt
+                        </button>
+                    </div>
+                    <div class="col-lg-4">
+                        <button style="width:100%" class="btn btn-primary mt-2 btn-block" onclick="checkout()">
+                            <i class="bi bi-arrow-right"></i> Satın Al
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
-{% endblock %}
 
+    <script>
+        // JavaScript fonksiyonları buraya eklenecek
+        function changeQuantity(amount) {
+            // Adet değiştirme işlemleri burada yapılabilir
+        }
+
+        function removeFromCart() {
+            // Ürünü sepetten kaldırma işlemleri burada yapılabilir
+        }
+
+        function clearCart() {
+            // Sepeti boşaltma işlemleri burada yapılabilir
+        }
+
+        function checkout() {
+            // Satın alma işlemleri burada yapılabilir
+        }
+    </script>
+{% endblock %}

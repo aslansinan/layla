@@ -17,13 +17,19 @@
                                         href="{% if '/' == request.path %} #about {% else %} {% url 'index.html' %}#about {% endif %}">Hakkımızda</a>
                 </li>
                 <li class="nav-item"><a class="nav-link"
-                                        href="{% if '/' == request.path %} #services {% else %} {% url 'index.html' %}#services {% endif %}">Ürünler</a>
+                                        href="{% if '/' == request.path %} #services {% else %} {% url 'products' %} {% endif %}">Ürünler</a>
                 </li>
                 <li class="nav-item"><a class="nav-link"
                                         href="{% if '/' == request.path %} #communication {% else %} {% url 'index.html' %}#communication {% endif %}">İletişim</a>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Bize Ulaş</a></li>
                 {% if request.user.is_authenticated %}
+                    <li class="nav-item" data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse.show" href="#hesabim">
+                        <a class="nav-link" href={% url 'sepetim' %}>
+                            <span><strong>Sepetim</strong></span>
+                        </a>
+                    </li>
                     <li class="nav-item" data-bs-toggle="collapse"
                         data-bs-target=".navbar-collapse.show" href="#hesabim">
                         <a class="nav-link" href={% url 'anasayfa' %}>
