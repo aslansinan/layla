@@ -26,6 +26,7 @@ urlpatterns = [
                   path('', include('pages.urls')),
                   path('account/', include('account.urls')),
                   path('satis/', include('satis.urls')),
+                  path('payment/', include('payment.urls')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # if settings.DEBUG:
 #     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -8,3 +8,4 @@ django-import-export
 postmarker==1.0
 django-imagekit==5.0.0
 django-daterangefilter
+iyzipay
