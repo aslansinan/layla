@@ -95,7 +95,7 @@ def payment(request):
         'currency': 'TRY',
         'basketId': 'B67832',
         'paymentGroup': 'PRODUCT',
-        "callbackUrl": "http://localhost:8008/result/",
+        "callbackUrl": "http://localhost:8000/payment/result/",
         "enabledInstallments": ['2', '3', '6', '9'],
         'buyer': buyer,
         'shippingAddress': address,
