@@ -13,6 +13,16 @@
 </header>
 <!-- Product section-->
 <section class="py-5">
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show text-center mx-auto" role="alert" style="max-width: 50%;">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
     <div class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5 align-items-center">
             <div id="portfolio" class="col-md-6">
@@ -28,19 +38,21 @@
                 </div>
                 <p class="lead">{{ urun.aciklama }}</p>
                 <div class="d-flex align-items-center">
-                    <div class="input-group">
-                        <button class="btn btn-outline-dark" type="button" onclick="changeQuantity(-1)">
-                            <i class="bi bi-dash"></i>
-                        </button>
-                        <input class="form-control text-center" id="inputQuantity" type="number" value="1" min="1" style="max-width: 4rem" />
-                        <button class="btn btn-outline-dark" type="button" onclick="changeQuantity(1)">
-                            <i class="bi bi-plus"></i>
-                        </button>
-                        <button class="btn btn-outline-dark ms-2" type="button" onclick="addToCart()">
-                            <i class="bi bi-cart-fill me-1"></i>
-                            Sepete Ekle
-                        </button>
-                    </div>
+                    <form action="{% url 'sepete_ekle' urun.id %}" method="get">
+                        <div class="input-group">
+                            <button class="btn btn-outline-dark" type="button" onclick="changeQuantity(-1)">
+                                <i class="bi bi-dash"></i>
+                            </button>
+                            <input class="form-control text-center" name="adet" id="inputQuantity" type="number" value="1" min="1" style="max-width: 4rem" />
+                            <button class="btn btn-outline-dark" type="button" onclick="changeQuantity(1)">
+                                <i class="bi bi-plus"></i>
+                            </button>
+                            <button class="btn btn-outline-dark ms-2" type="submit">
+                                <i class="bi bi-cart-fill me-1"></i>
+                                Sepete Ekle
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -75,19 +87,4 @@
         </div>
     </div>
 </section>
-<script>
-    function changeQuantity(amount) {
-        var inputQuantity = document.getElementById('inputQuantity');
-        var currentValue = parseInt(inputQuantity.value, 10) || 0;
-        var newValue = Math.max(currentValue + amount, 1); // En az 1 adet olmalı
-        inputQuantity.value = newValue;
-    }
-
-    function addToCart() {
-        // Sepete ekleme işlemleri burada yapılabilir
-        var inputQuantity = document.getElementById('inputQuantity');
-        var quantity = parseInt(inputQuantity.value, 10) || 0;
-        alert('Sepete ' + quantity + ' adet eklendi!');
-    }
-</script>
 {% endblock %}

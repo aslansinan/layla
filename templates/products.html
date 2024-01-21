@@ -12,7 +12,19 @@
     </div>
 </header>
 <section class="py-5">
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show text-center mx-auto" role="alert" style="max-width: 50%;">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
     <div class="container px-4 px-lg-5 mt-5">
+
+
         <div class = "row mt-3 mb-4 button-group filter-button-group">
             <div class = "col d-flex justify-content-center">
                 <a href="{% url 'products' %}" class="btn btn-light mx-1 active">Hepsi</a>
@@ -72,7 +84,7 @@
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Sepete Ekle</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'sepete_ekle' urun.id %}">Sepete Ekle</a></div>
                             </div>
                         </div>
                     </div>                    

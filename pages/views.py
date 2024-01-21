@@ -5,7 +5,7 @@ import random
 
 def index(request):
     details = "index.html"
-    urunler = Urun.objects.all().order_by('isim')[:6]
+    urunler = Urun.objects.all().order_by('-count')[:6]
 
     context = {
         'urunler':urunler

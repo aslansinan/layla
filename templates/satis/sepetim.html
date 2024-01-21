@@ -19,73 +19,44 @@
                             <h5>Sepet Ürünleri</h5>
                         </div>
                         <div class="border p-3">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Ürün Adı</th>
-                                        <th scope="col">Adet</th>
-                                        <th scope="col">Fiyat</th>
-                                        <th scope="col">Sil</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Ürün 1</td>
-                                        <td>
-                                            <button class="btn btn-outline-dark btn-sm" onclick="changeQuantity(-1)">
-                                                <i class="bi bi-dash"></i>
-                                            </button>
-                                            <span class="mx-2">1</span>
-                                            <button class="btn btn-outline-dark btn-sm" onclick="changeQuantity(1)">
-                                                <i class="bi bi-plus"></i>
-                                            </button>
-                                        </td>
-                                        <td>50.0₺</td>
-                                        <td>
-                                            <button class="btn btn-outline-danger btn-sm" onclick="removeFromCart()">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ürün 2</td>
-                                        <td>
-                                            <button class="btn btn-outline-dark btn-sm" onclick="changeQuantity(-1)">
-                                                <i class="bi bi-dash"></i>
-                                            </button>
-                                            <span class="mx-2">1</span>
-                                            <button class="btn btn-outline-dark btn-sm" onclick="changeQuantity(1)">
-                                                <i class="bi bi-plus"></i>
-                                            </button>
-                                        </td>
-                                        <td>50.0₺</td>
-                                        <td>
-                                            <button class="btn btn-outline-danger btn-sm" onclick="removeFromCart()">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ürün 3</td>
-                                        <td>
-                                            <button class="btn btn-outline-dark btn-sm" onclick="changeQuantity(-1)">
-                                                <i class="bi bi-dash"></i>
-                                            </button>
-                                            <span class="mx-2">1</span>
-                                            <button class="btn btn-outline-dark btn-sm" onclick="changeQuantity(1)">
-                                                <i class="bi bi-plus"></i>
-                                            </button>
-                                        </td>
-                                        <td>50.0₺</td>
-                                        <td>
-                                            <button class="btn btn-outline-danger btn-sm" onclick="removeFromCart()">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <!-- Diğer ürünlerin benzer satırları buraya eklenebilir -->
-                                </tbody>
-                            </table>
+                            {% if sepet_satirlari %}
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Ürün Adı</th>
+                                            <th scope="col">Adet</th>
+                                            <th scope="col">Fiyat</th>
+                                            <th scope="col">Sil</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="sepetSatiri">
+                                        {% for sepet_satiri in sepet_satirlari %}
+                                            <tr class="sepet_urunu" id="sepetSatiri_{{ sepet_satiri.id }}">
+                                                <td>{{ sepet_satiri.urun.isim }}</td>
+                                                <td>
+                                                    <button class="btn btn-outline-dark btn-sm" onclick="changeQuantity({{ sepet_satiri.id }}, 'azalt')">
+                                                        <i class="bi bi-dash"></i>
+                                                    </button>
+                                                    <span id="adet_{{ sepet_satiri.id }}" class="adet mx-2">{{ sepet_satiri.adet }}</span>
+                                                    <button class="btn btn-outline-dark btn-sm" onclick="changeQuantity({{ sepet_satiri.id }}, 'arttir')">
+                                                        <i class="bi bi-plus"></i>
+                                                    </button>
+                                                </td>
+                                                <td class="fiyat">{{ sepet_satiri.urun.fiyat }}₺</td>
+                                                <td>
+                                                    <button class="btn btn-outline-danger btn-sm" onclick="removeFromCart({{ sepet_satiri.id }})">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <div class="alert alert-info" role="alert">
+                                    Sepetiniz boş! Lütfen sepetinize ürün ekleyiniz.
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col-lg-4">
@@ -93,27 +64,27 @@
                             <h5>Ödenecek Tutar</h5>
                         </div>
                         <div class="border p-3 text-center">
-                            <h4 id="toplamTutar">150.0₺</h4>
-                            <button class="btn btn-success btn-lg btn-block" onclick="clearCart()">Sepeti Onayla</button>
+                            <h4 id="toplamTutar">₺</h4>
+                            <button style="{% if not sepet_satirlari %}opacity: 0.5; cursor: not-allowed; pointer-events: none;{% endif %}" id="checkoutButton" class="btn btn-success btn-lg btn-block" onclick="checkout()">Sepeti Onayla</button>
                         </div>
                         <div class="border bg-light p-3">
-                            <p>Sepet Tutarı: <span id="sepetTutari">120.0₺</span></p>
-                            <p>Toplam Adet: <span id="toplamAdet">3</span></p>
-                            <p>KDV Tutarı: <span id="kdvTutari">30.0₺</span></p>
+                            <p>Sepet Tutarı: <span id="sepetTutari">₺</span></p>
+                            <p>Toplam Adet: <span id="toplamAdet">0</span></p>
+                            <p>KDV Tutarı: <span id="kdvTutari">₺</span></p>
                         </div>
                     </div>
                     <div class="col-lg-4">
-                        <button style="width:100%" class="btn btn-primary mt-2 btn-block">
+                        <button onclick="geriGit()" style="width:100%" class="btn btn-primary mt-2 btn-block">
                             <i class="bi bi-arrow-left"></i> Geri Git
                         </button>
                     </div>
                     <div class="col-lg-4">
-                        <button style="width:100%" class="btn btn-outline-dark mt-2 btn-block" onclick="clearCart()">
+                        <button style="width:100%; {% if not sepet_satirlari %}opacity: 0.5; cursor: not-allowed; pointer-events: none;{% endif %}" id="clearCartButton" class="btn btn-outline-dark mt-2 btn-block" onclick="clearCart()">
                             <i class="bi bi-basket"></i> Sepeti Boşalt
                         </button>
                     </div>
                     <div class="col-lg-4">
-                        <button style="width:100%" class="btn btn-primary mt-2 btn-block" onclick="checkout()">
+                        <button style="width:100%; {% if not sepet_satirlari %}opacity: 0.5; cursor: not-allowed; pointer-events: none;{% endif %}" id="checkoutButton" class="btn btn-primary mt-2 btn-block" onclick="checkout()">
                             <i class="bi bi-arrow-right"></i> Satın Al
                         </button>
                     </div>
@@ -123,21 +94,115 @@
     </section>
 
     <script>
-        // JavaScript fonksiyonları buraya eklenecek
-        function changeQuantity(amount) {
-            // Adet değiştirme işlemleri burada yapılabilir
+        function changeQuantity(sepetSatiriId, operation) {
+            $.ajax({
+                url: '/satis/miktar_degistir/' + sepetSatiriId + '/' + operation + '/',
+                type: 'GET',
+                success: function(data) {
+                    if (data.success) {
+                        // Başarılı tamamlandıysa sayfayı güncelleme veya gerekli işlemleri yapma
+                        $('#adet_' + sepetSatiriId).text(data.adet); // Örnek: adet değerini güncelle
+                        updatePaymentDetails();
+                        basketItemQuantity()
+                    } else {
+                        console.log('Hata:', data.error);
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
         }
+        
+        function removeFromCart(sepetSatiriId) {
+            $.ajax({
+                url: '/satis/sepetten_kaldir/' + sepetSatiriId + '/',
+                type: 'GET',
+                success: function(data) {
+                    if (data.success) {
+                        // Başarılı tamamlandıysa sayfayı güncelleme veya gerekli işlemleri yapma
+                        $('#sepetSatiri_' + sepetSatiriId).remove(); // Örnek: sepet satırını sayfadan kaldır
+                        updatePaymentDetails();
+                        basketItemQuantity()
 
-        function removeFromCart() {
-            // Ürünü sepetten kaldırma işlemleri burada yapılabilir
+                        var sepetSatirlari = document.querySelectorAll('.sepet_urunu');
+
+                        if (sepetSatirlari.length === 0) {
+                            // Sayfayı yenile
+                            location.reload();
+                          }
+                    } else {
+                        console.log('Hata:', data.error);
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
         }
-
+        
         function clearCart() {
-            // Sepeti boşaltma işlemleri burada yapılabilir
+            $.ajax({
+                url: '/satis/sepeti_temizle/',
+                type: 'GET',
+                success: function(data) {
+                    if (data.success) {
+                        // Başarılı tamamlandıysa sayfayı güncelleme veya gerekli işlemleri yapma
+                        $('.sepetSatiri').remove(); // Örnek: tüm sepet satırlarını sayfadan kaldır
+                        updatePaymentDetails();
+                        location.reload();
+                    } else {
+                        console.log('Hata:', data.error);
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
         }
 
-        function checkout() {
-            // Satın alma işlemleri burada yapılabilir
+        function updatePaymentDetails() {
+            // Ürünleri sepetten al
+            var sepetSatirlari = document.querySelectorAll('.sepet_urunu');
+    
+            // Toplam fiyatı hesapla
+            var totalAmount = 0;
+            var totalQuantity = 0;
+            sepetSatirlari.forEach(function(sepetSatiri) {
+                var adet = parseInt(sepetSatiri.querySelector('.adet').innerText);
+                var fiyat = parseFloat(sepetSatiri.querySelector('.fiyat').innerText.replace('₺', ''));
+                totalAmount += adet * fiyat;
+                totalQuantity += adet
+            });
+    
+            // KDV'yi ve sepet tutarını hesapla
+            var kdvOrani = 0.20; // KDV oranı (%20)
+            var kdvTutari = totalAmount * kdvOrani;
+            var sepetTutari = totalAmount - kdvTutari;
+    
+            // UI'yi güncelle
+            updateUI(totalAmount, kdvTutari, sepetTutari ,totalQuantity);
         }
+    
+        // UI'yi güncelleyen fonksiyon
+        function updateUI(totalAmount, kdvTutari, sepetTutari, totalQuantity) {
+            // UI elemanlarını güncelle
+            document.getElementById('toplamTutar').innerText = totalAmount.toFixed(2) + '₺';
+            document.getElementById('kdvTutari').innerText = kdvTutari.toFixed(2) + '₺';
+            document.getElementById('sepetTutari').innerText = sepetTutari.toFixed(2) + '₺';
+            document.getElementById('toplamAdet').innerText = totalQuantity;
+        }
+
+        updatePaymentDetails();
+        
+        function checkout() {
+            // Ödeme sayfasına yönlendirme veya gerekli aksiyonları gerçekleştirme
+        } 
+        
+        function geriGit() {
+            // Önceki sayfaya yönlendir
+            history.back();
+        }
+
     </script>
 {% endblock %}

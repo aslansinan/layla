@@ -34,6 +34,12 @@ class Sepet(models.Model):
     def muaf_olmayan_urun_var(self):
         return self.sepetsatiri_set.filter(urun__kargo_muafiyeti=False).exists()
 
+    def sepet_temizle(self):
+        self.sepetsatiri_set.all().delete()
+    
+    def sepet_urun_adeti(self):
+        return self.sepetsatiri_set.all().count()
+
     class Meta:
         verbose_name = 'Sepet'
         verbose_name_plural = 'Sepetler'
