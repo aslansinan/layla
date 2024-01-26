@@ -158,7 +158,7 @@ def change_password(request):
         # Burada yeni şifrenin güvenlik kontrolleri ve kullanıcıya atanması yapılabilir
         if len(new_password) < 6:
             messages.error(request, 'Parolanız en az 6 karakter olmalıdır.')
-            return render(request, "account")
+            return render(request, "account/şifre_yenileme.html")
         else:
             # Yeni şifreyi kullanıcıya atama işlemi burada gerçekleştirilebilir
             request.user.set_password(new_password)
