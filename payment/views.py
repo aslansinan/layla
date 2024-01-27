@@ -34,17 +34,19 @@ def index(request):
 
 
 def payment(request):
+    total_amount = request.POST.get('totalAmount')
+    user = request.user
     context = dict()
 
     buyer={
-        'id': 'BY789',
-        'name': 'John',
+        'id': user.id,
+        'name': user.get_full_name(),
         'surname': 'Doe',
         'gsmNumber': '+905350000000',
-        'email': 'email@email.com',
+        'email': user.email,
         'identityNumber': '74300864791',
-        'lastLoginDate': '2015-10-05 12:43:35',
-        'registrationDate': '2013-04-21 15:12:09',
+        'lastLoginDate': user.last_login,
+        'registrationDate': user.date_joined,
         'registrationAddress': 'Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1',
         'ip': '85.34.78.112',
         'city': 'Istanbul',

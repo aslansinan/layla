@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Uye
+from .models import Uye, UyeAdresi
 from django.core.validators import EmailValidator
 
 
@@ -27,7 +27,11 @@ class UyeKayitFormu(forms.Form):
         'placeholder': 'E-mail',
     }))
 
-    isim_soyisim = forms.CharField(widget=forms.TextInput(attrs={
+    isim = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'form-control',
+    }))
+
+    soyisim = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'form-control',
     }))
 
@@ -59,7 +63,8 @@ class UyeKayitFormu(forms.Form):
     def __uye_kaydi(self):
         uye = Uye.objects.create_user(
             email=self.cleaned_data['email'],
-            isim_soyisim=self.cleaned_data['isim_soyisim'],
+            isim=self.cleaned_data['isim'],
+            soyisim=self.cleaned_data['soyisim'],
             password=self.cleaned_data["password"],
         )
         return uye
@@ -93,7 +98,8 @@ class PasswordChangeForm(forms.Form):
 
 
 class AccountInfoChangeForm(forms.Form):
-    isim_soyisim = forms.CharField(widget=forms.TextInput())
+    isim = forms.CharField(widget=forms.TextInput())
+    soyisim = forms.CharField(widget=forms.TextInput())
     cep_telefonu = forms.CharField(widget=forms.TextInput())
 
     # giren üyenin cep telefonu kendisinin ki ise kontrole girmeyecek farklı ise diğerleri ile karşılaştırılıcak
@@ -113,7 +119,43 @@ class AccountInfoChangeForm(forms.Form):
 
     def save(self, commit=True):
         uye = Uye.objects.get(email=self.data["email"])
-        uye.isim_soyisim = (self.data["isim_soyisim"])
+        uye.isim = (self.data["isim"])
+        uye.soyisim = (self.data["soyisim"])
         uye.cep_telefonu = (self.data["cep_telefonu"])
         uye.save()
         return uye
+
+class UyeAdresiForm(forms.ModelForm):
+    class Meta:
+        model = UyeAdresi  # Specify the model class
+        exclude = ['user']
+
+    baslik = forms.CharField(max_length=10, help_text=u'Ev, İş vb ..', label=u'Adres Başlığı')
+    isim = forms.CharField(max_length=255, label=u'Alıcı İsmi')
+    il = forms.CharField(max_length=1024, label=u'İl')
+    ilce = forms.CharField(max_length=1024, label=u'İlçe')
+    mahalle = forms.CharField(max_length=1024, label=u'Mahalle')
+    tel = forms.CharField(max_length=16)
+    posta_kodu = forms.CharField(max_length=5, required=False)
+    adres = forms.CharField(widget=forms.Textarea, min_length=5)
+
+    def clean_adres(self):
+        data = self.cleaned_data['adres']
+        data = ' '.join(data.split())
+        return data
+
+    def clean(self):
+        cleaned_data = super().clean()
+        isim = cleaned_data.get('isim')
+
+        if len(isim) < 2:
+            raise forms.ValidationError('Alıcı ismi çok kısa.')
+
+        return cleaned_data
+    def clean_tel(self):
+        tel = self.cleaned_data['tel']
+        no = tel.replace(' ', '').replace('(', '').replace(')', '').replace('_', '')
+        if len(no) < 10 or no.startswith('0') or no.startswith('9'):
+            raise forms.ValidationError(u"Lütfen telefon numaranızı doğru ve eksiksiz giriniz.")
+        return tel
+

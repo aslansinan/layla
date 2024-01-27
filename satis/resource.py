@@ -77,7 +77,7 @@ class SiparisResource(resources.ModelResource):
     #     return "<br />".join(["%s - (%s)" % (item['ogrenci_ismi'],item['ogrenci_cinsiyet']) for item in ogrenciler])
 
     def dehydrate_uye(self, siparis):
-        return '%s %s' % (siparis['user__isim_soyisim'])
+        return '%s %s' % (siparis['user__isim'])
 
     def dehydrate_email(self, siparis):
         return '%s' % (siparis['user__email'])

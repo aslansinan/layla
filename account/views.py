@@ -5,17 +5,14 @@ from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.mail import EmailMultiAlternatives
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout, get_user_model, REDIRECT_FIELD_NAME
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from django.urls import reverse
 from . import forms
-from .forms import UyeKayitFormu, LoginForm
-from django.http import JsonResponse, HttpResponseRedirect
-from http import HTTPStatus
+from .forms import UyeKayitFormu, LoginForm, UyeAdresiForm
 
-from .models import Uye
+from .models import Uye, UyeAdresi
 
 
 def anonymous_required(function=None, redirect_url=None):
@@ -34,7 +31,12 @@ def anonymous_required(function=None, redirect_url=None):
 # Create your views here.
 def anasayfa(request):
     details = "account/index.html"
-    return render(request, details)
+    adreses = UyeAdresi.objects.filter(user=request.user)
+    print(adreses)
+    context = {
+        'adreses': adreses
+    }
+    return render(request, details, context)
 
 
 def login_request(request):
@@ -61,6 +63,7 @@ def login_request(request):
             return render(request, 'index.html', {'error_message': form.errors})
     return render(request, 'index.html', {'error_message': "Hata."})
 
+
 def authenticate_user(email=None, password=None):
     User = get_user_model()
     try:
@@ -75,11 +78,13 @@ def yeni_uye_kayit(request):
     if request.method == "POST":
         try:
             email = request.POST.get('email')
-            isim_soyisim = request.POST.get('isim_soyisim')
+            isim = request.POST.get('isim')
+            soyisim = request.POST.get('soyisim')
             password = request.POST.get('password')
             form = UyeKayitFormu({
                 'email': email,
-                'isim_soyisim': isim_soyisim,
+                'isim': isim,
+                'soyisim': soyisim,
                 'password': password,
             })
             if form.is_valid():
@@ -95,7 +100,34 @@ def yeni_uye_kayit(request):
     return render(request, 'index.html', {'error_message': "Geçersiz istek."})
 
 
-@anonymous_required
+@login_required(login_url='/')
+def yeni_adres_ekle(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = UyeAdresiForm(request.POST)
+            if form.is_valid():
+                new_address = form.save(commit=False)
+
+                # Fetch the Uye instance based on the user's email
+                uye_instance = Uye.objects.get(email=request.user.email)
+
+                # Associate the fetched Uye instance with the address
+                new_address.user = uye_instance
+                new_address.save()
+                return render(request, "account/index.html")  # Replace 'success_page' with the actual URL name or path
+            else:
+                for field, errors in form.errors.items():
+                    print(f"Field: {field}, Errors: {', '.join(errors)}")
+                # Form is not valid, render the form with errors
+                return render(request, 'account/yeni_adres_ekle.html', {'form': form})
+        else:
+            form = UyeAdresiForm()
+
+        return render(request, 'account/yeni_adres_ekle.html', {'form': form})
+    else:
+        return redirect('index.html')
+
+
 def forget_password(request):
     if request.method == "POST":
         uye_email = request.POST.get("email")
@@ -130,7 +162,6 @@ def forget_password(request):
         return render(request, "account/şifremi_unuttum.html")
 
 
-@anonymous_required
 def mail_change_password(request, code):
     context = dict()
 
@@ -150,6 +181,7 @@ def mail_change_password(request, code):
 
     return render(request, "account/şifre_yenileme.html", context)
 
+
 @login_required(login_url='/')
 def change_password(request):
     if request.method == 'POST':
@@ -158,7 +190,7 @@ def change_password(request):
         # Burada yeni şifrenin güvenlik kontrolleri ve kullanıcıya atanması yapılabilir
         if len(new_password) < 6:
             messages.error(request, 'Parolanız en az 6 karakter olmalıdır.')
-            return render(request, "account/şifre_yenileme.html")
+            return render(request, "account/index.html")
         else:
             # Yeni şifreyi kullanıcıya atama işlemi burada gerçekleştirilebilir
             request.user.set_password(new_password)
@@ -166,6 +198,8 @@ def change_password(request):
             messages.success(request, 'Şifreniz başarıyla güncellendi.')
             return redirect("index.html")
     return redirect('index.html')
+
+
 def logout_request(request):
     logout(request)
     return redirect('index.html')

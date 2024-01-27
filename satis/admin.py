@@ -25,7 +25,7 @@ class SiparisAdmin(ImportExportModelAdmin):
     list_filter = ['durum', 'odeme_tipi',]
     list_display = ['id']
     search_fields = ['id',
-                     'user__isim_soyisim']
+                     'user__isim', 'user__soyisim']
 
     resource_class = SiparisResource
     inlines = [SiparisSatiriInlineAdmin]
@@ -152,7 +152,7 @@ class SepetAdmin(ImportExportModelAdmin):
     raw_id_fields = ('user',)
     readonly_fields = ('vade_ucreti', 'order_id', 'trans_id', 'banka_3d_onay_tarihi', 'banka_odeme_tarihi')
     search_fields = ['id',
-                     'user__isim_soyisim',]
+                     'user__isim','isim__soyisim']
 
     inlines = [SepetSatiriInlineAdmin]
 

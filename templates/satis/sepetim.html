@@ -22,34 +22,38 @@
                             {% if sepet_satirlari %}
                                 <table class="table">
                                     <thead>
-                                        <tr>
-                                            <th scope="col">Ürün Adı</th>
-                                            <th scope="col">Adet</th>
-                                            <th scope="col">Fiyat</th>
-                                            <th scope="col">Sil</th>
-                                        </tr>
+                                    <tr>
+                                        <th scope="col">Ürün Adı</th>
+                                        <th scope="col">Adet</th>
+                                        <th scope="col">Fiyat</th>
+                                        <th scope="col">Sil</th>
+                                    </tr>
                                     </thead>
                                     <tbody class="sepetSatiri">
-                                        {% for sepet_satiri in sepet_satirlari %}
-                                            <tr class="sepet_urunu" id="sepetSatiri_{{ sepet_satiri.id }}">
-                                                <td>{{ sepet_satiri.urun.isim }}</td>
-                                                <td>
-                                                    <button class="btn btn-outline-dark btn-sm" onclick="changeQuantity({{ sepet_satiri.id }}, 'azalt')">
-                                                        <i class="bi bi-dash"></i>
-                                                    </button>
-                                                    <span id="adet_{{ sepet_satiri.id }}" class="adet mx-2">{{ sepet_satiri.adet }}</span>
-                                                    <button class="btn btn-outline-dark btn-sm" onclick="changeQuantity({{ sepet_satiri.id }}, 'arttir')">
-                                                        <i class="bi bi-plus"></i>
-                                                    </button>
-                                                </td>
-                                                <td class="fiyat">{{ sepet_satiri.urun.fiyat }}₺</td>
-                                                <td>
-                                                    <button class="btn btn-outline-danger btn-sm" onclick="removeFromCart({{ sepet_satiri.id }})">
-                                                        <i class="bi bi-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
+                                    {% for sepet_satiri in sepet_satirlari %}
+                                        <tr class="sepet_urunu" id="sepetSatiri_{{ sepet_satiri.id }}">
+                                            <td>{{ sepet_satiri.urun.isim }}</td>
+                                            <td>
+                                                <button class="btn btn-outline-dark btn-sm"
+                                                        onclick="changeQuantity({{ sepet_satiri.id }}, 'azalt')">
+                                                    <i class="bi bi-dash"></i>
+                                                </button>
+                                                <span id="adet_{{ sepet_satiri.id }}"
+                                                      class="adet mx-2">{{ sepet_satiri.adet }}</span>
+                                                <button class="btn btn-outline-dark btn-sm"
+                                                        onclick="changeQuantity({{ sepet_satiri.id }}, 'arttir')">
+                                                    <i class="bi bi-plus"></i>
+                                                </button>
+                                            </td>
+                                            <td class="fiyat">{{ sepet_satiri.urun.fiyat }}₺</td>
+                                            <td>
+                                                <button class="btn btn-outline-danger btn-sm"
+                                                        onclick="removeFromCart({{ sepet_satiri.id }})">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
                             {% else %}
@@ -65,7 +69,10 @@
                         </div>
                         <div class="border p-3 text-center">
                             <h4 id="toplamTutar">₺</h4>
-                            <button style="{% if not sepet_satirlari %}opacity: 0.5; cursor: not-allowed; pointer-events: none;{% endif %}" id="checkoutButton" class="btn btn-success btn-lg btn-block" onclick="checkout()">Sepeti Onayla</button>
+                            <button style="{% if not sepet_satirlari %}opacity: 0.5; cursor: not-allowed; pointer-events: none;{% endif %}"
+                                    id="checkoutButton" class="btn btn-success btn-lg btn-block" onclick="checkout()">
+                                Sepeti Onayla
+                            </button>
                         </div>
                         <div class="border bg-light p-3">
                             <p>Sepet Tutarı: <span id="sepetTutari">₺</span></p>
@@ -79,12 +86,14 @@
                         </button>
                     </div>
                     <div class="col-lg-4">
-                        <button style="width:100%; {% if not sepet_satirlari %}opacity: 0.5; cursor: not-allowed; pointer-events: none;{% endif %}" id="clearCartButton" class="btn btn-outline-dark mt-2 btn-block" onclick="clearCart()">
+                        <button style="width:100%; {% if not sepet_satirlari %}opacity: 0.5; cursor: not-allowed; pointer-events: none;{% endif %}"
+                                id="clearCartButton" class="btn btn-outline-dark mt-2 btn-block" onclick="clearCart()">
                             <i class="bi bi-basket"></i> Sepeti Boşalt
                         </button>
                     </div>
                     <div class="col-lg-4">
-                        <button style="width:100%; {% if not sepet_satirlari %}opacity: 0.5; cursor: not-allowed; pointer-events: none;{% endif %}" id="checkoutButton" class="btn btn-primary mt-2 btn-block" onclick="checkout()">
+                        <button style="width:100%; {% if not sepet_satirlari %}opacity: 0.5; cursor: not-allowed; pointer-events: none;{% endif %}"
+                                id="checkoutButton" class="btn btn-primary mt-2 btn-block" onclick="checkout()">
                             <i class="bi bi-arrow-right"></i> Satın Al
                         </button>
                     </div>
@@ -98,7 +107,7 @@
             $.ajax({
                 url: '/satis/miktar_degistir/' + sepetSatiriId + '/' + operation + '/',
                 type: 'GET',
-                success: function(data) {
+                success: function (data) {
                     if (data.success) {
                         // Başarılı tamamlandıysa sayfayı güncelleme veya gerekli işlemleri yapma
                         $('#adet_' + sepetSatiriId).text(data.adet); // Örnek: adet değerini güncelle
@@ -108,17 +117,17 @@
                         console.log('Hata:', data.error);
                     }
                 },
-                error: function(error) {
+                error: function (error) {
                     console.log(error);
                 }
             });
         }
-        
+
         function removeFromCart(sepetSatiriId) {
             $.ajax({
                 url: '/satis/sepetten_kaldir/' + sepetSatiriId + '/',
                 type: 'GET',
-                success: function(data) {
+                success: function (data) {
                     if (data.success) {
                         // Başarılı tamamlandıysa sayfayı güncelleme veya gerekli işlemleri yapma
                         $('#sepetSatiri_' + sepetSatiriId).remove(); // Örnek: sepet satırını sayfadan kaldır
@@ -130,22 +139,22 @@
                         if (sepetSatirlari.length === 0) {
                             // Sayfayı yenile
                             location.reload();
-                          }
+                        }
                     } else {
                         console.log('Hata:', data.error);
                     }
                 },
-                error: function(error) {
+                error: function (error) {
                     console.log(error);
                 }
             });
         }
-        
+
         function clearCart() {
             $.ajax({
                 url: '/satis/sepeti_temizle/',
                 type: 'GET',
-                success: function(data) {
+                success: function (data) {
                     if (data.success) {
                         // Başarılı tamamlandıysa sayfayı güncelleme veya gerekli işlemleri yapma
                         $('.sepetSatiri').remove(); // Örnek: tüm sepet satırlarını sayfadan kaldır
@@ -155,7 +164,7 @@
                         console.log('Hata:', data.error);
                     }
                 },
-                error: function(error) {
+                error: function (error) {
                     console.log(error);
                 }
             });
@@ -164,26 +173,26 @@
         function updatePaymentDetails() {
             // Ürünleri sepetten al
             var sepetSatirlari = document.querySelectorAll('.sepet_urunu');
-    
+
             // Toplam fiyatı hesapla
             var totalAmount = 0;
             var totalQuantity = 0;
-            sepetSatirlari.forEach(function(sepetSatiri) {
+            sepetSatirlari.forEach(function (sepetSatiri) {
                 var adet = parseInt(sepetSatiri.querySelector('.adet').innerText);
                 var fiyat = parseFloat(sepetSatiri.querySelector('.fiyat').innerText.replace('₺', ''));
                 totalAmount += adet * fiyat;
                 totalQuantity += adet
             });
-    
+
             // KDV'yi ve sepet tutarını hesapla
             var kdvOrani = 0.20; // KDV oranı (%20)
             var kdvTutari = totalAmount * kdvOrani;
             var sepetTutari = totalAmount - kdvTutari;
-    
+
             // UI'yi güncelle
-            updateUI(totalAmount, kdvTutari, sepetTutari ,totalQuantity);
+            updateUI(totalAmount, kdvTutari, sepetTutari, totalQuantity);
         }
-    
+
         // UI'yi güncelleyen fonksiyon
         function updateUI(totalAmount, kdvTutari, sepetTutari, totalQuantity) {
             // UI elemanlarını güncelle
@@ -194,11 +203,29 @@
         }
 
         updatePaymentDetails();
-        
+
         function checkout() {
-            // Ödeme sayfasına yönlendirme veya gerekli aksiyonları gerçekleştirme
-        } 
-        
+                
+            {#var totalAmount = parseFloat(document.getElementById('toplamTutar').innerText.replace('₺', ''));#}
+            {#var csrfToken = '{{ csrf_token }}';  // Include the CSRF token#}
+            {##}
+            {#$.ajax({#}
+            {#    url: '/payment/payment/',  // Update the URL to match your actual URL#}
+            {#    type: 'POST',#}
+            {#    data: {#}
+            {#        'totalAmount': totalAmount,#}
+            {#        csrfmiddlewaretoken: csrfToken  // Include the CSRF token in the data#}
+            {#    },#}
+            {#    success: function (data) {#}
+            {#        // Handle success, for example, redirect to the payment page#}
+            {#        window.location.href = '/payment/payment/';#}
+            {#    },#}
+            {#    error: function (error) {#}
+            {#        console.log(error);#}
+            {#    }#}
+          
+        }
+
         function geriGit() {
             // Önceki sayfaya yönlendir
             history.back();

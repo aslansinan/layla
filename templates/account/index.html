@@ -12,6 +12,11 @@
         <div class="container px-4 px-lg-5 mt-5">
             <div class="container-fluid">
                 <div class="row">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p class="text-white text-center bg-danger mt-2 uyari" id="hata-bastir">{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
                     <div class="col-md-3">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
                              aria-orientation="vertical">
@@ -23,6 +28,11 @@
                                href="#v-pills-dashboard" role="tab" aria-controls="v-pills-dashboard"
                                aria-selected="false">
                                 Şifre Değiştir
+                            </a>
+                            <a class="nav-link" id="v-pills-addreses-tab" data-bs-toggle="pill"
+                               href="#v-pills-addreses" role="tab" aria-controls="v-pills-addreses"
+                               aria-selected="false">
+                                Adreslerim
                             </a>
                             <!-- Diğer menü öğeleri buraya eklenebilir -->
                         </div>
@@ -36,8 +46,12 @@
                                     <table class="table">
                                         <tbody>
                                         <tr>
-                                            <th scope="row">Ad-Soyad</th>
-                                            <td>{{ user.isim_soyisim }}</td>
+                                            <th scope="row">Ad</th>
+                                            <td>{{ user.isim }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">Soyad</th>
+                                            <td>{{ user.soyisim }}</td>
                                         </tr>
                                         <tr>
                                             <th scope="row">Mailiniz</th>
@@ -55,27 +69,60 @@
                             </div>
                             <div class="tab-pane fade" id="v-pills-dashboard" role="tabpanel"
                                  aria-labelledby="v-pills-dashboard-tab">
-                                <form action="{% url 'sifre_degistir' %}" method="POST">
-                                    {% csrf_token %}
-                                    {% if messages %}
-                                        {% for message in messages %}
-                                            <p class="text-white text-center bg-danger mt-2 uyari"
-                                               id="hata-bastir">{{ message }}</p>
-                                            <p class="text-white text-center bg-danger mt-2 uyari" id="hata-bastir">
-                                                Parolanız en az 6 karakter olmalıdır.</p>
-                                        {% endfor %}
+                                {% include 'account/şifre_yenileme.html' %}
+                            </div>
+                            <div class="tab-pane fade" id="v-pills-addreses" role="tabpanel"
+                                 aria-labelledby="v-pills-addreses-tab">
+                                <div class="row">
+                                    {% if adreses %}
+                                        <div class="add-list-yeni">
+                                            <a href="{% url 'yeni_adres_ekle' %}"
+                                               class="btn btn-type-primary">Yeni Adres Ekle</a>
+                                        </div>
+                                        {% csrf_token %}
+                                        <div class="add-list">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>Adres Başlığı</th>
+                                                    <th>Alıcı İsmi</th>
+                                                    <th>Adres</th>
+                                                    <th>İl</th>
+                                                    <th>İlçe</th>
+                                                    <th>Mahalle</th>
+                                                    <th>Cep</th>
+                                                    <th>İşlemler</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for adres in adreses %}
+                                                    <tr>
+                                                        <td>{{ adres.baslik }}</td>
+                                                        <td>{{ adres.isim }}</td>
+                                                        <td>{{ adres.adres }}</td>
+                                                        <td>{{ adres.ilce.isim }}</td>
+                                                        <td>{{ adres.il.isim }}</td>
+                                                        <td>{{ adres.mahalle.isim }}</td>
+                                                        <td>{{ adres.gsm }}</td>
+                                                        <td>
+                                                            {# İşlemler için düzenleme ve silme linklerini ekleyebilirsiniz #}
+{#                                                            <!-- <a href="{% url 'adres_guncelle' okul.slug adres.pk %}" class="btn btn-type-primary btn-edit">Düzenle</a> -->#}
+{#                                                            <!-- <a href="#" data-post="{% url 'adres_sil' okul.slug adres.pk %}" data-post-confirm="Adresi silmek istediğinizden emin misiniz?" class="btn btn-type-secondary btn-delete">Sil</a> -->#}
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    {% else %}
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <p>Sistemimizde kayıtlı adresiniz bulunmamaktadır.</p>
+                                            <a href="{% url 'yeni_adres_ekle' %}"
+                                               class="btn btn-type-primary">Yeni Adres Ekle</a>
+                                        </div>
                                     {% endif %}
-
-                                    <div class="field pb-3">
-                                        <input type="password" name="password" class="form-control"
-                                               placeholder="Şifrenizi Giriniz..." required>
-                                    </div>
-
-                                    <div class="field align-items-center pt-3 pb-4">
-                                        <button class="kayit-ol-buton" id="mail-with-signup" type="submit">Kaydet
-                                        </button>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                             <!-- Diğer tab içerikleri buraya eklenebilir -->
                         </div>
