@@ -133,7 +133,7 @@ def payment(request):
         token = json_content.get("token")
         if token:
             print(token)
-            sozlukToken.append(token)
+            request.session['sozlukToken'] = token
             return HttpResponse(json_content["checkoutFormContent"])
         else:
             # Token alınamadıysa
@@ -159,7 +159,8 @@ def result(request):
     context = dict()
     url = request.META.get('index')
     try:
-        if not sozlukToken:
+        token_from_session = request.session.get('sozlukToken')
+        if not token_from_session:
             # sozlukToken boşsa veya içinde hiç eleman yoksa
             print("sozlukToken is empty or does not exist.")
             # Handle this case as needed, maybe redirect to an error page
@@ -168,7 +169,7 @@ def result(request):
         request_data = {
             'locale': 'tr',
             'conversationId': '123456789',
-            'token': sozlukToken[0]
+            'token': token_from_session
         }
 
         checkout_form_result = iyzipay.CheckoutForm().retrieve(request, options)
@@ -176,7 +177,6 @@ def result(request):
         print(type(checkout_form_result))
         result = checkout_form_result.read().decode('utf-8')
         print("************************")
-        print(sozlukToken[0])  # Form oluşturulduğunda
         print("************************")
         print("************************")
         sonuc = json.loads(result, object_pairs_hook=list)
@@ -186,7 +186,6 @@ def result(request):
         for i in sonuc:
             print(i)
         print("************************")
-        print(sozlukToken)
         print("************************")
         if sonuc[0][1] == 'success':
             context['success'] = 'Başarılı İŞLEMLER'
