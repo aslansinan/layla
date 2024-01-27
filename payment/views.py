@@ -172,8 +172,7 @@ def result(request):
     print(sozlukToken)
     print("************************")
     if sonuc[0][1] == 'success':
-        context['success'] = 'Başarılı İŞLEMLER'
-        return HttpResponseRedirect(reverse('success'), context)
+        return HttpResponseRedirect(reverse('success'))
 
     elif sonuc[0][1] == 'failure':
         context['failure'] = 'Başarısız'
