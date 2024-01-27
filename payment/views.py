@@ -13,6 +13,10 @@ from django.contrib.auth.decorators import login_required
 from account.models import UyeAdresi, Uye
 from pages.models import Kategori
 from satis.models import Sepet, Siparis, SiparisSatiri
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 api_key = 'sandbox-etkBOaBAec7Zh6jLDL59Gng0xJV2o1tV'
 secret_key = 'sandbox-uC9ysXfBn2syo7ZMOW2ywhYoc9z9hTHh'
@@ -136,15 +140,18 @@ def payment(request):
         if token:
             print(token)
             sozlukToken.append(json_content["token"])
+            logger.info("Token added to sozlukToken: %s", json_content["token"])
             return HttpResponse(json_content["checkoutFormContent"])
         else:
             # Token alınamadıysa
             print("Error: Token not found in the response")
+            logger.error("Error: Token not found in the response")
             # Handle this case as needed, maybe redirect to an error page
             return HttpResponse("Error: Token not found in the response")
 
     except json.decoder.JSONDecodeError as e:
         print("Error decoding JSON:", e)
+        logger.exception("An error occurred during payment")
         print("Response content:", content)
         # Handle the error as needed
         return HttpResponse("Error decoding JSON")
@@ -158,41 +165,47 @@ def payment(request):
 @require_http_methods(['POST'])
 @csrf_exempt
 def result(request):
-    context = dict()
-    url = request.META.get('index')
-    request = {
-        'locale': 'tr',
-        'conversationId': '123456789',
-        'token': sozlukToken[0]
-    }
-    checkout_form_result = iyzipay.CheckoutForm().retrieve(request, options)
-    print("************************")
-    print(type(checkout_form_result))
-    result = checkout_form_result.read().decode('utf-8')
-    print("************************")
-    print(sozlukToken[0])  # Form oluşturulduğunda
-    print("************************")
-    print("************************")
-    sonuc = json.loads(result, object_pairs_hook=list)
-    # print(sonuc[0][1])  # İşlem sonuç Durumu dönüyor
-    # print(sonuc[5][1])   # Test ödeme tutarı
-    print("************************")
-    for i in sonuc:
-        print(i)
-    print("************************")
-    print(sozlukToken)
-    print("************************")
-    if sonuc[0][1] == 'success':
-        context['success'] = 'Başarılı İŞLEMLER'
-        success_url = reverse('success') + f'?sonuc={sonuc}'
-        return HttpResponseRedirect(success_url)
+    try:
+        context = dict()
+        url = request.META.get('index')
+        request = {
+            'locale': 'tr',
+            'conversationId': '123456789',
+            'token': sozlukToken[0]
+        }
+        checkout_form_result = iyzipay.CheckoutForm().retrieve(request, options)
+        print("************************")
+        print(type(checkout_form_result))
+        result = checkout_form_result.read().decode('utf-8')
+        print("************************")
+        print(sozlukToken[0])  # Form oluşturulduğunda
+        print("************************")
+        print("************************")
+        sonuc = json.loads(result, object_pairs_hook=list)
+        # print(sonuc[0][1])  # İşlem sonuç Durumu dönüyor
+        # print(sonuc[5][1])   # Test ödeme tutarı
+        print("************************")
+        for i in sonuc:
+            print(i)
+        print("************************")
+        print(sozlukToken)
+        print("************************")
+        if sonuc[0][1] == 'success':
+            context['success'] = 'Başarılı İŞLEMLER'
+            success_url = reverse('success') + f'?sonuc={sonuc}'
+            return HttpResponseRedirect(success_url)
 
 
-    elif sonuc[0][1] == 'failure':
-        context['failure'] = 'Başarısız'
-        return HttpResponseRedirect(reverse('payment:failure'), context)
 
-    return HttpResponse(url)
+        elif sonuc[0][1] == 'failure':
+            context['failure'] = 'Başarısız'
+            return HttpResponseRedirect(reverse('payment:failure'), context)
+
+        return HttpResponse(url)
+    except Exception as e:
+        print("An error occurred during result:", e)
+        logger.exception("An error occurred during result")
+        return HttpResponseServerError("Internal Server Error during result")
 
 def update_cart_status(user_cart, payment_id):
     user_cart.durum = Sepet.TAMAMLANDI  # Assuming you have a constant like TAMAMLANDI for completed status
