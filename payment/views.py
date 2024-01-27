@@ -142,51 +142,13 @@ def payment(request):
         return HttpResponse("Error decoding JSON")
 
 
-# @require_http_methods(['POST'])
-# @csrf_exempt
-# def result(request):
-#     context = dict()
-#
-#     url = request.META.get('index')
-#
-#     request = {
-#         'locale': 'tr',
-#         'conversationId': '123456789',
-#         'token': sozlukToken[0]
-#     }
-#     checkout_form_result = iyzipay.CheckoutForm().retrieve(request, options)
-#     print("************************")
-#     print(type(checkout_form_result))
-#     result = checkout_form_result.read().decode('utf-8')
-#     print("************************")
-#     print(sozlukToken[0])   # Form oluşturulduğunda
-#     print("************************")
-#     print("************************")
-#     sonuc = json.loads(result, object_pairs_hook=list)
-#     #print(sonuc[0][1])  # İşlem sonuç Durumu dönüyor
-#     #print(sonuc[5][1])   # Test ödeme tutarı
-#     print("************************")
-#     for i in sonuc:
-#         print(i)
-#     print("************************")
-#     print(sozlukToken)
-#     print("************************")
-#
-#     if sonuc[0][1] == 'success':
-#         context['success'] = 'Başarılı İŞLEMLER'
-#         return HttpResponseRedirect(reverse('success'), context)
-#
-#     elif sonuc[0][1] == 'failure':
-#         context['failure'] = 'Başarısız'
-#         return HttpResponseRedirect(reverse('failure'), context)
-
-# return HttpResponse(url)
-
 @require_http_methods(['POST'])
 @csrf_exempt
 def result(request):
     context = dict()
+
     url = request.META.get('index')
+
     request = {
         'locale': 'tr',
         'conversationId': '123456789',
@@ -197,12 +159,12 @@ def result(request):
     print(type(checkout_form_result))
     result = checkout_form_result.read().decode('utf-8')
     print("************************")
-    print(sozlukToken[0])  # Form oluşturulduğunda
+    print(sozlukToken[0])   # Form oluşturulduğunda
     print("************************")
     print("************************")
     sonuc = json.loads(result, object_pairs_hook=list)
-    # print(sonuc[0][1])  # İşlem sonuç Durumu dönüyor
-    # print(sonuc[5][1])   # Test ödeme tutarı
+    #print(sonuc[0][1])  # İşlem sonuç Durumu dönüyor
+    #print(sonuc[5][1])   # Test ödeme tutarı
     print("************************")
     for i in sonuc:
         print(i)
@@ -211,15 +173,30 @@ def result(request):
     print("************************")
     if sonuc[0][1] == 'success':
         context['success'] = 'Başarılı İŞLEMLER'
-        success_url = reverse('success') + f'?sonuc={sonuc}'
-        return HttpResponseRedirect(success_url)
-
+        return HttpResponseRedirect(reverse('success'), context)
 
     elif sonuc[0][1] == 'failure':
         context['failure'] = 'Başarısız'
-        return HttpResponseRedirect(reverse('payment:failure'), context)
+        return HttpResponseRedirect(reverse('failure'), context)
 
     return HttpResponse(url)
+
+
+
+def success(request):
+    context = dict()
+    context['success'] = 'İşlem Başarılı'
+
+    template = 'ok.html'
+    return render(request, template, context)
+
+
+def fail(request):
+    context = dict()
+    context['fail'] = 'İşlem Başarısız'
+
+    template = 'fail.html'
+    return render(request, template, context)
 
 
 def update_cart_status(user_cart, payment_id):
@@ -246,63 +223,63 @@ def move_cart_items_to_order(user_cart, order):
     return
 
 
-def create_order(user, user_cart, payment_id, card_type, tutar):
-    odeme_tipi_mapping = {
-        'CREDIT_CARD': 'K',
-        'Havale': 'H',
-        'KAPIDA_ODEME_KREDI_KARTI': 'KK',
-        'KAPIDA_ODEME_NAKIT': 'KN',
-    }
-    sepet_instance = get_object_or_404(Sepet, id=user_cart.id)
-    print(sepet_instance)
-    order = Siparis.objects.create(
-        user=user,
-        sepet=sepet_instance,
-        tarih=timezone.now(),
-        order_id=payment_id,
-        odeme_tipi=odeme_tipi_mapping.get(card_type, ''),
-        durum='S',
-        toplam_tutar=tutar,
-        kargo_ucreti=50
-    )
-    return order
-
-
-def success(request):
-    context = dict()
-    template = 'payment/ok.html'
-    context['success'] = 'İşlem Başarılı'
-    user = request.user
-    sonuc_str = request.GET.get('sonuc', None)
-    if sonuc_str:
-        sonuc_str = sonuc_str[1:-1]
-
-        # Tuple'ları içeren string'i ayırın
-        tuple_str_list = sonuc_str.split("), (")
-
-        # Her bir tuple'ı bir string olarak ele alıp, uygun bir formata getirin
-        for i in range(len(tuple_str_list)):
-            tuple_str_list[i] = tuple_str_list[i].replace("(", "").replace(")", "")
-
-        # Her bir tuple string'ini bir tuple nesnesine dönüştürün
-        sonuc_list = [tuple(item.split(", ")) for item in tuple_str_list]
-
-        # Şimdi, sonuc_list içinde tuple'lar içeren bir liste elde ettiniz
-
-        user_cart = get_object_or_404(Sepet, user=user, durum=Sepet.HAZIRLIKTA)
-        temp =sonuc_list[7][1]
-        temp = temp.strip("'")
-        temp1 =sonuc_list[5][1]
-        temp1 = temp1.strip("'")
-        value_float = int(float(temp))
-        value_float1 = int(float(temp1))
-        order = create_order(user, user_cart, payment_id=value_float, card_type=sonuc_list[13][1],
-                             tutar=value_float1, )
-        move_cart_items_to_order(user_cart, order)
-        update_cart_status(user_cart, payment_id=value_float)
-        return render(request, template, context)
-    else:
-        return render(request, template, context)
+# def create_order(user, user_cart, payment_id, card_type, tutar):
+#     odeme_tipi_mapping = {
+#         'CREDIT_CARD': 'K',
+#         'Havale': 'H',
+#         'KAPIDA_ODEME_KREDI_KARTI': 'KK',
+#         'KAPIDA_ODEME_NAKIT': 'KN',
+#     }
+#     sepet_instance = get_object_or_404(Sepet, id=user_cart.id)
+#     print(sepet_instance)
+#     order = Siparis.objects.create(
+#         user=user,
+#         sepet=sepet_instance,
+#         tarih=timezone.now(),
+#         order_id=payment_id,
+#         odeme_tipi=odeme_tipi_mapping.get(card_type, ''),
+#         durum='S',
+#         toplam_tutar=tutar,
+#         kargo_ucreti=50
+#     )
+#     return order
+#
+#
+# def success(request):
+#     context = dict()
+#     template = 'payment/ok.html'
+#     context['success'] = 'İşlem Başarılı'
+#     user = request.user
+#     sonuc_str = request.GET.get('sonuc', None)
+#     if sonuc_str:
+#         sonuc_str = sonuc_str[1:-1]
+#
+#         # Tuple'ları içeren string'i ayırın
+#         tuple_str_list = sonuc_str.split("), (")
+#
+#         # Her bir tuple'ı bir string olarak ele alıp, uygun bir formata getirin
+#         for i in range(len(tuple_str_list)):
+#             tuple_str_list[i] = tuple_str_list[i].replace("(", "").replace(")", "")
+#
+#         # Her bir tuple string'ini bir tuple nesnesine dönüştürün
+#         sonuc_list = [tuple(item.split(", ")) for item in tuple_str_list]
+#
+#         # Şimdi, sonuc_list içinde tuple'lar içeren bir liste elde ettiniz
+#
+#         user_cart = get_object_or_404(Sepet, user=user, durum=Sepet.HAZIRLIKTA)
+#         temp =sonuc_list[7][1]
+#         temp = temp.strip("'")
+#         temp1 =sonuc_list[5][1]
+#         temp1 = temp1.strip("'")
+#         value_float = int(float(temp))
+#         value_float1 = int(float(temp1))
+#         order = create_order(user, user_cart, payment_id=value_float, card_type=sonuc_list[13][1],
+#                              tutar=value_float1, )
+#         move_cart_items_to_order(user_cart, order)
+#         update_cart_status(user_cart, payment_id=value_float)
+#         return render(request, template, context)
+#     else:
+#         return render(request, template, context)
 
 
 def fail(request):
