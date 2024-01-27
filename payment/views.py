@@ -140,6 +140,7 @@ def payment(request):
         if token:
             print(token)
             sozlukToken.append(json_content["token"])
+            request.session['sozlukToken'] = token
             logger.info("Token added to sozlukToken: %s", json_content["token"])
             return HttpResponse(json_content["checkoutFormContent"])
         else:
@@ -167,17 +168,18 @@ def payment(request):
 def result(request):
     context = dict()
     url = request.META.get('index')
+    token_from_session = request.session.get('sozlukToken')
     request = {
         'locale': 'tr',
         'conversationId': '123456789',
-        'token': sozlukToken[0]
+        'token': token_from_session
     }
     checkout_form_result = iyzipay.CheckoutForm().retrieve(request, options)
     print("************************")
     print(type(checkout_form_result))
     result = checkout_form_result.read().decode('utf-8')
     print("************************")
-    print(sozlukToken[0])  # Form oluşturulduğunda
+    # print(sozlukToken[0])  # Form oluşturulduğunda
     print("************************")
     print("************************")
     sonuc = json.loads(result, object_pairs_hook=list)
@@ -187,7 +189,7 @@ def result(request):
     for i in sonuc:
         print(i)
     print("************************")
-    print(sozlukToken)
+    # print(sozlukToken)
     print("************************")
     if sonuc[0][1] == 'success':
         context['success'] = 'Başarılı İŞLEMLER'
