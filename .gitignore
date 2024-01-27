@@ -1,6 +1,6 @@
 node_modules/
 .idea/
-#db.sqlite3
+db.sqlite3
 *.pyc
 django.log
 # Created by https://www.toptal.com/developers/gitignore/api/venv,pycharm,visualstudiocode,macos,windows
