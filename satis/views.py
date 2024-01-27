@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+
+from account.models import UyeAdresi
 from .models import Sepet, SepetSatiri
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -34,6 +36,16 @@ def sepetim(request):
         'sepet': sepet,
         'user': request.user,
         'sepet_satirlari': sepet_satirlari,
+    })
+
+def adres_secim(request):
+    total_amount = request.POST.get('totalAmount')
+    user = request.user
+    adreses = UyeAdresi.objects.filter(user=request.user)
+    return render(request, 'satis/adres_secim.html', {
+        'user': request.user,
+        'adreses': adreses,
+        'total_amount':total_amount
     })
 
 @login_required()

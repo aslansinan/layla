@@ -114,7 +114,7 @@ def yeni_adres_ekle(request):
                 # Associate the fetched Uye instance with the address
                 new_address.user = uye_instance
                 new_address.save()
-                return render(request, "account/index.html")  # Replace 'success_page' with the actual URL name or path
+                return render(request, "account/index.html")
             else:
                 for field, errors in form.errors.items():
                     print(f"Field: {field}, Errors: {', '.join(errors)}")

@@ -1,0 +1,40 @@
+{% extends 'partials/_base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <header class="bg-secondary py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Adres Seçiniz</h1>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="container-fluid">
+                {% if adreses %}
+                    <form id="addressForm" method="post" action="{% url 'payment' %}">
+                        {% csrf_token %}
+                        <label for="selectedAddress">Adres Seçiniz:</label>
+                        <select name="selectedAddress" id="selectedAddress" class="form-control">
+                            {% for adres in adreses %}
+                                <option value="{{ adres.id }}">{{ adres.isim }} - {{ adres.adres }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="hidden" name="totalAmount" value="{{ total_amount }}">
+                        <button type="submit" class="btn btn-primary mt-3">Adresi Seç</button>
+                    </form>
+                {% else %}
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <p>Sistemimizde kayıtlı adresiniz bulunmamaktadır.</p>
+                        <a href="{% url 'yeni_adres_ekle' %}"
+                           class="btn btn-type-primary">Yeni Adres Ekle</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

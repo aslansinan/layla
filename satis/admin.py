@@ -10,7 +10,7 @@ from django.urls import reverse
 class SiparisSatiriInlineAdmin(admin.StackedInline):
     model = SiparisSatiri
     extra = 0
-    readonly_fields = ('urun', 'sira', 'adet', 'kalan_adet', 'birim_fiyat',
+    readonly_fields = ('urun', 'adet', 'kalan_adet', 'birim_fiyat',
                        'ogrenci_ismi', 'tc_kimlik_no',
                        'durum')
     can_delete = False
@@ -18,14 +18,13 @@ class SiparisSatiriInlineAdmin(admin.StackedInline):
     def get_queryset(self, request):
         return super(SiparisSatiriInlineAdmin, self) \
             .get_queryset(request) \
-            .select_related('urun', 'fatura') \
+            .select_related('urun') \
             .order_by('-durum').all()
 
 class SiparisAdmin(ImportExportModelAdmin):
     list_filter = ['durum', 'odeme_tipi',]
     list_display = ['id']
-    search_fields = ['id',
-                     'user__isim', 'user__soyisim']
+    search_fields = ['id','user__isim', 'user__soyisim']
 
     resource_class = SiparisResource
     inlines = [SiparisSatiriInlineAdmin]
@@ -39,23 +38,6 @@ class SiparisAdmin(ImportExportModelAdmin):
     musteri.short_description = u'Müşteri İsmi'
     musteri.allow_tags = True
 
-    @mark_safe
-    def kargo_takip_numaralari(self, obj):
-        return "<br />".join(['<a target="_blank" href="%s">%s</a>' % (
-            siparis_faturasi.kargo_url.replace("('", "").replace("',)", ""),
-            siparis_faturasi.kargo_takip_no.replace("('", "").replace("',)", "")
-        ) if siparis_faturasi.kargo_takip_no else "--" for siparis_faturasi in obj.siparisfaturasi_set.all()])
-
-    kargo_takip_numaralari.allow_tags = True
-
-    @mark_safe
-    def ogrenci_ismi(self, obj):
-        satirlar = obj.siparissatiri_set.all()
-        ogrenciler = satirlar.values().order_by().annotate(
-            Count('ogrenci_ismi'))
-        return "<br />".join(["%s - (%s)" % (item['ogrenci_ismi']) for item in ogrenciler])
-
-    ogrenci_ismi.allow_tags = True
 
     def siparis_durumu(self, obj):
         return obj.get_durum_display()
@@ -108,7 +90,7 @@ class SiparisAdmin(ImportExportModelAdmin):
 
 class SiparisSatiriAdmin(ImportExportModelAdmin):
     list_display = [
-        'sira', 'siparis', 'get_user', 'urun', 'adet',
+      'siparis', 'get_user', 'urun', 'adet',
         'kalan_adet', 'birim_fiyat', 'durum', 'ogrenci_ismi',
 
     ]

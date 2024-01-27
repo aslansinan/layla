@@ -11,6 +11,8 @@ class Kategori(MPTTModel):
     class MPTTMeta:
         order_insertion_by = ['baslik']
 
+    class Meta:
+        app_label = 'pages'
     def __str__(self):
         full_path = [self.baslik]
         k = self.parent

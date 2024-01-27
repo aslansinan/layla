@@ -52,11 +52,16 @@ class SepetSatiri(models.Model):
     sepet = models.ForeignKey(Sepet, on_delete=models.PROTECT)
     urun = models.ForeignKey('pages.Urun', on_delete=models.PROTECT)
     adet = models.IntegerField()
+    fiyat = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
         verbose_name = 'Sepet Satırı'
         verbose_name_plural = 'Sepet Satırları'
 
+    def save(self, *args, **kwargs):
+        # Calculate and set the total price before saving
+        self.fiyat = self.adet * self.urun.fiyat
+        super().save(*args, **kwargs)
     def __str__(self):
         return self.urun.isim + ' ' + str(self.adet)
 
@@ -68,17 +73,15 @@ class Siparis(models.Model):
     order_id = models.CharField(max_length=255, blank=True, null=True)
     trans_id = models.CharField(max_length=255, blank=True, null=True)
 
-    KREDI_KARTI = 'K'
+    CREDIT_CARD = 'K'
     HAVALE = 'H'
     KAPIDA_ODEME_KREDI_KARTI = 'KK'
     KAPIDA_ODEME_NAKIT = 'KN'
-    OKULDA_ODEME = 'O'
     ODEME_TIPLERI = (
-        (KREDI_KARTI, 'Kredi Kartı'),
+        (CREDIT_CARD, 'Kredi Kartı'),
         (HAVALE, 'Havale'),
         (KAPIDA_ODEME_KREDI_KARTI, 'Kapıda Ödeme (Kredi Kartı - Tek Çekim)'),
         (KAPIDA_ODEME_NAKIT, 'Kapıda Ödeme (Nakit)'),
-        (OKULDA_ODEME, 'Okulda Ödeme'),
     )
     odeme_tipi = models.CharField(max_length=2, choices=ODEME_TIPLERI, blank=True)
 
@@ -183,7 +186,6 @@ class SiparisSatiri(models.Model):
     iade_talep_adet = models.IntegerField(blank=True, null=True)
     iade_talep_tarih = models.DateTimeField(blank=True, null=True)
     birim_fiyat = models.DecimalField(max_digits=19, decimal_places=2)
-    sira = models.IntegerField()
     ogrenci_ismi = models.CharField(max_length=1024, blank=True, null=True)
     tc_kimlik_no = models.CharField(max_length=1024, blank=True, null=True)
 
