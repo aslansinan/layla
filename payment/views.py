@@ -129,11 +129,17 @@ def payment(request):
         json_content = json.loads(content)
         print(type(json_content))
         print(json_content["checkoutFormContent"])
-        print("************************")
         print(json_content["token"])
-        print("************************")
-        sozlukToken.append(json_content["token"])
-        return HttpResponse(json_content["checkoutFormContent"])
+        token = json_content.get("token")
+        if token:
+            print(token)
+            sozlukToken.append(token)
+            return HttpResponse(json_content["checkoutFormContent"])
+        else:
+            # Token alınamadıysa
+            print("Error: Token not found in the response")
+            # Handle this case as needed, maybe redirect to an error page
+            return HttpResponse("Error: Token not found in the response")
 
     except json.decoder.JSONDecodeError as e:
         print("Error decoding JSON:", e)
