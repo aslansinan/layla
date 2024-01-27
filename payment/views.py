@@ -140,6 +140,10 @@ def payment(request):
         print("Response content:", content)
         # Handle the error as needed
         return HttpResponse("Error decoding JSON")
+    except Exception as e:
+        print("An error occurred during payment:", e)
+        # Handle other exceptions as needed
+        return HttpResponseServerError("Internal Server Error during payment")
 
 
 
@@ -148,40 +152,55 @@ def payment(request):
 def result(request):
     context = dict()
     url = request.META.get('index')
-    request = {
-        'locale': 'tr',
-        'conversationId': '123456789',
-        'token': sozlukToken[0]
-    }
-    checkout_form_result = iyzipay.CheckoutForm().retrieve(request, options)
-    print("************************")
-    print(type(checkout_form_result))
-    result = checkout_form_result.read().decode('utf-8')
-    print("************************")
-    print(sozlukToken[0])  # Form oluşturulduğunda
-    print("************************")
-    print("************************")
-    sonuc = json.loads(result, object_pairs_hook=list)
-    # print(sonuc[0][1])  # İşlem sonuç Durumu dönüyor
-    # print(sonuc[5][1])   # Test ödeme tutarı
-    print("************************")
-    for i in sonuc:
-        print(i)
-    print("************************")
-    print(sozlukToken)
-    print("************************")
-    if sonuc[0][1] == 'success':
-        context['success'] = 'Başarılı İŞLEMLER'
-        success_url = reverse('success') + f'?sonuc={sonuc}'
-        return HttpResponseRedirect(success_url)
+    try:
+        if not sozlukToken:
+            # sozlukToken boşsa veya içinde hiç eleman yoksa
+            print("sozlukToken is empty or does not exist.")
+            # Handle this case as needed, maybe redirect to an error page
+            return HttpResponse("Error: Token not found in sozlukToken")
 
+        request_data = {
+            'locale': 'tr',
+            'conversationId': '123456789',
+            'token': sozlukToken[0]
+        }
 
-    elif sonuc[0][1] == 'failure':
-        context['failure'] = 'Başarısız'
-        return HttpResponseRedirect(reverse('payment:failure'), context)
+        checkout_form_result = iyzipay.CheckoutForm().retrieve(request, options)
+        print("************************")
+        print(type(checkout_form_result))
+        result = checkout_form_result.read().decode('utf-8')
+        print("************************")
+        print(sozlukToken[0])  # Form oluşturulduğunda
+        print("************************")
+        print("************************")
+        sonuc = json.loads(result, object_pairs_hook=list)
+        # print(sonuc[0][1])  # İşlem sonuç Durumu dönüyor
+        # print(sonuc[5][1])   # Test ödeme tutarı
+        print("************************")
+        for i in sonuc:
+            print(i)
+        print("************************")
+        print(sozlukToken)
+        print("************************")
+        if sonuc[0][1] == 'success':
+            context['success'] = 'Başarılı İŞLEMLER'
+            success_url = reverse('success') + f'?sonuc={sonuc}'
+            return HttpResponseRedirect(success_url)
 
-    return HttpResponse(url)
+        elif sonuc[0][1] == 'failure':
+            context['failure'] = 'Başarısız'
+            return HttpResponseRedirect(reverse('payment:failure'), context)
 
+        return HttpResponse(url)
+    except IndexError:
+        # Index hatası alındığında
+        print("IndexError: Token index out of range.")
+        # Handle this case as needed, maybe redirect to an error page
+        return HttpResponse("Error: Token index out of range")
+    except Exception as e:
+        print("An error occurred during result:", e)
+        # Handle other exceptions as needed
+    return HttpResponseServerError("Internal Server Error during result")
 
 def update_cart_status(user_cart, payment_id):
     user_cart.durum = Sepet.TAMAMLANDI  # Assuming you have a constant like TAMAMLANDI for completed status
