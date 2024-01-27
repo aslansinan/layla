@@ -4,7 +4,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render, get_object_or_404
 import iyzipay
 import json
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
@@ -148,39 +148,43 @@ def payment(request):
 def result(request):
     context = dict()
     url = request.META.get('index')
-    request = {
-        'locale': 'tr',
-        'conversationId': '123456789',
-        'token': sozlukToken[0]
-    }
-    checkout_form_result = iyzipay.CheckoutForm().retrieve(request, options)
-    print("************************")
-    print(type(checkout_form_result))
-    result = checkout_form_result.read().decode('utf-8')
-    print("************************")
-    print(sozlukToken[0])  # Form oluşturulduğunda
-    print("************************")
-    print("************************")
-    sonuc = json.loads(result, object_pairs_hook=list)
-    # print(sonuc[0][1])  # İşlem sonuç Durumu dönüyor
-    # print(sonuc[5][1])   # Test ödeme tutarı
-    print("************************")
-    for i in sonuc:
-        print(i)
-    print("************************")
-    print(sozlukToken)
-    print("************************")
-    if sonuc[0][1] == 'success':
-        context['success'] = 'Başarılı İŞLEMLER'
-        success_url = reverse('success') + f'?sonuc={sonuc}'
-        return HttpResponseRedirect(success_url)
+    try:
+        request = {
+            'locale': 'tr',
+            'conversationId': '123456789',
+            'token': sozlukToken[0]
+        }
+        checkout_form_result = iyzipay.CheckoutForm().retrieve(request, options)
+        print("************************")
+        print(type(checkout_form_result))
+        result = checkout_form_result.read().decode('utf-8')
+        print("************************")
+        print(sozlukToken[0])  # Form oluşturulduğunda
+        print("************************")
+        print("************************")
+        sonuc = json.loads(result, object_pairs_hook=list)
+        # print(sonuc[0][1])  # İşlem sonuç Durumu dönüyor
+        # print(sonuc[5][1])   # Test ödeme tutarı
+        print("************************")
+        for i in sonuc:
+            print(i)
+        print("************************")
+        print(sozlukToken)
+        print("************************")
+        if sonuc[0][1] == 'success':
+            context['success'] = 'Başarılı İŞLEMLER'
+            success_url = reverse('success') + f'?sonuc={sonuc}'
+            return HttpResponseRedirect(success_url)
 
 
-    elif sonuc[0][1] == 'failure':
-        context['failure'] = 'Başarısız'
-        return HttpResponseRedirect(reverse('payment:failure'), context)
+        elif sonuc[0][1] == 'failure':
+            context['failure'] = 'Başarısız'
+            return HttpResponseRedirect(reverse('payment:failure'), context)
 
-    return HttpResponse(url)
+        return HttpResponse(url)
+    except Exception as e:
+        print(f"Hata oluştu: {e}")
+        return HttpResponseServerError("Internal Server Error")
 
 
 def update_cart_status(user_cart, payment_id):
