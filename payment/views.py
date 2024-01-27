@@ -106,7 +106,7 @@ def payment(request):
 
     payment_request = {
         'locale': 'tr',
-        'conversationId': str(user_cart.id),
+        'conversationId': '123456789',
         'price': total_amount,
         'paidPrice': total_amount,
         'currency': 'TRY',
