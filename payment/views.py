@@ -270,38 +270,39 @@ def create_order(user, user_cart, payment_id, card_type, tutar):
 
 def success(request):
     context = dict()
+    template = 'payment/ok.html'
+    context['success'] = 'İşlem Başarılı'
     user = request.user
     sonuc_str = request.GET.get('sonuc', None)
+    if sonuc_str:
+        sonuc_str = sonuc_str[1:-1]
 
-    sonuc_str = sonuc_str[1:-1]
+        # Tuple'ları içeren string'i ayırın
+        tuple_str_list = sonuc_str.split("), (")
 
-    # Tuple'ları içeren string'i ayırın
-    tuple_str_list = sonuc_str.split("), (")
+        # Her bir tuple'ı bir string olarak ele alıp, uygun bir formata getirin
+        for i in range(len(tuple_str_list)):
+            tuple_str_list[i] = tuple_str_list[i].replace("(", "").replace(")", "")
 
-    # Her bir tuple'ı bir string olarak ele alıp, uygun bir formata getirin
-    for i in range(len(tuple_str_list)):
-        tuple_str_list[i] = tuple_str_list[i].replace("(", "").replace(")", "")
+        # Her bir tuple string'ini bir tuple nesnesine dönüştürün
+        sonuc_list = [tuple(item.split(", ")) for item in tuple_str_list]
 
-    # Her bir tuple string'ini bir tuple nesnesine dönüştürün
-    sonuc_list = [tuple(item.split(", ")) for item in tuple_str_list]
+        # Şimdi, sonuc_list içinde tuple'lar içeren bir liste elde ettiniz
 
-    # Şimdi, sonuc_list içinde tuple'lar içeren bir liste elde ettiniz
-
-    user_cart = get_object_or_404(Sepet, user=user, durum=Sepet.HAZIRLIKTA)
-    temp =sonuc_list[7][1]
-    temp = temp.strip("'")
-    temp1 =sonuc_list[5][1]
-    temp1 = temp1.strip("'")
-    value_float = int(float(temp))
-    value_float1 = int(float(temp1))
-    order = create_order(user, user_cart, payment_id=value_float, card_type=sonuc_list[13][1],
-                         tutar=value_float1, )
-    move_cart_items_to_order(user_cart, order)
-    update_cart_status(user_cart, payment_id=value_float)
-    context['success'] = 'İşlem Başarılı'
-
-    template = 'payment/ok.html'
-    return render(request, template, context)
+        user_cart = get_object_or_404(Sepet, user=user, durum=Sepet.HAZIRLIKTA)
+        temp =sonuc_list[7][1]
+        temp = temp.strip("'")
+        temp1 =sonuc_list[5][1]
+        temp1 = temp1.strip("'")
+        value_float = int(float(temp))
+        value_float1 = int(float(temp1))
+        order = create_order(user, user_cart, payment_id=value_float, card_type=sonuc_list[13][1],
+                             tutar=value_float1, )
+        move_cart_items_to_order(user_cart, order)
+        update_cart_status(user_cart, payment_id=value_float)
+        return render(request, template, context)
+    else:
+        return render(request, template, context)
 
 
 def fail(request):
