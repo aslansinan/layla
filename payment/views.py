@@ -116,7 +116,7 @@ def payment(request):
         'currency': 'TRY',
         'basketId': user_cart.id,
         'paymentGroup': 'PRODUCT',
-        "callbackUrl": "http://localhost:8000/payment/result/",
+        "callbackUrl": "https://www.laylabutik.com/payment/result/",
         "enabledInstallments": ['2', '3', '6', '9'],
         'buyer': buyer,
         'shippingAddress': address,
