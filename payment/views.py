@@ -289,6 +289,5 @@ def success(request):
 def fail(request):
     context = dict()
     context['fail'] = 'İşlem Başarısız'
-
-    template = '/fail.html'
+    template = 'payment/fail.html'
     return render(request, template, context)
