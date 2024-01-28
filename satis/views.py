@@ -42,6 +42,8 @@ def adres_secim(request):
     total_amount = request.POST.get('totalAmount')
     user = request.user
     adreses = UyeAdresi.objects.filter(user=request.user)
+    request.session['test_key'] = 'test_value'
+    request.session.flush()
     return render(request, 'satis/adres_secim.html', {
         'user': request.user,
         'adreses': adreses,
