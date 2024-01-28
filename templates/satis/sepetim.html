@@ -70,7 +70,7 @@
                         <div class="border p-3 text-center">
                             <h4 id="toplamTutar">₺</h4>
                             <button style="{% if not sepet_satirlari %}opacity: 0.5; cursor: not-allowed; pointer-events: none;{% endif %}"
-                                    id="checkoutButton" class="btn btn-success btn-lg btn-block" onclick="checkout()">
+                                    id="checkoutButton" class="btn btn-success btn-lg btn-block" onclick="redirectToAdresSecim()">
                                 Sepeti Onayla
                             </button>
                         </div>
@@ -93,7 +93,7 @@
                     </div>
                     <div class="col-lg-4">
                         <button style="width:100%; {% if not sepet_satirlari %}opacity: 0.5; cursor: not-allowed; pointer-events: none;{% endif %}"
-                                id="checkoutButton" class="btn btn-primary mt-2 btn-block" onclick="checkout()">
+                                id="checkoutButton" class="btn btn-primary mt-2 btn-block" onclick="redirectToAdresSecim()">
                             <i class="bi bi-arrow-right"></i> Satın Al
                         </button>
                     </div>
@@ -204,27 +204,10 @@
 
         updatePaymentDetails();
 
-        function checkout() {
-            var totalAmount = parseFloat(document.getElementById('toplamTutar').innerText.replace('₺', ''));
-            var csrfToken = '{{ csrf_token }}';  // Include the CSRF token
-
-            $.ajax({
-                url: '/satis/adres-secim/',  // Update the URL to match your actual URL
-                type: 'POST',
-                data: {
-                    'totalAmount': totalAmount,
-                    csrfmiddlewaretoken: csrfToken  // Include the CSRF token in the data
-                },
-                success: function (data) {
-                    // Handle success, for example, redirect to the payment page
-                    window.location.href = '/satis/adres-secim/';
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
+        function redirectToAdresSecim() {
+            var djangoURL = "{% url 'adres-secim' %}";
+            window.location.href = djangoURL;
         }
-
         function geriGit() {
             // Önceki sayfaya yönlendir
             history.back();
