@@ -2,13 +2,10 @@
 {% load static %}
 
 {% block content %}
-    <header class="bg-light py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center text-white">
-            </div>
+    <section class="py-2">
+        <div class = "title text-center py-5 bg-light">
+            <h2 class = "position-relative d-inline-block">Hesabım</h2>
         </div>
-    </header>
-    <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
             <div class="container-fluid">
                 <div class="row">
@@ -22,7 +19,7 @@
                              aria-orientation="vertical">
                             <a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" href="#v-pills-home"
                                role="tab" aria-controls="v-pills-home" aria-selected="true">
-                                Home
+                                Bilgilerim
                             </a>
                             <a class="nav-link" id="v-pills-dashboard-tab" data-bs-toggle="pill"
                                href="#v-pills-dashboard" role="tab" aria-controls="v-pills-dashboard"
@@ -37,11 +34,12 @@
                             <!-- Diğer menü öğeleri buraya eklenebilir -->
                         </div>
                     </div>
-                    <div class="col-md-9">
-                        <div class="tab-content" id="v-pills-tabContent">
+                    <div class="col-md-8 offset-md-1">
+                        <div class="container tab-content" id="v-pills-tabContent">
                             <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
                                  aria-labelledby="v-pills-home-tab">
                                 <!-- Burada kullanıcı bilgilerini gösterin -->
+                                <h3 class="text-center text-decoration-underline"><i>Bilgilerim</i></h3>
                                 <div class="table-responsive">
                                     <table class="table">
                                         <tbody>
@@ -69,34 +67,36 @@
                             </div>
                             <div class="tab-pane fade" id="v-pills-dashboard" role="tabpanel"
                                  aria-labelledby="v-pills-dashboard-tab">
+                                 <h3 class="text-center text-decoration-underline"><i>Şifre Değiştir</i></h3>
                                 {% include 'account/şifre_yenileme.html' %}
                             </div>
                             <div class="tab-pane fade" id="v-pills-addreses" role="tabpanel"
                                  aria-labelledby="v-pills-addreses-tab">
+                                 <h3 class="text-center text-decoration-underline"><i>Adreslerim</i></h3>
                                 <div class="row">
                                     {% if adreses %}
                                         <div class="add-list-yeni">
                                             <a href="{% url 'yeni_adres_ekle' %}"
-                                               class="btn btn-type-primary">Yeni Adres Ekle</a>
+                                            type="button" class="btn btn-outline-success">Yeni Adres Ekle</a>
                                         </div>
                                         {% csrf_token %}
-                                        <div class="add-list">
-                                            <table class="table">
+                                        <div class="add-list" class="table-responsive">
+                                            <table class="table align-middle table-striped table-hover">
                                                 <thead>
                                                 <tr>
-                                                    <th>Adres Başlığı</th>
-                                                    <th>Alıcı İsmi</th>
-                                                    <th>Adres</th>
-                                                    <th>İl</th>
-                                                    <th>İlçe</th>
-                                                    <th>Mahalle</th>
-                                                    <th>Cep</th>
-                                                    <th>İşlemler</th>
+                                                    <th scope="col">Adres Başlığı</th>
+                                                    <th scope="col">Alıcı İsmi</th>
+                                                    <th scope="col">Adres</th>
+                                                    <th scope="col">İl</th>
+                                                    <th scope="col">İlçe</th>
+                                                    <th scope="col">Mahalle</th>
+                                                    <th scope="col">Cep</th>
+                                                    <th scope="col">İşlemler</th>
                                                 </tr>
                                                 </thead>
-                                                <tbody>
+                                                <tbody class="table-group-divider">
                                                 {% for adres in adreses %}
-                                                    <tr>
+                                                    <tr class="align-bottom">
                                                         <td>{{ adres.baslik }}</td>
                                                         <td>{{ adres.isim }}</td>
                                                         <td>{{ adres.adres }}</td>

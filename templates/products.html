@@ -3,95 +3,83 @@
 
 {% block content %}
 	
-<header class="bg-secondary py-5">
-    <div class="container px-4 px-lg-5 my-5">
-        <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Ürünlerimiz</h1>
-            <p class="lead fw-normal text-white-50 mb-0">Kendinizi özel hissetmek için şimdi keşfedin ve tarzınıza dokunuş katın!</p>
+<section class="py-2">
+    <div class="container">
+        <div class = "title text-center py-2">
+            <h2 class = "position-relative d-inline-block">Ürünlerimiz</h2>
         </div>
-    </div>
-</header>
-<section class="py-5">
-    {% if messages %}
-        <div class="container mt-3">
-            {% for message in messages %}
-                <div class="alert alert-success alert-dismissible fade show text-center mx-auto" role="alert" style="max-width: 50%;">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-    <div class="container px-4 px-lg-5 mt-5">
-
-
+        {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show text-center mx-auto" role="alert" style="max-width: 50%;">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
         <div class = "row mt-3 mb-4 button-group filter-button-group">
             <div class = "col d-flex justify-content-center">
-                <a href="{% url 'products' %}" class="btn btn-light mx-1 active">Hepsi</a>
+                <a href="{% url 'products' %}" class="btn btn-light m-2 text-dark rounded-5 active">Hepsi</a>
                 {% for kategori in ana_kategoriler %}
-                    <a href="{% url 'urunler_by_kategori' kategori.id %}" class="btn btn-light mx-1">{{ kategori.baslik }}</a>
+                    <a href="{% url 'urunler_by_kategori' kategori.id %}" class="btn btn-light m-2 text-dark rounded-5">{{ kategori.baslik }}</a>
                 {% endfor %}
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3 col-12 right-single">
-                <div class="widget-search">
-                    <div class="site-search-area">
-                        <h5>Arama</h5>
-                        <form method="get" id="site-searchform" action="{% url 'search' %}">
-                            <div>
-                                <input class="input-text form-control" name="search" placeholder="Kelime ara.." type="text">
-                                <input id="searchsubmit" class="btn btn-primary" value="Search" type="submit">
+            <div class="col-lg-3 col-12">
+                <div class="right-single" style="position: sticky; top: 20;">
+                    <div class="widget-search">
+                        <div class="site-search-area">
+                            <h5>Arama</h5>
+                            <form method="get" id="site-searchform" action="{% url 'search' %}">
+                                <div class="form-group mb-3">
+                                    <input class="input-text form-control" name="search" placeholder="Kelime ara.." type="text">
+                                </div>
+                                <input id="searchsubmit" class="btn btn-primary rounded-4" value="Search" type="submit">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="widget-price-range mt-4">
+                        <h5>Fiyat Aralığı</h5>
+                        <form method="get" action="{% url 'search' %}">
+                            <div class="form-group mb-3">
+                                <label for="min_price">Min Fiyat:</label>
+                                <input type="number" class="form-control" id="min_price" name="min_price" placeholder="Min Fiyat" value="{{ request.GET.min_price }}">
                             </div>
+                            <div class="form-group mb-3">
+                                <label for="max_price">Max Fiyat:</label>
+                                <input type="number" class="form-control" id="max_price" name="max_price" placeholder="Max Fiyat" value="{{ request.GET.max_price }}">
+                            </div>
+                            <button type="submit" class="btn btn-primary rounded-4">Filtrele</button>
                         </form>
                     </div>
                 </div>
-                <div class="widget-price-range mt-4">
-                    <h5>Fiyat Aralığı</h5>
-                    <form method="get" action="{% url 'search' %}">
-                        <div class="form-group">
-                            <label for="min_price">Min Fiyat:</label>
-                            <input type="number" class="form-control" id="min_price" name="min_price" placeholder="Min Fiyat" value="{{ request.GET.min_price }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="max_price">Max Fiyat:</label>
-                            <input type="number" class="form-control" id="max_price" name="max_price" placeholder="Max Fiyat" value="{{ request.GET.max_price }}">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Filtrele</button>
-                    </form>
-                </div>
             </div>
-            <div class="col-lg-9 blog-post-single">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-2 row-cols-xl-4 justify-content-center mt-5">
+            <div class="col-lg-9">
+                <div class = "row mt-5">
                     {% if urunler %}
-                    {% for urun in urunler %}
-                    <div class="col mb-5">
-                        <div class="card h-60">
-                            <!-- Product image-->
-                            <a href="{% url 'urun_detay' urun.id %}">
-                                <img class="img-fluid" src="{{ urun.resim.url }}" alt="{{urun.isim}}" style="width: 250px; height: 150px;"/>
-                            </a>
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5>
-                                        <a style="text-decoration: none;" href="{% url 'urun_detay' urun.id %}">{{urun.isim}}</a>
-                                    </h5>
-                                    <!-- Product price-->
-                                    {{urun.fiyat}}₺
+                        {% for urun in urunler %}
+                            <div class = "col-6 col-md-4 col-lg-4 col-xl-3 p-2 mb-3">
+                                <div class="card">
+                                    <div class = "special-img position-relative overflow-hidden">
+                                        <a href="{% url 'urun_detay' urun.id %}">
+                                            <img src = "{{ urun.resim.url }}"  alt="{{urun.isim}}" class = "w-100" style="height: 300px;">
+                                        </a>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class = "text-center">
+                                            <a style="text-decoration: none; color: inherit;" href="{% url 'urun_detay' urun.id %}"><p class = "text-capitalize mt-3 mb-1" style="max-width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{urun.isim}}</p></a>
+                                            <span class = "fw-bold d-block">{{urun.fiyat}}₺</span>
+                                            <a href = "{% url 'sepete_ekle' urun.id %}" class = "btn btn-outline-dark mt-3 rounded-5" style="opacity: 0.7;">Sepete Ekle</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'sepete_ekle' urun.id %}">Sepete Ekle</a></div>
-                            </div>
-                        </div>
-                    </div>                    
-                    {% endfor %}
-                {% else %}
-                    <h3 class="text-center">Ürün bulunamadı.</h3>
-                {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <h3 class="text-center">Ürün bulunamadı.</h3>
+                    {% endif %}
                 </div>
             </div>
         </div>

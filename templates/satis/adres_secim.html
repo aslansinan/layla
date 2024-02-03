@@ -3,22 +3,19 @@
 {% load static %}
 
 {% block content %}
-    <header class="bg-secondary py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Adres Seçiniz</h1>
-            </div>
-        </div>
-    </header>
 
-    <section class="py-5">
+    <section class="py-2">
+        <div class = "title text-center py-5 bg-light">
+            <h2 class = "position-relative d-inline-block">Adres Seçimi</h2>
+        </div>
         <div class="container px-4 px-lg-5 mt-5">
             <div class="container-fluid">
                 {% if adreses %}
+                    <h5>Adres Seçiminizi Yapınız:</h5>
                     <form id="addressForm" method="post" action="{% url 'payment' %}">
                         {% csrf_token %}
-                        <label for="selectedAddress">Adres Seçiniz:</label>
-                        <select name="selectedAddress" id="selectedAddress" class="form-control">
+                        <select name="selectedAddress" id="selectedAddress" class="form-select">
+                            <option disabled selected>Seçiniz..</option>
                             {% for adres in adreses %}
                                 <option value="{{ adres.id }}">{{ adres.isim }} - {{ adres.adres }}</option>
                             {% endfor %}

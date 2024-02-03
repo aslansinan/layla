@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from . models import Urun, Kategori
+from . models import Urun, Kategori, ContactForm
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, HttpResponseBadRequest
 import random
 
 def index(request):
@@ -16,6 +17,25 @@ def index(request):
 def contact(request):
     details = "contact.html"
     return render(request, details)
+
+def create_contact_form(request):
+    if request.method == 'POST':
+        if all(key in request.POST for key in ['isim', 'email', 'telefon', 'baslik', 'mesaj']):
+            isim = request.POST['isim']
+            email = request.POST['email']
+            telefon = request.POST['telefon']
+            baslik = request.POST['baslik']
+            mesaj = request.POST['mesaj']
+            user_ip = request.META.get('REMOTE_ADDR', None)
+            ip = user_ip
+
+            new_contact_form = ContactForm(isim=isim, email=email, telefon=telefon, baslik=baslik, mesaj=mesaj, ip=ip)
+            new_contact_form.save()
+            success = isim + ' için ileti başarı ile gönderilmiştir.'
+            return HttpResponse(success)
+        else:
+            return HttpResponseBadRequest("Form verileri eksik veya hatalı.")
+
 
 def products(request):
     ana_kategoriler = Kategori.objects.filter(parent__isnull=True, aktif=True)

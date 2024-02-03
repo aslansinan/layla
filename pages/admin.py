@@ -1,5 +1,5 @@
 from django.contrib import admin
-from pages.models import Urun, Kategori
+from pages.models import Urun, Kategori, ContactForm
 
 
 # Register your models here.
@@ -13,6 +13,12 @@ class KategoriAdmin(admin.ModelAdmin):
     search_fields = ['baslik']
     ordering = ['parent_id', 'baslik']
 
+class ContactFormAdmin(admin.ModelAdmin):
+    list_display = ['isim', 'email', 'baslik', 'mesaj','durum']
+    list_filter = ['durum']
+    readonly_fields = ['isim','telefon', 'ip', 'email', 'baslik', 'mesaj']
+
 
 admin.site.register(Urun, UrunAdmin)
 admin.site.register(Kategori, KategoriAdmin)
+admin.site.register(ContactForm, ContactFormAdmin)

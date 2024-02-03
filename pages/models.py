@@ -44,3 +44,29 @@ class Urun(models.Model):
 
     def __str__(self):
         return self.isim
+
+class ContactForm(models.Model):
+    YENI = 'Y'
+    OKUNDU = 'O'
+    KAPANDI = 'K'
+    DURUM_SECENEKLERI = (
+        (YENI, 'Yeni'),
+        (OKUNDU, 'Okundu'),
+        (KAPANDI, 'Kapandı'),
+    )
+    isim = models.CharField(blank=True, max_length=20)
+    email = models.CharField(blank=True, max_length=50)
+    telefon = models.CharField(blank=True, max_length=20)
+    baslik = models.CharField(blank=True, max_length=50)
+    mesaj = models.CharField(blank=True, max_length=255)
+    ip = models.CharField(blank=True, max_length=20)
+    admin_notu = models.CharField(blank=True, max_length=100)
+    durum = models.CharField(max_length=10, choices=DURUM_SECENEKLERI, default=YENI)
+    olusturma_tarihi = models.DateTimeField(auto_now_add=True, blank=True)
+    guncelleme_tarihi = models.DateTimeField(auto_now_add=True, blank=True)
+
+    def __str__(self):
+        return self.isim
+    class Meta:
+        verbose_name = 'İletişim Formu'
+        verbose_name_plural = 'İletişim Formları'

@@ -3,28 +3,23 @@
 
 {% block content %}
 	
-<header class="bg-secondary py-5">
-    <div class="container px-4 px-lg-5 my-5">
-        <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">{{ urun.isim }}</h1>
-            <p class="lead fw-normal text-white-50 mb-0">Kendinizi özel hissetmek için şimdi keşfedin ve tarzınıza dokunuş katın!</p>
-        </div>
-    </div>
-</header>
 <!-- Product section-->
-<section class="py-5">
-    {% if messages %}
-        <div class="container mt-3">
-            {% for message in messages %}
-                <div class="alert alert-success alert-dismissible fade show text-center mx-auto" role="alert" style="max-width: 50%;">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
+<section class="py-3">
+    <div class="container">
+        <div class = "title text-center py-2">
+            <h2 class = "position-relative d-inline-block">{{ urun.isim }}</h2>
         </div>
-    {% endif %}
-    <div class="container px-4 px-lg-5 my-5">
-        <div class="row gx-4 gx-lg-5 align-items-center">
+        {% if messages %}
+            <div class="container mt-3">
+                {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show text-center mx-auto" role="alert" style="max-width: 50%;">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="row px-4 px-lg-5 my-5 gx-4 gx-lg-5 align-items-center">
             <div id="portfolio" class="col-md-6">
                 <a class="portfolio-box" href="{{ urun.resim.url }}" title="{{urun.isim}}">
                     <img class="img-fluid card-img-top mb-5 mb-md-0" src="{{ urun.resim.url }}" alt="{{urun.isim}}"/>
@@ -87,4 +82,12 @@
         </div>
     </div>
 </section>
+<script>
+    function changeQuantity(amount) {
+        var inputQuantity = document.getElementById('inputQuantity');
+        var currentValue = parseInt(inputQuantity.value, 10) || 0;
+        var newValue = Math.max(currentValue + amount, 1); // En az 1 adet olmalı
+        inputQuantity.value = newValue;
+    }
+</script>
 {% endblock %}
