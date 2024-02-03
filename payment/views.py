@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 api_key = 'sandbox-F4nYkhziRRvqnjhMV9u0IQMrekBwalBk'
 secret_key = 'sandbox-DxkGCnUj3dH9hglAI9MZrU7T4uFdd1jg'
-base_url = 'sandbox-api.iyzipay.com'
+base_url = 'https://api.iyzipay.com'
 
 options = {
     'api_key': api_key,
