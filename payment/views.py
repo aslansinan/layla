@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 
 from account.models import UyeAdresi, Uye
 from pages.models import Kategori
+from payment.models import SessionTokens
 from satis.models import Sepet, Siparis, SiparisSatiri
 import logging
 import random
@@ -116,7 +117,7 @@ def payment(request):
         'currency': 'TRY',
         'basketId': user_cart.id,
         'paymentGroup': 'PRODUCT',
-        "callbackUrl": "https://www.laylabutik.com/payment/result/",
+        "callbackUrl": "http://localhost:8000/payment/result/",
         "enabledInstallments": ['2', '3', '6', '9'],
         'buyer': buyer,
         'shippingAddress': address,
@@ -135,11 +136,21 @@ def payment(request):
         print(json_content["checkoutFormContent"])
         print(json_content["token"])
         token = json_content.get("token")
+        request.session['q'] = token
         print(token)
 
         if token:
             print(token)
             sozlukToken.append(json_content["token"])
+            order = SessionTokens.objects.create(
+                user=user,
+                sepet=user_cart,
+                token=token
+            )
+            request.session['payment_token'] = json_content["token"]
+            request.session['user_id'] = selected_user.id
+            request.session['cart_id'] = user_cart.id
+            request.session.save()
             logger.info("Token added to sozlukToken: %s", json_content["token"])
             return HttpResponse(json_content["checkoutFormContent"])
         else:
@@ -167,10 +178,17 @@ def payment(request):
 def result(request):
     context = dict()
     url = request.META.get('index')
+    token = request.session.get('payment_token')
+    user_id = request.session.get('user_id')
+    cart_id = request.session.get('cart_id')
+    q = request.session.get('q', '')
+    print(q)
+    data = SessionTokens.objects.get(user=request.user, active=True,token=q)
+    print(data)
     request = {
         'locale': 'tr',
         'conversationId': str(conversationId),
-        'token': sozlukToken[0]
+        'token': q
     }
     checkout_form_result = iyzipay.CheckoutForm().retrieve(request, options)
     print("************************")
@@ -209,7 +227,11 @@ def update_cart_status(user_cart, payment_id):
     user_cart.order_id = payment_id
     user_cart.save()
     return
-
+def update_token_status(user_cart):
+    temp = SessionTokens.objects.get(sepet=user_cart)
+    temp.active= False
+    temp.save()
+    return
 
 def move_cart_items_to_order(user_cart, order):
     cart_items = user_cart.sepetsatiri_set.all()
@@ -281,6 +303,7 @@ def success(request):
                              tutar=value_float1, )
         move_cart_items_to_order(user_cart, order)
         update_cart_status(user_cart, payment_id=value_float)
+        update_token_status(user_cart)
         return render(request, template, context)
     else:
         return render(request, template, context)

@@ -26,6 +26,8 @@ def get_kullanici_aktif_sepet(request):
 # Create your views here.
 def sepetim(request):
     sepet = get_kullanici_aktif_sepet(request)
+    q = 1
+    request.session['q'] = q
 
     if sepet is not None:
         sepet_satirlari = sepet.sepetsatiri_set.order_by('pk').all()
@@ -42,8 +44,9 @@ def adres_secim(request):
     total_amount = request.POST.get('totalAmount')
     user = request.user
     adreses = UyeAdresi.objects.filter(user=request.user)
-    request.session['test_key'] = 'test_value'
-    request.session.flush()
+    q = request.session.get('q', '')
+    print(q)
+
     return render(request, 'satis/adres_secim.html', {
         'user': request.user,
         'adreses': adreses,
