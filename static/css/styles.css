@@ -85,19 +85,6 @@
   box-sizing: border-box;
 }
 
-.title h2::before{
-  position: absolute;
-  content: "";
-  width: 4px;
-  height: 50px;
-  background-color: var(--bs-primary);
-  left: -20px;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-      -ms-transform: translateY(-50%);
-          transform: translateY(-50%);
-}
-
 @media (prefers-reduced-motion: no-preference) {
   :root {
     scroll-behavior: smooth;

@@ -2,11 +2,12 @@ from django.shortcuts import render
 from . models import Urun, Kategori, ContactForm
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseBadRequest
+from django.core.paginator import Paginator
 import random
 
 def index(request):
     details = "index.html"
-    urunler = Urun.objects.all().order_by('-count')[:6]
+    urunler = Urun.objects.all().order_by('-count')[:4]
 
     context = {
         'urunler':urunler
@@ -20,7 +21,7 @@ def contact(request):
 
 def create_contact_form(request):
     if request.method == 'POST':
-        if all(key in request.POST for key in ['isim', 'email', 'telefon', 'baslik', 'mesaj']):
+        if request.POST['isim'] and request.POST['email'] and request.POST['telefon'] and request.POST['baslik'] and request.POST['mesaj']:
             isim = request.POST['isim']
             email = request.POST['email']
             telefon = request.POST['telefon']
@@ -41,10 +42,23 @@ def products(request):
     ana_kategoriler = Kategori.objects.filter(parent__isnull=True, aktif=True)
     details = "products.html"
     urunler = Urun.objects.filter(aktif='True').order_by('fiyat')
+    paginator = Paginator(urunler, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    price_ranges = [
+        {"count": urunler.count()},
+        {"count": urunler.filter(fiyat__gte=0, fiyat__lte=500).count()},
+        {"count": urunler.filter(fiyat__gte=500, fiyat__lte=1000).count()},
+        {"count": urunler.filter(fiyat__gte=1000, fiyat__lte=2000).count()},
+        {"count": urunler.filter(fiyat__gte=2000, fiyat__lte=5000).count()},
+        {"count": urunler.filter(fiyat__gte=5000, fiyat__lte=20000).count()},
+    ]
 
     context = {
-        'urunler':urunler,
-        'ana_kategoriler':ana_kategoriler
+        'ana_kategoriler':ana_kategoriler,
+        'price_ranges':price_ranges,
+        'page_obj': page_obj,
     }
     return render(request, details, context)
 
@@ -53,11 +67,24 @@ def urunler_by_kategori(request, kategori_id):
     secili_kategori = get_object_or_404(Kategori, id=kategori_id, aktif=True)
     alt_kategoriler = secili_kategori.get_descendants(include_self=True)
     urunler = Urun.objects.filter(kategori__in=alt_kategoriler, aktif=True).order_by('fiyat')
+    paginator = Paginator(urunler, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    price_ranges = [
+        {"count": urunler.count()},
+        {"count": urunler.filter(fiyat__gte=0, fiyat__lte=500).count()},
+        {"count": urunler.filter(fiyat__gte=500, fiyat__lte=1000).count()},
+        {"count": urunler.filter(fiyat__gte=1000, fiyat__lte=2000).count()},
+        {"count": urunler.filter(fiyat__gte=2000, fiyat__lte=5000).count()},
+        {"count": urunler.filter(fiyat__gte=5000, fiyat__lte=20000).count()},
+    ]
 
     context = {
-        'urunler': urunler,
         'ana_kategoriler': ana_kategoriler,
         'secili_kategori': secili_kategori,
+        'price_ranges':price_ranges,
+        'page_obj': page_obj,
     }
     return render(request, 'products_by_category.html', context)
 
@@ -67,11 +94,29 @@ def search(request, kategori_id=None):
     ana_kategoriler = Kategori.objects.filter(parent__isnull=True, aktif=True)
     urunler = Urun.objects.filter(aktif='True')
 
+    price_ranges = [
+        {"count": urunler.count()},
+        {"count": urunler.filter(fiyat__gte=0, fiyat__lte=500).count()},
+        {"count": urunler.filter(fiyat__gte=500, fiyat__lte=1000).count()},
+        {"count": urunler.filter(fiyat__gte=1000, fiyat__lte=2000).count()},
+        {"count": urunler.filter(fiyat__gte=2000, fiyat__lte=5000).count()},
+        {"count": urunler.filter(fiyat__gte=5000, fiyat__lte=20000).count()},
+    ]
+
     if kategori_id:
         details = 'products_by_category.html'
         secili_kategori = get_object_or_404(Kategori, id=kategori_id, aktif=True)
         alt_kategoriler = secili_kategori.get_descendants(include_self=True)
         urunler = Urun.objects.filter(kategori__in=alt_kategoriler, aktif=True).order_by('fiyat')
+
+        price_ranges = [
+            {"count": urunler.count()},
+            {"count": urunler.filter(fiyat__gte=0, fiyat__lte=500).count()},
+            {"count": urunler.filter(fiyat__gte=500, fiyat__lte=1000).count()},
+            {"count": urunler.filter(fiyat__gte=1000, fiyat__lte=2000).count()},
+            {"count": urunler.filter(fiyat__gte=2000, fiyat__lte=5000).count()},
+            {"count": urunler.filter(fiyat__gte=5000, fiyat__lte=20000).count()},
+        ]
     
     search_query = request.GET.get('search', '')
     min_price = request.GET.get('min_price', '')
@@ -88,17 +133,22 @@ def search(request, kategori_id=None):
         urunler = urunler.filter(fiyat__lte=max_price)
 
     urunler = urunler.order_by('fiyat')
+    paginator = Paginator(urunler, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     if kategori_id:
         context = {
-            'urunler': urunler,
             'ana_kategoriler': ana_kategoriler,
-            'secili_kategori': secili_kategori
+            'secili_kategori': secili_kategori,
+            'price_ranges':price_ranges,
+            'page_obj': page_obj,
         }
     else:
         context = {
-            'urunler': urunler,
-            'ana_kategoriler': ana_kategoriler
+            'ana_kategoriler': ana_kategoriler,
+            'price_ranges':price_ranges,
+            'page_obj': page_obj,
         }
 
     return render(request, details, context)

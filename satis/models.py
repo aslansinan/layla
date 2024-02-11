@@ -227,3 +227,6 @@ class SiparisSatiri(models.Model):
             return "yeterli sayıda ürün sayısı yok"
         else:
             self.urun.save()
+
+    def toplam_urun_fiyat(self):
+        return self.birim_fiyat * self.adet

@@ -2,60 +2,85 @@
 {% load static %}
 
 {% block content %}
-	
-<section class="py-2">
-    <div class = "title text-center py-5">
-        <h2 class = "position-relative d-inline-block">İletişime Geçelim!</h2>
-    </div>
-    <div class="container px-4 px-lg-5">
-        <div id="alert" class="alert-dismissible fade show text-center mx-auto" role="alert" style="max-width: 50%;">
-        </div>
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-lg-8 col-xl-6 text-center">
-                <p class="text-muted mb-5">Herhangi bir görüş veya öneriniz var mı? Bize bir mesaj gönderin ve en kısa sürede size döneceğiz!</p>
-            </div>
-        </div>
-        <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
-            <div class="col-lg-6">
-                <form id="post-form">
-                    {% csrf_token %}
-                    <!-- Name input-->
-                    <div class="form-floating mb-3">
-                        <input class="form-control" name="isim" id="isim" type="text" placeholder="Enter your name..." required />
-                        <label for="isim">İsim soyisim</label>
-                    </div>
-                    <!-- Email address input-->
-                    <div class="form-floating mb-3">
-                        <input class="form-control" name="email" id="e-mail" type="email" placeholder="name@example.com" required />
-                        <label for="email">Email adresi</label>
-                    </div>
-                    <!-- Phone number input-->
-                    <div class="form-floating mb-3">
-                        <input class="form-control" name="telefon" id="telefon" type="number" placeholder="(123) 456-7890" required />
-                        <label for="telefon">Telefon numarası</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input class="form-control" name="baslik" id="baslik" type="text" placeholder="Enter your subject here..." required />
-                        <label for="baslik">Başlık</label>
-                    </div>
-                    <!-- Message input-->
-                    <div class="form-floating mb-3">
-                        <textarea class="form-control" name="mesaj" id="mesaj" type="text" placeholder="Enter your message here..." style="height: 10rem" required></textarea>
-                        <label for="mesaj">Mesaj</label>
-                    </div>
-                    <!-- Submit error message-->
-                    <!---->
-                    <!-- This is what your users will see when there is-->
-                    <!-- Submit Button-->
-                    <div class="d-grid"><button class="btn btn-primary btn-xl" type="submit">Gönder</button></div>
-                </form>
+	 <!-- Page Header Start -->
+     <div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">Bize Ulaş</h1>
+            <div class="d-inline-flex">
+                <p class="m-0"><a href="{% url 'index.html' %}">Anasayfa</a></p>
+                <p class="m-0 px-2">-</p>
+                <p class="m-0">Bize Ulaş</p>
             </div>
         </div>
     </div>
-</section>
+    <!-- Page Header End -->
+
+
+    <!-- Contact Start -->
+    <div class="container-fluid pt-5">
+        <div class="text-center mb-4">
+            <h2 class="section-title px-5"><span class="px-2">Sorularınız İçin İletişime Geçin</span></h2>
+        </div>
+        <div class="row px-xl-5">
+            <div class="col-lg-7 mb-5">
+                <div class="contact-form">
+                    <div id="success"></div>
+                    <form id="contactForm">
+                        {% csrf_token %}
+                        <div class="control-group">
+                            <input type="text" class="form-control" name="isim" id="isim" placeholder="İsim soyisim"
+                                required="required" data-validation-required-message="Lütfen isim soyisiminizi giriniz" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <input type="email" class="form-control" name="email" id="e-mail" placeholder="Email adresi"
+                            required="required" data-validation-required-message="Lütfen emailinizi giriniz" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <input type="text" class="form-control" name="telefon" id="telefon" placeholder="Telefon numarası"
+                                required="required" data-validation-required-message="Lütfen telefon numaranızı giriniz" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <input type="text" class="form-control" name="baslik" id="baslik" placeholder="Başlık"
+                                required="required" data-validation-required-message="Lütfen başlık giriniz" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <textarea class="form-control" rows="6" name="mesaj" id="mesaj" placeholder="Mesaj"
+                                required="required"
+                                data-validation-required-message="Lütfen mesajınızı giriniz"></textarea>
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">Mesaj Gönder</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-5 mb-5">
+                <h5 class="font-weight-semi-bold mb-3">Bize Ulaşın</h5>
+                <p>Eğer ürünlerimiz hakkında herhangi bir sorunuz varsa veya siparişinizle ilgili destek gerekiyorsa, bizimle iletişime geçmekten çekinmeyin. Müşteri hizmetleri ekibimiz size yardımcı olmaktan mutluluk duyacaktır.</p>
+                <div class="d-flex flex-column mb-3">
+                    <h5 class="font-weight-semi-bold mb-3">Mağazamız</h5>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>Batı mah, Pendik, İstanbul</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>info@layla.com</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt text-primary mr-3"></i>+012 345 67890</p>
+                </div>
+            </div>
+        </div>
+        <div class="map">
+            <iframe style="width: 100%;
+            height: 400px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3016.66916941793!2d29.22771007641353!3d40.879133927366325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac3092734e89f%3A0x717e26de434244fd!2sLayla%20Moda%20Wedding%20Dress!5e0!3m2!1str!2str!4v1703349477405!5m2!1str!2str"></iframe>
+            <br />
+            <small><a href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3016.66916941793!2d29.22771007641353!3d40.879133927366325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac3092734e89f%3A0x717e26de434244fd!2sLayla%20Moda%20Wedding%20Dress!5e0!3m2!1str!2str!4v1703349477405!5m2!1str!2st"></a></small>
+        </div>
+    </div>
+    <!-- Contact End -->
 <script type="text/javascript">
     
-$(document).on('submit','#post-form',function(e){
+$(document).on('submit','#contactForm',function(e){
     e.preventDefault();
     $.ajax({
         type:'POST',
@@ -69,17 +94,19 @@ $(document).on('submit','#post-form',function(e){
             csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
         },
         success:function(data){
-            $("#alert").html(data).addClass("alert").addClass("alert-success");
             $('#isim').val('');
             $('#e-mail').val('');
             $('#telefon').val('');
             $('#baslik').val('');
             $('#mesaj').val('');
+            alertify.set('notifier','position', 'top-right');
+            alertify.success('İletiniz başarı ile gönderilmiştir');
         },
         error: function(xhr, status, error) {
             var errorMessage = xhr.status + ': ' + xhr.statusText;
             console.error('Ajax Error - ' + errorMessage);
-            $("#alert").html(xhr.responseText).addClass("alert").addClass("alert-danger");
+            alertify.set('notifier','position', 'top-right');
+            alertify.error('Form verileri eksik veya hatalı');
         }
     })
 })

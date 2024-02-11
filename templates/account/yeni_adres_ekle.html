@@ -3,80 +3,89 @@
 {% load static %}
 
 {% block content %}
-<section class="py-2">
-        <div class = "title text-center py-5 bg-light">
-            <h2 class = "position-relative d-inline-block">Hesabım</h2>
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Adres Ekle</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="{% url 'index.html' %}">Anasayfa</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0"><a href="{% url 'anasayfa' %}">Hesabım</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Adres Ekle</p>
         </div>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 bg-white form-border-radius">
         <div class="row justify-content-center">
-            <div class="col-12 col-md-8 bg-white form-border-radius">
-                <div class="row justify-content-center">
-                    <div class="col-12 col-md-9 mt-3">
-                        <h2 class="text-center"><i>Yeni Adres Ekle</i></h2>
-                        <form method="post" action="{% url 'yeni_adres_ekle' %}">
-                            {% csrf_token %}
-                            {% if form.errors %}
-                                <div class="alert alert-danger">
-                                    <strong>Error:</strong>
-                                    {% for error in form.errors %}
-                                        {{ error }}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="baslik">Adres Başlığı:</label>
-                                        <input type="text" name="baslik" class="form-control" placeholder="Ev, iş, vb" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="isim">Alıcı İsmi:</label>
-                                        <input type="text" name="isim" class="form-control" placeholder="Lütfen alıcının isim soyismini yazınız" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="il">İl:</label>
-                                        <input type="text" name="il" class="form-control" placeholder="İlinizi yazınız">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="ilce">İlçe:</label>
-                                        <input type="text" name="ilce" class="form-control" placeholder="İlçenizi yazınız">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="mahalle">Mahalle:</label>
-                                        <input type="text" name="mahalle" class="form-control" placeholder="Mahallenizi yazınız">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="posta_kodu">Posta Kodu:</label>
-                                        <input type="text" name="posta_kodu" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="tel">Telefon Numarası:</label>
-                                        <input type="tel" name="tel" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="adres">Adres:</label>
-                                        <textarea name="adres" class="form-control" placeholder="Açık adresiniz" required></textarea>
-                                    </div>
-                                </div>
+            <div class="col-12 col-md-9 mt-3">
+                <form method="post" action="{% url 'yeni_adres_ekle' %}">
+                    {% csrf_token %}
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>Error:</strong>
+                            {% for error in form.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="baslik">Adres Başlığı:</label>
+                                <input type="text" name="baslik" class="form-control" placeholder="Ev, iş, vb" required>
                             </div>
-                            <button type="submit" class="btn btn-primary">Kaydet</button>
-                        </form>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="isim">Alıcı İsmi:</label>
+                                <input type="text" name="isim" class="form-control" placeholder="Lütfen alıcının isim soyismini yazınız" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="il">İl:</label>
+                                <input type="text" name="il" class="form-control" placeholder="İlinizi yazınız">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ilce">İlçe:</label>
+                                <input type="text" name="ilce" class="form-control" placeholder="İlçenizi yazınız">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="mahalle">Mahalle:</label>
+                                <input type="text" name="mahalle" class="form-control" placeholder="Mahallenizi yazınız">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="posta_kodu">Posta Kodu:</label>
+                                <input type="text" name="posta_kodu" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="tel">Telefon Numarası:</label>
+                                <input type="tel" name="tel" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="adres">Adres:</label>
+                                <textarea name="adres" class="form-control" placeholder="Açık adresiniz" required></textarea>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <button type="submit" class="btn btn-primary py-2 px-4">Kaydet</button>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
+</div>
 {% endblock %}

@@ -10,4 +10,5 @@ urlpatterns = [
     path("mail/change-password/<code>/", views.mail_change_password, name="password-change-with-mail"),
     path('sifre-degistir', views.change_password, name='sifre_degistir'),
     path('yeni-adres-ekle', views.yeni_adres_ekle, name='yeni_adres_ekle'),
+    path('siparis-detay/<int:siparis_id>/', views.siparis_detay, name='siparis_detay'),
 ]

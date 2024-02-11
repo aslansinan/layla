@@ -2,86 +2,104 @@
 {% load static %}
 
 {% block content %}
-    <section class="py-2">
-        <div class = "title text-center py-5 bg-light">
-            <h2 class = "position-relative d-inline-block">Hesabım</h2>
+	 <!-- Page Header Start -->
+     <div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">Hesabım</h1>
+            <div class="d-inline-flex">
+                <p class="m-0"><a href="{% url 'index.html' %}">Anasayfa</a></p>
+                <p class="m-0 px-2">-</p>
+                <p class="m-0">Hesabım</p>
+            </div>
         </div>
-        <div class="container px-4 px-lg-5 mt-5">
-            <div class="container-fluid">
-                <div class="row">
-                    {% if messages %}
-                        {% for message in messages %}
-                            <p class="text-white text-center bg-danger mt-2 uyari" id="hata-bastir">{{ message }}</p>
-                        {% endfor %}
-                    {% endif %}
-                    <div class="col-md-3">
-                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist"
-                             aria-orientation="vertical">
-                            <a class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" href="#v-pills-home"
-                               role="tab" aria-controls="v-pills-home" aria-selected="true">
-                                Bilgilerim
-                            </a>
-                            <a class="nav-link" id="v-pills-dashboard-tab" data-bs-toggle="pill"
-                               href="#v-pills-dashboard" role="tab" aria-controls="v-pills-dashboard"
-                               aria-selected="false">
-                                Şifre Değiştir
-                            </a>
-                            <a class="nav-link" id="v-pills-addreses-tab" data-bs-toggle="pill"
-                               href="#v-pills-addreses" role="tab" aria-controls="v-pills-addreses"
-                               aria-selected="false">
-                                Adreslerim
-                            </a>
-                            <!-- Diğer menü öğeleri buraya eklenebilir -->
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- Contact Start -->
+    <div class="container-fluid pt-2">
+        <div class="row px-xl-5">
+            <div class="col-md-3">
+                <div class="list-group" id="list-tab" role="tablist"
+                        aria-orientation="vertical">
+                        <a class="list-group-item list-group-item-action active" id="v-pills-home-tab" data-bs-toggle="pill" href="#v-pills-home"
+                        role="tab" aria-controls="v-pills-home" aria-selected="true">
+                        <i class="fas fa-user-circle me-2"></i> Bilgilerim
+                    </a>
+                    <a class="list-group-item list-group-item-action" id="v-pills-dashboard-tab" data-bs-toggle="pill"
+                        href="#v-pills-dashboard" role="tab" aria-controls="v-pills-dashboard" aria-selected="false">
+                        <i class="fas fa-key me-2"></i> Şifre Değiştir
+                    </a>
+                    <a class="list-group-item list-group-item-action" id="v-pills-addreses-tab" data-bs-toggle="pill"
+                        href="#v-pills-addreses" role="tab" aria-controls="v-pills-addreses" aria-selected="false">
+                        <i class="fas fa-map-marker-alt me-2"></i> Adreslerim
+                    </a>
+                    <a class="list-group-item list-group-item-action" id="v-pills-orders-tab" data-bs-toggle="pill"
+                        href="#v-pills-orders" role="tab" aria-controls="v-pills-orders" aria-selected="false">
+                        <i class="fas fa-shopping-cart me-2"></i> Siparişlerim
+                    </a>
+                    {% comment %} <a class="list-group-item list-group-item-action" id="list-home-list" data-bs-toggle="pill" href="#list-home"
+                        role="tab" aria-controls="v-pills-home" aria-selected="true">
+                        <i class="fas fa-user-circle me-2"></i>
+                        Bilgilerim
+                    </a>
+                    <div class="collapse" id="list-home" aria-labelledby="list-home-list">
+                        <a href="#v-pills-home" class="list-group-item list-group-item-action">Link 1</a>
+                        <a href="#v-pills-home" class="list-group-item list-group-item-action">Link 2</a>
+                        <a href="#v-pills-home" class="list-group-item list-group-item-action">Link 3</a>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+            <div class="col-md-9 mb-5">
+                <div class="container tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                            aria-labelledby="v-pills-home-tab">
+                        <!-- Burada kullanıcı bilgilerini gösterin -->
+                        <h5 class="font-weight-semi-bold mb-3">Bilgilerim</h5>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <th scope="row">Ad</th>
+                                    <td>{{ user.isim }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Soyad</th>
+                                    <td>{{ user.soyisim }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Mailiniz</th>
+                                    <td>{{ user.email }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Telefonunuz</th>
+                                    <td>{% if user.cep_telefonu %}{{ user.cep_telefonu }}{% else %}
+                                        ---{% endif %}</td>
+                                </tr>
+                                <!-- Diğer kullanıcı bilgileri buraya eklenebilir -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="col-md-8 offset-md-1">
-                        <div class="container tab-content" id="v-pills-tabContent">
-                            <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
-                                 aria-labelledby="v-pills-home-tab">
-                                <!-- Burada kullanıcı bilgilerini gösterin -->
-                                <h3 class="text-center text-decoration-underline"><i>Bilgilerim</i></h3>
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <tbody>
-                                        <tr>
-                                            <th scope="row">Ad</th>
-                                            <td>{{ user.isim }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Soyad</th>
-                                            <td>{{ user.soyisim }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Mailiniz</th>
-                                            <td>{{ user.email }}</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Telefonunuz</th>
-                                            <td>{% if user.cep_telefonu %}{{ user.cep_telefonu }}{% else %}
-                                                ---{% endif %}</td>
-                                        </tr>
-                                        <!-- Diğer kullanıcı bilgileri buraya eklenebilir -->
-                                        </tbody>
-                                    </table>
-                                </div>
+                    <div class="tab-pane fade" id="v-pills-dashboard" role="tabpanel"
+                            aria-labelledby="v-pills-dashboard-tab">
+                            <h5 class="font-weight-semi-bold mb-3">Şifre Değiştir</h5>
+                        {% include 'account/şifre_yenileme.html' %}
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-addreses" role="tabpanel"
+                            aria-labelledby="v-pills-addreses-tab">
+                            <h5 class="font-weight-semi-bold mb-3">Adreslerim</h5>
+                            <div class="add-list-yeni">
+                                <a href="{% url 'yeni_adres_ekle' %}"
+                                type="button" class="btn btn-outline-primary">Yeni Adres Ekle</a>
                             </div>
-                            <div class="tab-pane fade" id="v-pills-dashboard" role="tabpanel"
-                                 aria-labelledby="v-pills-dashboard-tab">
-                                 <h3 class="text-center text-decoration-underline"><i>Şifre Değiştir</i></h3>
-                                {% include 'account/şifre_yenileme.html' %}
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-addreses" role="tabpanel"
-                                 aria-labelledby="v-pills-addreses-tab">
-                                 <h3 class="text-center text-decoration-underline"><i>Adreslerim</i></h3>
-                                <div class="row">
-                                    {% if adreses %}
-                                        <div class="add-list-yeni">
-                                            <a href="{% url 'yeni_adres_ekle' %}"
-                                            type="button" class="btn btn-outline-success">Yeni Adres Ekle</a>
-                                        </div>
-                                        {% csrf_token %}
-                                        <div class="add-list" class="table-responsive">
-                                            <table class="table align-middle table-striped table-hover">
+                            <br>
+                            <div class="row">
+                                {% if adreses %}
+                                <div class="col-12">
+                                    <div class="card shadow p-3 bg-body rounded border-primary mb-3 text-center">
+                                        <div class="card-body">
+                                            <table class="table table-bordered dt-responsive nowrap w-100">
                                                 <thead>
                                                 <tr>
                                                     <th scope="col">Adres Başlığı</th>
@@ -96,7 +114,7 @@
                                                 </thead>
                                                 <tbody class="table-group-divider">
                                                 {% for adres in adreses %}
-                                                    <tr class="align-bottom">
+                                                    <tr>
                                                         <td>{{ adres.baslik }}</td>
                                                         <td>{{ adres.isim }}</td>
                                                         <td>{{ adres.adres }}</td>
@@ -106,31 +124,119 @@
                                                         <td>{{ adres.gsm }}</td>
                                                         <td>
                                                             {# İşlemler için düzenleme ve silme linklerini ekleyebilirsiniz #}
-{#                                                            <!-- <a href="{% url 'adres_guncelle' okul.slug adres.pk %}" class="btn btn-type-primary btn-edit">Düzenle</a> -->#}
-{#                                                            <!-- <a href="#" data-post="{% url 'adres_sil' okul.slug adres.pk %}" data-post-confirm="Adresi silmek istediğinizden emin misiniz?" class="btn btn-type-secondary btn-delete">Sil</a> -->#}
+        {#                                                            <!-- <a href="{% url 'adres_guncelle' okul.slug adres.pk %}" class="btn btn-type-primary btn-edit">Düzenle</a> -->#}
+        {#                                                            <!-- <a href="#" data-post="{% url 'adres_sil' okul.slug adres.pk %}" data-post-confirm="Adresi silmek istediğinizden emin misiniz?" class="btn btn-type-secondary btn-delete">Sil</a> -->#}
                                                         </td>
                                                     </tr>
                                                 {% endfor %}
                                                 </tbody>
                                             </table>
                                         </div>
-
-                                    {% else %}
-                                        <div class="col-md-12 col-sm-12 col-xs-12">
-                                            <p>Sistemimizde kayıtlı adresiniz bulunmamaktadır.</p>
-                                            <a href="{% url 'yeni_adres_ekle' %}"
-                                               class="btn btn-type-primary">Yeni Adres Ekle</a>
-                                        </div>
-                                    {% endif %}
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- Diğer tab içerikleri buraya eklenebilir -->
+
+                            {% else %}
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <p>Sistemimizde kayıtlı adresiniz bulunmamaktadır.</p>
+                                    <a href="{% url 'yeni_adres_ekle' %}"
+                                        class="btn btn-type-primary">Yeni Adres Ekle</a>
+                                </div>
+                            {% endif %}
                         </div>
+                    </div>
+                    <!-- Diğer tab içerikleri buraya eklenebilir -->
+                    <div class="tab-pane fade" id="v-pills-orders" role="tabpanel"
+                            aria-labelledby="v-pills-orders-tab">
+                            <h5 class="font-weight-semi-bold mb-3">Şiparişlerim</h5>
+                            <div class="row">
+                                {% if orders %}
+                                <div class="col-12">
+                                    <div class="card shadow p-3 bg-body rounded border-primary mb-3 text-center">
+                                        <div class="card-body">
+                                            <table class="table table-bordered dt-responsive nowrap w-100">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Durumu</th>
+                                                        <th scope="col">Toplam Tutar</th>
+                                                        <th scope="col">Tarih</th>
+                                                        <th scope="col">Detay</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for order in orders %}
+                                                    <tr>
+                                                        <td data-field="order_number">{{ order.get_durum_display }}</td>
+                                                        <td data-field="user->name">{{ order.toplam_tutar }} ₺</td>
+                                                        <td data-field="phone">{{ order.tarih|date:"d F l, H:i" }}</td>
+                                                        <td data-field="address">
+                                                            <div class="add-list-yeni">
+                                                                <a href="{% url 'siparis_detay' order.id %}"
+                                                                type="button" class="btn btn-outline-primary">Görüntüle</a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            {% else %}
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <p>Sistemimizde kayıtlı siparişiniz bulunmamaktadır.</p>
+                                </div>
+                            {% endif %}
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+    <!-- Contact End -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const links = document.querySelectorAll('.list-group-item');
+            const bilgilerimLink = document.querySelector('#list-home-list');
+        
+            links.forEach(link => {
+                link.addEventListener('click', function () {
+                    const collapseTarget = this.getAttribute('href');
+                    const isCollapsed = document.querySelector(collapseTarget).classList.contains('show');
+        
+                    links.forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    if (this !== bilgilerimLink) {
+                        bilgilerimLink.classList.remove('active');
+                    }
+        
+                    if (isCollapsed) {
+                        $(collapseTarget).collapse('hide');
+                    } else {
+                        $(collapseTarget).collapse('show');
+                    }
+                });
+            });
+        });
+        
+        document.addEventListener('DOMContentLoaded', function () {
+            const links = document.querySelectorAll('.list-group-item');
+            const bilgilerimLink = document.querySelector('#list-home-list');
+        
+            links.forEach(link => {
+                link.addEventListener('click', function () {
+                    links.forEach(link => {
+                        link.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    if (this !== bilgilerimLink) {
+                        bilgilerimLink.classList.remove('active');
+                    } else {
+                        bilgilerimLink.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}
-
-

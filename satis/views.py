@@ -48,7 +48,7 @@ def adres_secim(request):
         'total_amount':total_amount
     })
 
-@login_required()
+@login_required(login_url='index.html')
 def sepete_ekle(request, urun_id):
     # Adet değerini request üzerinden al, eğer gelmemişse varsayılan olarak 1 kullan
     adet = int(request.GET.get('adet', 1))

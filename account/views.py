@@ -4,7 +4,7 @@ import json
 from django.conf import settings
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.mail import EmailMultiAlternatives
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib import messages
 from django.template.loader import render_to_string
@@ -13,6 +13,7 @@ from . import forms
 from .forms import UyeKayitFormu, LoginForm, UyeAdresiForm
 
 from .models import Uye, UyeAdresi
+from satis.models import Siparis, SiparisSatiri
 
 
 def anonymous_required(function=None, redirect_url=None):
@@ -32,9 +33,11 @@ def anonymous_required(function=None, redirect_url=None):
 def anasayfa(request):
     details = "account/index.html"
     adreses = UyeAdresi.objects.filter(user=request.user)
-    print(adreses)
+    orders = Siparis.objects.filter(user=request.user)
+    print(orders)
     context = {
-        'adreses': adreses
+        'adreses': adreses,
+        'orders': orders,
     }
     return render(request, details, context)
 
@@ -203,3 +206,13 @@ def change_password(request):
 def logout_request(request):
     logout(request)
     return redirect('index.html')
+
+def siparis_detay(request, siparis_id):
+    siparis = get_object_or_404(Siparis, id=siparis_id)
+    siparis_satiri = SiparisSatiri.objects.filter(siparis=siparis)
+
+    context = {
+        'siparis': siparis,
+        'siparis_satiri': siparis_satiri
+    }
+    return render(request, 'account/siparis_detay.html', context)
