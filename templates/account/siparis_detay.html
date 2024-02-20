@@ -1,0 +1,86 @@
+<!-- yeni_adres_ekle.html -->
+{% extends 'partials/_base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Sipariş Detay</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="{% url 'index.html' %}">Anasayfa</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0"><a href="{% url 'anasayfa' %}">Hesabım</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Sipariş Detay</p>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 bg-white form-border-radius">
+        <div class="row justify-content-center">
+            <div class="col-12 card shadow p-3 bg-body rounded border-primary mb-3 text-center">
+                <div class="d-flex justify-content-between m-3" 
+                style="border: 1px solid #ccc; 
+                padding: 10px; 
+                border-radius: 10px;">
+                    <div>
+                        <div class="d-flex align-items-center">
+                            {% for satir in siparis_satiri %}
+                            <div class="mr-3">
+                                <img src="{{ satir.urun.resim.url }}" alt="{{ satir.urun.isim }}" style="width: 50px; height: 50px; border-radius: 50%; position: absolute;">
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <p><strong> {{ siparis.tarih|date:"d F l, H:i" }}
+                        </strong></p>
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <p><strong> {{ siparis.get_durum_display }}</strong></p>
+                    </div>
+                    <div class="d-flex align-items-center mt-3">
+                        <p><strong class="text-success">{{ siparis.toplam_tutar }}₺</strong></p>
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <div class="card-header rounded bg-secondary">Sipariş Ürünleri</div>
+                    {% if siparis_satiri %}
+                        {% for satir in siparis_satiri %}
+                        <div class="card rounded d-flex justify-content-between m-3">
+                            <h5 class="card-header d-flex align-items-center bg-primary text-white">{{ satir.urun }}</h5>
+                            <div class="card-body d-flex align-items-center justify-content-between">
+                                <div class="align-items-center mt-3 d-flex" style="vertical-align: middle;">
+                                    <img src="{{ satir.urun.resim.url }}" alt="{{ satir.urun.isim }}" style="height: 85px;">
+                                    <div class="ml-2">
+                                        <span>{{ satir.urun }}</span><br>
+                                        <span class="text-success">{{ satir.birim_fiyat }} ₺</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center mt-3">
+                                    <span class="text-info">{{ satir.adet }} <i>adet</i></span>
+
+                                </div>
+                                <div class="d-flex align-items-center mt-3">
+                                    <div class="ml-2">
+                                        <strong><i>Toplam</i></strong><br>
+                                        <span class="text-success">{{ satir.toplam_urun_fiyat}} ₺</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <p>Ürün bilgisi bulunmamaktadır.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

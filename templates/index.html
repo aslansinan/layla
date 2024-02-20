@@ -2,110 +2,193 @@
 {% load static %}
 
 {% block content %}
-
-<header class="masthead">
-	<div class="container px-4 px-lg-5 h-100">
-		<div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
-			<div class="col-lg-8 align-self-end">
-				<h1 class="text-white font-weight-bold">Hoş Geldiniz!</h1>
-				<hr class="divider" />
-			</div>
-			<div class="col-lg-8 align-self-baseline">
-				<p class="text-white-75 mb-5">Butik sitemizde size özel ürünleri keşfedin. En yeni koleksiyonlarımız ve avantajlı fiyatlarımızla sizi bekliyoruz!</p>
-				<a class="btn btn-primary btn-xl" href="#about">Daha Fazla Bilgi Alın</a>
-			</div>
-		</div>
-	</div>
-</header>
-{% if error_message %}
-    <div class="alert alert-danger alert-dismissible" role="alert" id="error-message">
-        {{ error_message }}
-        <button type="button" class="btn-close" aria-label="Close"></button>
+	
+<!-- Featured Start -->
+<div class="container-fluid pt-5">
+    <div class="row px-xl-5 pb-3">
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                <h1 class="fa fa-check text-primary m-0 mr-3"></h1>
+                <h5 class="font-weight-semi-bold m-0">Kaliteli Ürün</h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                <h1 class="fa fa-shipping-fast text-primary m-0 mr-2"></h1>
+                <h5 class="font-weight-semi-bold m-0">Ücretsiz kargo
+                </h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                <h1 class="fas fa-exchange-alt text-primary m-0 mr-3"></h1>
+                <h5 class="font-weight-semi-bold m-0">14 Gün İade
+                </h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                <h1 class="fa fa-phone-volume text-primary m-0 mr-3"></h1>
+                <h5 class="font-weight-semi-bold m-0">7/24 Destek</h5>
+            </div>
+        </div>
     </div>
-{% endif %}
-    
-<!-- About test-->
-<section class="page-section bg-primary" id="about">
-	<div class="container px-4 px-lg-5">
-		<div class="row gx-4 gx-lg-5 justify-content-center">
-			<div class="col-lg-8 text-center">
-				<h2 class="text-white mt-0">Layla Hakkında</h2>
-				<hr class="divider divider-light" />
-				<p class="text-white-75 mb-4">Firmamız, müşterilerine kaliteli ürünleri uygun fiyatlarla sunma misyonu ile yola çıkmıştır. Sitemizdeki ürünleri inceleyerek size özel indirimleri ve kampanyaları kaçırmayın!</p>
-				<a class="btn btn-light btn-xl" href="#services">Başlamak İçin Tıklayın</a>
-			</div>
-		</div>
-	</div>
-</section>
-<!-- Portfolio-->
-<section class="page-section" id="services">
-	<div id="portfolio">
-		<div class="container-fluid p-0">
-			<h2 class="text-center mt-0">Ürünlerimiz</h2>
-			<hr class="divider" />
-			<div class="row g-0">
-				{% for urun in urunler %}
-				<div class="col-lg-4 col-sm-6">
-					<a class="portfolio-box" href="{{ urun.resim.url }}" title="{{urun.isim}}">
-						<img class="img-fluid" src="{{ urun.resim.url }}" alt="..." style="width: 650px; height: 450px;"/>
-						<div class="portfolio-box-caption">
-							<div class="project-category text-white-50">Category</div>
-							<div class="project-name">{{urun.isim}}</div>
-						</div>
-					</a>
-				</div>
-				{% endfor %}
-			</div>
-		</div>
-	</div>
-	<section class="page-section bg-dark text-white">
-		<div class="container px-4 px-lg-5 text-center">
-			<h2 class="mb-4">Daha fazlası için</h2>
-			<a class="btn btn-light btn-xl" href="{% url 'products' %}">HEMEN TIKLA !</a>
-		</div>
-	</section>
-</section>
-<!-- Contact-->
-<section class="page-section" id="communication">
-	<div class="container px-4 px-lg-5">
-		<div class="row gx-4 gx-lg-5 justify-content-center">
-			<div class="col-lg-4 text-center mb-5 mb-lg-0">
-				<i class="bi-phone fs-2 mb-3 text-muted"></i>
-				<div>+90 123 456 789</div>
-			</div>
-			<div class="col-lg-4 text-center mb-5 mb-lg-0">
-				<i class="bi-map fs-2 mb-3 text-muted"></i>
-				<div>Batı, 19 Mayıs Cd. No: 8 E kat 1, 34890 Pendik/İstanbule</div>
-			</div>
-			<div class="col-lg-4 text-center mb-5 mb-lg-0">
-				<i class="bi-envelope fs-2 mb-3 text-muted"></i>
-				<div>info@layla.com</div>
-			</div>
-		</div>
-	</div>
-</section>
-<div class="map">
-	<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3016.66916941793!2d29.22771007641353!3d40.879133927366325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac3092734e89f%3A0x717e26de434244fd!2sLayla%20Moda%20Wedding%20Dress!5e0!3m2!1str!2str!4v1703349477405!5m2!1str!2str"></iframe>
-	<br />
-	<small><a href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3016.66916941793!2d29.22771007641353!3d40.879133927366325!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cac3092734e89f%3A0x717e26de434244fd!2sLayla%20Moda%20Wedding%20Dress!5e0!3m2!1str!2str!4v1703349477405!5m2!1str!2st"></a></small>
 </div>
+<!-- Featured End -->
+
+
+<!-- Categories Start -->
+<div class="container-fluid pt-5">
+    <div class="row px-xl-5 pb-3">
+        <div class="col-lg-4 col-md-6 pb-1">
+            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
+                {% comment %} <p class="text-right">15 Products</p> {% endcomment %}
+                <a href="{% url 'products' %}" class="cat-img position-relative overflow-hidden mb-3">
+                    <img class="img-fluid" src="{% static 'theme/img/cat-1.jpg' %}" alt="">
+                </a>
+                <h5 class="font-weight-semi-bold m-0">Erkek elbiseleri</h5>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 pb-1">
+            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
+                {% comment %} <p class="text-right">15 Products</p> {% endcomment %}
+                <a href="{% url 'products' %}" class="cat-img position-relative overflow-hidden mb-3">
+                    <img class="img-fluid" src="{% static 'theme/img/cat-2.jpg' %}" alt="">
+                </a>
+                <h5 class="font-weight-semi-bold m-0">Kadın elbiseleri</h5>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 pb-1">
+            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
+                {% comment %} <p class="text-right">15 Products</p> {% endcomment %}
+                <a href="{% url 'products' %}" class="cat-img position-relative overflow-hidden mb-3">
+                    <img class="img-fluid" src="{% static 'theme/img/cat-3.jpg' %}" alt="">
+                </a>
+                <h5 class="font-weight-semi-bold m-0">Çocuk elbiseleri</h5>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 pb-1">
+            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
+                {% comment %} <p class="text-right">15 Products</p> {% endcomment %}
+                <a href="{% url 'products' %}" class="cat-img position-relative overflow-hidden mb-3">
+                    <img class="img-fluid" src="{% static 'theme/img/cat-4.jpg' %}" alt="">
+                </a>
+                <h5 class="font-weight-semi-bold m-0">Aksesuarlar</h5>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 pb-1">
+            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
+                {% comment %} <p class="text-right">15 Products</p> {% endcomment %}
+                <a href="{% url 'products' %}" class="cat-img position-relative overflow-hidden mb-3">
+                    <img class="img-fluid" src="{% static 'theme/img/cat-5.jpg' %}" alt="">
+                </a>
+                <h5 class="font-weight-semi-bold m-0">Çantalar</h5>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 pb-1">
+            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
+                {% comment %} <p class="text-right">15 Products</p> {% endcomment %}
+                <a href="{% url 'products' %}" class="cat-img position-relative overflow-hidden mb-3">
+                    <img class="img-fluid" src="{% static 'theme/img/cat-6.jpg' %}" alt="">
+                </a>
+                <h5 class="font-weight-semi-bold m-0">Ayakkabı</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Categories End -->
+
+
+<!-- Offer Start -->
+<div class="container-fluid offer pt-5">
+    <div class="row px-xl-5">
+        <div class="col-md-6 pb-4">
+            <div class="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">
+                <img src="{% static 'theme/img/offer-1.png' %}" alt="">
+                <div class="position-relative" style="z-index: 1;">
+                    <h5 class="text-uppercase text-primary mb-3">Tüm siparişlerde %20 indirim</h5>
+                    <h1 class="mb-4 font-weight-semi-bold">Bahar koleksiyonu</h1>
+                    <a href="{% url 'products' %}" class="btn btn-outline-primary py-md-2 px-md-3">Satın Al</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 pb-4">
+            <div class="position-relative bg-secondary text-center text-md-left text-white mb-2 py-5 px-5">
+                <img src="{% static 'theme/img/offer-2.png' %}" alt="">
+                <div class="position-relative" style="z-index: 1;">
+                    <h5 class="text-uppercase text-primary mb-3">Tüm siparişlerde %20 indirim</h5>
+                    <h1 class="mb-4 font-weight-semi-bold">Kış Koleksiyonu</h1>
+                    <a href="{% url 'products' %}" class="btn btn-outline-primary py-md-2 px-md-3">Satın Al</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Offer End -->
+
+
+<!-- Products Start -->
+<div class="container-fluid pt-5">
+    <div class="text-center mb-4">
+        <h2 class="section-title px-5"><span class="px-2">En Çok Satan Ürünler</span></h2>
+    </div>
+    <div class="row px-xl-5 pb-3">
+        {% for urun in urunler %}
+            <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+                <div class="card product-item border-0 mb-4">
+                    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                        <img class="img-fluid w-100" src="{{ urun.resim.url }}" alt="{{urun.isim}}" style="height: 300px;">
+                    </div>
+                    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                        <h6 class="text-truncate mb-3">{{urun.isim}}</h6>
+                        <div class="d-flex justify-content-center">
+                            <h6>{{urun.fiyat}}₺</h6>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between bg-light border">
+                        <a href="{% url 'urun_detay' urun.id %}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Görüntüle</a>
+                        <a href="{% url 'sepete_ekle' urun.id %}" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Sepete Ekle</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- Products End -->
+
+
+<!-- Vendor Start -->
+<div class="container-fluid py-5">
+    <div class="row px-xl-5">
+        <div class="col">
+            <div class="owl-carousel vendor-carousel">
+                <div class="vendor-item border p-4">
+                    <img src="{% static 'theme/img/vendor-1.jpg' %}" alt="">
+                </div>
+                <div class="vendor-item border p-4">
+                    <img src="{% static 'theme/img/vendor-2.jpg' %}" alt="">
+                </div>
+                <div class="vendor-item border p-4">
+                    <img src="{% static 'theme/img/vendor-3.jpg' %}" alt="">
+                </div>
+                <div class="vendor-item border p-4">
+                    <img src="{% static 'theme/img/vendor-4.jpg' %}" alt="">
+                </div>
+                <div class="vendor-item border p-4">
+                    <img src="{% static 'theme/img/vendor-5.jpg' %}" alt="">
+                </div>
+                <div class="vendor-item border p-4">
+                    <img src="{% static 'theme/img/vendor-6.jpg' %}" alt="">
+                </div>
+                <div class="vendor-item border p-4">
+                    <img src="{% static 'theme/img/vendor-7.jpg' %}" alt="">
+                </div>
+                <div class="vendor-item border p-4">
+                    <img src="{% static 'theme/img/vendor-8.jpg' %}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Vendor End -->
 {% endblock %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function(){
-        // Hide the error message after 5 seconds
-        setTimeout(function(){
-            $('#error-message').fadeOut('slow');
-        }, 5000);  // 5000 milliseconds = 5 seconds
-
-        // Close message when clicking on the error message itself
-        $('#error-message').click(function(){
-            $(this).fadeOut('slow');
-        });
-
-        // Prevent closing when clicking on the close button
-        $('.btn-close').click(function(e){
-            e.stopPropagation(); // Prevents the click event from propagating to the parent element (#error-message)
-        });
-    });
-</script>

@@ -64,8 +64,8 @@
     z-index: 0;
     transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     /*background: -webkit-linear-gradient(left, #e3b52d, #e3b52d);*/
-    /*background: -webkit-linear-gradient(left, #e3b52d, E30513d);*/
-    background: -webkit-linear-gradient(left, #E30513, #E30513);
+    /*background: -webkit-linear-gradient(left, #e3b52d,#D19C97d);*/
+    background: -webkit-linear-gradient(left, #D19C97, #D19C97);
 
 }
 
@@ -87,9 +87,9 @@
 
 .radio-color:checked {
     /*background-color: #e3b52d;*/
-    background-color: #E30513;
+    background-color: #D19C97;
     /*border-color: #e3b52d;*/
-    border-color: #E30513;
+    border-color: #D19C97;
 }
 
 .cinsiyet-font {
@@ -103,10 +103,10 @@
     margin-top: -35px;
     height: 50px;
     /*border: solid 2px #e3b52d;*/
-    border: solid 2px #E30513;
+    border: solid 2px #D19C97;
     border-radius: 15px;
     /*color: #e3b52d;*/
-    color: #E30513;
+    color: #D19C97;
     background-color: white;
     text-align: center;
     align-items: center;
@@ -121,10 +121,10 @@
 .date-input:checked + .date-label {
     transition: all 0.5s ease-in-out;
     /*border: solid 2px #e3b52d;*/
-    border: solid 2px #E30513;
+    border: solid 2px #D19C97;
     color: white;
     /*background-color: #e3b52d;*/
-    background-color: #E30513;
+    background-color: #D19C97;
 
 }
 
@@ -162,7 +162,7 @@
 
 .form-inner form .field input:focus {
     /*border-color: #e3b52d;*/
-    border-color: #E30513;
+    border-color: #D19C97;
 }
 
 .form-inner form .pass-link {
@@ -172,7 +172,7 @@
 .form-inner form .pass-link a,
 .form-inner form .signup-link a {
     /*color: #e3b52d;*/
-    color: #E30513;
+    color: #D19C97;
     text-decoration: none;
 }
 
@@ -194,8 +194,8 @@ form .field button[type="submit"] {
     border: none;
     cursor: pointer;
     /*background: -webkit-linear-gradient(left, #e3b52d, #e3b52d);*/
-    /*background: -webkit-linear-gradient(left, #e3b52d, E30513d);*/
-    background: -webkit-linear-gradient(left, #E30513, #E30513);
+    /*background: -webkit-linear-gradient(left, #e3b52d,#D19C97d);*/
+    background: -webkit-linear-gradient(left, #D19C97, #D19C97);
 }
 
 body.modal-open .bg {
@@ -230,8 +230,8 @@ body.modal-open .bg {
 .modal .field #davetiye_talebi_gonder {
     color: #fff;
     /*background: -webkit-linear-gradient(left, #e3b52d, #e3b52d);*/
-    /*background: -webkit-linear-gradient(left, #e3b52d, E30513d);*/
-    background: -webkit-linear-gradient(left, #E30513, #E30513);
+    /*background: -webkit-linear-gradient(left, #e3b52d,#D19C97d);*/
+    background: -webkit-linear-gradient(left, #D19C97, #D19C97);
 }
 
 .modal .field #davetiye_talebi_gonderme {
@@ -272,6 +272,6 @@ body.modal-open .bg {
     border: none;
     cursor: pointer;
     /*color: #e3b52d;*/
-    color: #E30513;
+    color: #D19C97;
     background: -webkit-linear-gradient(left, #fff, #fff);
 }
