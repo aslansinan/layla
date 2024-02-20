@@ -27,10 +27,10 @@ class Kategori(MPTTModel):
 class Urun(models.Model):
     kategori = models.ForeignKey(Kategori, on_delete=models.CASCADE)
     aciklama = models.CharField(max_length=255)
-    isim = models.CharField(max_length=25, verbose_name='İSİM')
+    isim = models.CharField(max_length=255, verbose_name='İSİM')
     kod = models.CharField(max_length=4, blank=True, null=True)
-    aciklama = models.CharField(max_length=124, blank=True)
-    kod = models.CharField(max_length=124, blank=True)
+    aciklama = models.CharField(max_length=255, blank=True)
+    kod = models.CharField(max_length=24, blank=True)
     fiyat = models.DecimalField(max_digits=10, decimal_places=2)
     stok_durumu = models.IntegerField(default=0)
     count = models.IntegerField(default=0)
