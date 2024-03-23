@@ -6,7 +6,7 @@ import iyzipay
 import json
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerError
 from django.urls import reverse
-from django.views.decorators.http import require_http_methods
+from django.views.decorators.http import require_http_methods, require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 import random
@@ -27,6 +27,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
+@require_POST
 def callback(request):
     if request.method != 'POST':
         return HttpResponse(str(''))
@@ -169,8 +170,8 @@ def paytr_payment(request):
         'user_name': user_name,
         'user_address': user_address,
         'user_phone': user_phone,
-        'merchant_ok_url': 'http://127.0.0.1:8000/payment/success',
-        'merchant_fail_url': 'http://127.0.0.1:8000/payment/failure',
+        'merchant_ok_url': 'https://laylabutik.com/payment/success',
+        'merchant_fail_url': 'https://laylabutik.com/payment/failure',
         'timeout_limit': 30,  # Convert timeout_limit to integer
         'currency': currency,
         'test_mode': test_mode
