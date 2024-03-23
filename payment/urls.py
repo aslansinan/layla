@@ -1,17 +1,15 @@
 from django.urls import path
 from .views import (
     index,
-    payment,
-    result,
     success,
-    fail,
+    fail, paytr_payment, callback,
 
 )
 
 urlpatterns = [
     path('', index, name='index'),
-    path('payment/', payment, name='payment'),
-    path('result/', result, name='result'),
+    path('payment/', paytr_payment, name='payment'),
+    path('result/', callback, name='result'),
     path('success/', success, name='success'),
     path('failure/', fail, name='failure'),
 
