@@ -39,17 +39,17 @@ def callback(request):
 
     hash_str = post['merchant_oid'] + merchant_salt + post['status'] + post['total_amount']
     hash_value = base64.b64encode(hmac.new(merchant_key, hash_str.encode(), hashlib.sha256).digest())
-    data = SessionTokens.objects.get(user=request.user, active=True)
+    # data = SessionTokens.objects.get(user=request.user, active=True)
     if hash_value != post['hash']:
         return HttpResponse(str('PAYTR notification failed: bad hash'))
 
     if post['status'] == 'success':  # Ödeme Onaylandı
-        data = SessionTokens.objects.get(temp=post['merchant_oid'])
-        order = create_order(data.user, data.sepet, payment_id=post['merchant_oid'],
-                             tutar=data.payment_amount)
-        move_cart_items_to_order(data.sepet, order)
-        update_cart_status(data.sepet, payment_id=post['merchant_oid'])
-        update_token_status(data.sepet)
+        # data = SessionTokens.objects.get(temp=post['merchant_oid'])
+        # order = create_order(data.user, data.sepet, payment_id=post['merchant_oid'],
+        #                      tutar=data.payment_amount)
+        # move_cart_items_to_order(data.sepet, order)
+        # update_cart_status(data.sepet, payment_id=post['merchant_oid'])
+        # update_token_status(data.sepet)
         """
         BURADA YAPILMASI GEREKENLER
         1) Siparişi onaylayın.
