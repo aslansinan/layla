@@ -12,7 +12,7 @@ class SessionTokens(models.Model):
     payment_amount = models.CharField(max_length=200)
     active = models.BooleanField(default=True)
     params_to_send = models.CharField(max_length=10000)
-
+    olusturma_tarihi = models.DateTimeField(auto_now_add=True, blank=True)
 
 class CallbackHashTokens(models.Model):
     merchant_oid = models.CharField(max_length=200)
@@ -21,3 +21,4 @@ class CallbackHashTokens(models.Model):
     total_amount = models.CharField(max_length=200)
     hash_value = models.CharField(max_length=400)
     hash = models.CharField(max_length=400)
+    olusturma_tarihi = models.DateTimeField(auto_now_add=True, blank=True)
