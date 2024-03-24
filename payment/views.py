@@ -92,30 +92,6 @@ def paytr_payment(request):
 
     user_cart = get_object_or_404(Sepet, user=user, durum=Sepet.HAZIRLIKTA)
     cart_items = user_cart.sepetsatiri_set.all()
-    context = dict()
-    buyer = {
-        'id': selected_user.id,
-        'name': selected_user.isim,
-        'surname': selected_user.soyisim,
-        'gsmNumber': selected_address.tel,
-        'email': selected_user.email,
-        'identityNumber': selected_user.tc,
-        'lastLoginDate': user.date_joined.strftime('%Y-%m-%d %H:%M:%S'),
-        'registrationDate': user.date_joined.strftime('%Y-%m-%d %H:%M:%S'),
-        'registrationAddress': selected_address.adres,
-        'ip': user_ip,
-        'city': selected_address.il,
-        'country': 'Turkey',
-        'zipCode': selected_address.posta_kodu
-    }
-
-    address = {
-        'contactName': selected_address.isim,
-        'city': selected_address.il,
-        'country': 'Turkey',
-        'address': selected_address.adres,
-        'zipCode': selected_address.posta_kodu
-    }
     basket_items = []
     total_amount = 0
     temp = random.randint(0, 999999999)
@@ -167,7 +143,7 @@ def paytr_payment(request):
         'email': email,
         'paytr_token': paytr_token,
         'payment_amount': payment_amount,
-        'user_basket': user_basket,
+        'user_basket': user_basket.decode(),
         'debug_on': '1',
         'no_installment': no_installment,
         'max_installment': max_installment,
