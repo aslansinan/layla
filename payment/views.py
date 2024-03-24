@@ -410,10 +410,11 @@ def get_client_ip(request):
 #     return HttpResponse(url)
 #
 def update_cart_status(user_cart, payment_id):
-    user_cart.durum = Sepet.TAMAMLANDI  # Assuming you have a constant like TAMAMLANDI for completed status
-    user_cart.guncelleme_tarihi = datetime.now()
-    user_cart.order_id = payment_id
-    user_cart.save()
+    sepet_instance = get_object_or_404(Sepet, id=user_cart.id)
+    sepet_instance.durum = Sepet.TAMAMLANDI  # Assuming you have a constant like TAMAMLANDI for completed status
+    sepet_instance.guncelleme_tarihi = datetime.now()
+    sepet_instance.order_id = payment_id
+    sepet_instance.save()
     return
 def update_token_status(user_cart):
     temp = SessionTokens.objects.get(sepet=user_cart)
@@ -446,13 +447,14 @@ def create_order(user, user_cart, payment_id, tutar):
     }
     sepet_instance = get_object_or_404(Sepet, id=user_cart.id)
     print(sepet_instance)
+    tutar_temp = tutar / 100
     order = Siparis.objects.create(
         user=user,
         sepet=sepet_instance,
         tarih=timezone.now(),
         order_id=payment_id,
         durum='S',
-        toplam_tutar=tutar,
+        toplam_tutar=tutar_temp,
         kargo_ucreti=50
     )
     return order
@@ -462,38 +464,7 @@ def success(request):
     context = dict()
     template = 'payment/ok.html'
     context['success'] = 'İşlem Başarılı'
-    user = request.user
-    sonuc_str = request.GET.get('sonuc', None)
-    if sonuc_str:
-        sonuc_str = sonuc_str[1:-1]
-
-        # Tuple'ları içeren string'i ayırın
-        tuple_str_list = sonuc_str.split("), (")
-
-        # Her bir tuple'ı bir string olarak ele alıp, uygun bir formata getirin
-        for i in range(len(tuple_str_list)):
-            tuple_str_list[i] = tuple_str_list[i].replace("(", "").replace(")", "")
-
-        # Her bir tuple string'ini bir tuple nesnesine dönüştürün
-        sonuc_list = [tuple(item.split(", ")) for item in tuple_str_list]
-
-        # Şimdi, sonuc_list içinde tuple'lar içeren bir liste elde ettiniz
-
-        user_cart = get_object_or_404(Sepet, user=user, durum=Sepet.HAZIRLIKTA)
-        temp =sonuc_list[7][1]
-        temp = temp.strip("'")
-        temp1 =sonuc_list[5][1]
-        temp1 = temp1.strip("'")
-        value_float = int(float(temp))
-        value_float1 = int(float(temp1))
-        order = create_order(user, user_cart, payment_id=value_float, card_type=sonuc_list[13][1],
-                             tutar=value_float1, )
-        move_cart_items_to_order(user_cart, order)
-        update_cart_status(user_cart, payment_id=value_float)
-        update_token_status(user_cart)
-        return render(request, template, context)
-    else:
-        return render(request, template, context)
+    return render(request, template, context)
 
 
 def fail(request):
