@@ -410,11 +410,10 @@ def get_client_ip(request):
 #     return HttpResponse(url)
 #
 def update_cart_status(user_cart, payment_id):
-    sepet_instance = get_object_or_404(Sepet, id=user_cart.id)
-    sepet_instance.durum = Sepet.TAMAMLANDI  # Assuming you have a constant like TAMAMLANDI for completed status
-    sepet_instance.guncelleme_tarihi = datetime.now()
-    sepet_instance.order_id = payment_id
-    sepet_instance.save()
+    user_cart.durum = Sepet.TAMAMLANDI  # Assuming you have a constant like TAMAMLANDI for completed status
+    user_cart.guncelleme_tarihi = datetime.now()
+    user_cart.order_id = payment_id
+    user_cart.save()
     return
 def update_token_status(user_cart):
     temp = SessionTokens.objects.get(sepet=user_cart)
