@@ -446,13 +446,14 @@ def create_order(user, user_cart, payment_id, tutar):
     }
     sepet_instance = get_object_or_404(Sepet, id=user_cart.id)
     print(sepet_instance)
+    tutar_temp = float(tutar) / 100
     order = Siparis.objects.create(
         user=user,
         sepet=sepet_instance,
         tarih=timezone.now(),
         order_id=payment_id,
         durum='S',
-        toplam_tutar=tutar,
+        toplam_tutar=tutar_temp,
         kargo_ucreti=50
     )
     return order
