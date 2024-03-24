@@ -131,8 +131,9 @@ def paytr_payment(request):
         total_amount += cart_item.fiyat
     total_amount = float(total_amount)
     basket_items_str = json.dumps([[item['name'], item['price'], 1] for item in basket_items])
-
-    user_basket = base64.b64encode(basket_items_str.encode()).decode('utf-8')
+    print(basket_items_str)
+    user_basket = base64.b64encode(basket_items_str.encode())
+    print(user_basket)
     # Müşteri Bilgileri
     email = selected_user.email
     payment_amount = int(total_amount * 100) # 9.99 için 9.99 * 100 = 999 gönderilmelidir.
@@ -146,12 +147,11 @@ def paytr_payment(request):
     max_installment = '0'
 
     payment_amount_str = str(payment_amount)
-    user_basket_str = json.dumps(basket_items)  # Convert basket_items list to JSON string
     temp_str = str(temp)
     # Construct the hash string
     hash_str = (
             merchant_id + user_ip + temp_str + email +
-            payment_amount_str + user_basket_str +
+            payment_amount_str + user_basket.decode() +
             no_installment + max_installment +
             currency + test_mode
     )
