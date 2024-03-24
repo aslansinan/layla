@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 import random
 from account.models import UyeAdresi, Uye
 from pages.models import Kategori
-from payment.models import SessionTokens
+from payment.models import SessionTokens, CallbackHashTokens
 from satis.models import Sepet, Siparis, SiparisSatiri
 import logging
 import random
@@ -39,6 +39,14 @@ def callback(request):
 
     hash_str = post['merchant_oid'] + merchant_salt + post['status'] + post['total_amount']
     hash_value = base64.b64encode(hmac.new(merchant_key, hash_str.encode(), hashlib.sha256).digest())
+    callback_order = CallbackHashTokens.objects.create(
+       merchant_oid=post['merchant_oid'],
+       merchant_salt=merchant_salt,
+       status=post['status'],
+       total_amount=post['total_amount'],
+       hash_value=hash_value,
+       hash=post['hash'],
+    )
     # data = SessionTokens.objects.get(user=request.user, active=True)
     if hash_value != post['hash']:
         return HttpResponse(str('PAYTR notification failed: bad hash'))

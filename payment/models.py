@@ -11,3 +11,11 @@ class SessionTokens(models.Model):
     temp = models.CharField(max_length=200)
     payment_amount = models.CharField(max_length=200)
     active = models.BooleanField(default=True)
+
+class CallbackHashTokens(models.Model):
+    merchant_oid = models.CharField(max_length=200)
+    merchant_salt = models.CharField(max_length=200)
+    status = models.CharField(max_length=200)
+    total_amount = models.CharField(max_length=200)
+    hash_value = models.CharField(max_length=400)
+    hash = models.CharField(max_length=400)
