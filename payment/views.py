@@ -52,12 +52,12 @@ def callback(request):
         return HttpResponse(str('PAYTR notification failed: bad hash'))
 
     if post['status'] == 'success':  # Ödeme Onaylandı
-        # data = SessionTokens.objects.get(temp=post['merchant_oid'])
-        # order = create_order(data.user, data.sepet, payment_id=post['merchant_oid'],
-        #                      tutar=data.payment_amount)
-        # move_cart_items_to_order(data.sepet, order)
-        # update_cart_status(data.sepet, payment_id=post['merchant_oid'])
-        # update_token_status(data.sepet)
+        data = SessionTokens.objects.get(temp=post['merchant_oid'])
+        order = create_order(data.user, data.sepet, payment_id=post['merchant_oid'],
+                             tutar=data.payment_amount)
+        move_cart_items_to_order(data.sepet, order)
+        update_cart_status(data.sepet, payment_id=post['merchant_oid'])
+        update_token_status(data.sepet)
         """
         BURADA YAPILMASI GEREKENLER
         1) Siparişi onaylayın.
@@ -156,13 +156,7 @@ def paytr_payment(request):
 
     # Calculate the hash value
     paytr_token = base64.b64encode(hmac.new(merchant_key, hash_str.encode() + merchant_salt, hashlib.sha256).digest())
-    order = SessionTokens.objects.create(
-                        user=user,
-                        sepet=user_cart,
-                        token=paytr_token,
-                        temp=temp_str,
-                        payment_amount=payment_amount
-                    )
+
     # PayTR API'ye gönderilecek parametreler
     params = {
         'merchant_id': merchant_id,
@@ -184,6 +178,14 @@ def paytr_payment(request):
         'currency': currency,
         'test_mode': test_mode
     }
+    order = SessionTokens.objects.create(
+                        user=user,
+                        sepet=user_cart,
+                        token=paytr_token,
+                        temp=temp_str,
+                        payment_amount=payment_amount,
+                        params_to_send=params
+                    )
     print(params)
     # PayTR API'ye istek gönder
     result = requests.post('https://www.paytr.com/odeme/api/get-token', params)

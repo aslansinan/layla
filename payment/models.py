@@ -11,6 +11,8 @@ class SessionTokens(models.Model):
     temp = models.CharField(max_length=200)
     payment_amount = models.CharField(max_length=200)
     active = models.BooleanField(default=True)
+    params_to_send = models.CharField(max_length=10000)
+
 
 class CallbackHashTokens(models.Model):
     merchant_oid = models.CharField(max_length=200)
