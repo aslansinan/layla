@@ -38,7 +38,7 @@ def callback(request):
     merchant_salt = '2itjpGfzEKrTNmEo'
 
     hash_str = post['merchant_oid'] + merchant_salt + post['status'] + post['total_amount']
-    hash_value = base64.b64encode(hmac.new(merchant_key, hash_str.encode(), hashlib.sha256).digest())
+    hash_value = base64.b64encode(hmac.new(merchant_key, hash_str.encode(), hashlib.sha256).digest()).decode('utf-8')
     callback_order = CallbackHashTokens.objects.create(
        merchant_oid=post['merchant_oid'],
        merchant_salt=merchant_salt,
